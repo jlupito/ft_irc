@@ -18,7 +18,34 @@ http://chi.cs.uchicago.edu/chirc/index.html
 http://vidalc.chez.com/lf/socket.html
 https://www.codequoi.com/programmation-reseau-via-socket-en-c/
 
-**1.1 Servers**
+socket: Crée un nouveau point de terminaison de communication, un socket.
+close: Ferme un fichier ou un socket.
+setsockopt: Configure des options sur un socket.
+getsockname: Obtient le nom local associé à un socket.
+getprotobyname: Obtient une structure de données associée à un protocole par son nom.
+gethostbyname: Obtient des informations sur l'hôte (adresse IP) par son nom.
+getaddrinfo: Convertit un nom d'hôte et/ou un service en informations sur l'adresse.
+freeaddrinfo: Libère la mémoire allouée par la fonction getaddrinfo.
+bind: Associe une adresse à un socket.
+connect: Établit une connexion avec un socket.
+listen: Met un socket en mode d'écoute pour les connexions entrantes.
+accept: Accepte une connexion entrante sur un socket.
+htons: Convertit une valeur courte (16 bits) de l'ordre des octets de l'hôte à l'ordre des octets du réseau (Big-Endian).
+htonl: Convertit une valeur longue (32 bits) de l'ordre des octets de l'hôte à l'ordre des octets du réseau.
+ntohs: Convertit une valeur courte de l'ordre des octets du réseau à l'ordre des octets de l'hôte.
+ntohl: Convertit une valeur longue de l'ordre des octets du réseau à l'ordre des octets de l'hôte.
+inet_addr: Convertit une chaîne représentant une adresse IP en forme binaire.
+inet_ntoa: Convertit une adresse IP en forme binaire en une chaîne lisible.
+send: Envoie des données sur un socket.
+recv: Reçoit des données depuis un socket.
+signal: Configure le traitement d'un signal.
+sigaction: Permet une gestion plus avancée des signaux que signal.
+lseek: Modifie la position du curseur dans un fichier.
+fstat: Obtient des informations sur un fichier ouvert.
+fcntl: Modifie les propriétés d'un descripteur de fichier.
+poll: Suspend l'exécution jusqu'à ce qu'un événement se produise sur un descripteur de fichier.
+
+**1.1 Servers**  
 ---
 Servers are uniquely identified by their name, which has a maximum
 length of sixty three (63) characters.
@@ -48,3 +75,4 @@ separator by the protocol.  A colon (':') can also be used as a
 delimiter for the channel mask.  Channel names are case insensitive.
 
 ***See the protocol grammar rules (section 2.3.1)***
+
