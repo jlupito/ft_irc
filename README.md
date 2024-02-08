@@ -12,6 +12,8 @@ L’objectif de ce projet est de reproduire le fonctionnement d’un serveur IRC
 
 - exemple d'un IRC: http://chi.cs.uchicago.edu/chirc/index.html
 
+- les commandes: https://www.techbull.com/techbull/guide/internet/irccommande.html#msg
+
 - guide pour la programmation reseau/socket:
 http://vidalc.chez.com/lf/socket.html
 https://www.codequoi.com/programmation-reseau-via-socket-en-c/
