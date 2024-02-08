@@ -8,11 +8,9 @@ L’objectif de ce projet est de reproduire le fonctionnement d’un serveur IRC
 [Client](https://tools.ietf.org/html/rfc2812)   
 [Server Protocol](https://tools.ietf.org/html/rfc2813)
 
-- Résumé de la doc:
-https://modern.ircdocs.horse/#errneedmoreparams-461
+- Résumé de la doc: https://modern.ircdocs.horse/#errneedmoreparams-461
 
-- exemple d'un IRC:
-http://chi.cs.uchicago.edu/chirc/index.html
+- exemple d'un IRC: http://chi.cs.uchicago.edu/chirc/index.html
 
 - guide pour la programmation reseau/socket:
 http://vidalc.chez.com/lf/socket.html
