@@ -2,11 +2,20 @@
 
 const int PORT = 6667;
 
-void handleEvent(int clientSocket) {
-    // Code pour gérer la connexion du client
-    // Coder pour lire/écrire des données et/ou traiter les commandes IRC
-    // Par exemple fermer simplement la connexion :
-    // close(clientSocket);
+void handleEvent(Server &server, int i) {
+	char buffer[1024];
+	int clientFd = server.getEventsTab()[i].data.fd;
+	std::cout << "Control: client on socket #" << clientFd << "is connected." << std::endl;
+
+	ssize_t bytes_received = recv(clientFd, buffer, sizeof(buffer) - 1, 0);
+	if (bytes_received <= 0) {
+		std::cout << "Client on socket #" << clientFd << " is disconnected." << std::endl;
+		close(clientFd);
+	} else {
+		buffer[bytes_received] = '\0';
+		std::string receivedData(buffer);
+		server.getClients()[clientFd]->setBuffer(receivedData);
+	}
 }
 
 int main(int ac, char **av) {
@@ -40,7 +49,7 @@ int main(int ac, char **av) {
 				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(client.getClientSocket()); }
 			}
 			else
-				handleEvent(server.getEventsTab()[i].data.fd);
+				handleEvent(server, i);
 		}
 	}
 	for (std::map<const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++)

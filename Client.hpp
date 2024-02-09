@@ -16,6 +16,8 @@ class Client
         socklen_t& 	getClientAddrLen(void);
         int 	getClientSocket(void);
         void 	setClientSocket(int fd);
+        void    setBuffer(std::string &buffer);
+        std::string&    getBuffer();
 
         class clientConnectFailure : public std::exception {
             public:
@@ -26,5 +28,6 @@ class Client
         struct sockaddr_in  _clientAddr;
         socklen_t _clientAddrLen = sizeof(_clientAddr); //taille et adresse du client est necessaire pour la focntion accept()
         int                 _clientSocket;
+        std::string _buffer;
         
 };
