@@ -17,10 +17,14 @@ class Client
         int 	getClientSocket(void);
         void 	setClientSocket(int fd);
 
+        class clientConnectFailure : public std::exception {
+            public:
+            virtual const char* what() const throw();
+        };
+
     private:
-        struct sockaddr_in _clientAddr;
+        struct sockaddr_in  _clientAddr;
         socklen_t _clientAddrLen = sizeof(_clientAddr); //taille et adresse du client est necessaire pour la focntion accept()
-        int _clientSocket;
-
-
+        int                 _clientSocket;
+        
 };

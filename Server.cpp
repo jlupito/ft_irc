@@ -25,7 +25,6 @@ std::map<const int, Client *>&		Server::getClients(void) { return this->_clients
 /******************************** EXCEPTIONS ********************************/
 
 const char* Server::serverInitFailure::what() const throw() {
-	// close(server.getClientSocket()); A FINIR
 	return "Error : server has not been initialized."; }
 
 /***************************** OTHER FUNCTIONS ******************************/

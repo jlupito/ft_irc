@@ -9,13 +9,11 @@
 #include "Client.hpp"
 #pragma once
 
-const int MAX_EVENTS = 1024;
-
 class Client;
 class Server {
 
 	public:
-		Server(int port);
+		Server(int port); // a finir
 		~Server();
 
 		void	initialization(); // micro parsing, condition pour demarrer le server
@@ -31,7 +29,7 @@ class Server {
 	private:
 		struct sockaddr_in _serverAddr; //struct pour stocker les infos relatives aux adresses IP
 		struct epoll_event _event;
-		struct epoll_event _events[MAX_EVENTS];
+		struct epoll_event _events[1024];
 		std::map<const int, Client *> _clients; // le int est le fd attribue au client(socket) - non cessible
 		int _port;
 		int _serverSocket;
