@@ -15,6 +15,7 @@ void handleEvent(Server &server, int i) {
 		buffer[bytes_received] = '\0';
 		std::string receivedData(buffer);
 		server.getClients()[clientFd]->setBuffer(receivedData);
+		std::cout << "Client sends: " << receivedData << std::endl;
 	}
 }
 

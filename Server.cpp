@@ -14,9 +14,9 @@ Server::~Server() {
 
 /********************************** GETTERS **********************************/
 
-int		Server::getPort(void) { return _port; }
-int		Server::getServerSocket(void) { return _serverSocket; }
-int		Server::getEpollFd(void) { return _epollFd; }
+int				Server::getPort(void) { return _port; }
+int				Server::getServerSocket(void) { return _serverSocket; }
+int				Server::getEpollFd(void) { return _epollFd; }
 sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }
@@ -29,9 +29,7 @@ const char* Server::serverInitFailure::what() const throw() {
 
 /***************************** OTHER FUNCTIONS ******************************/
 
-// personnalisation des classes d'exceptions si besoin
 void	Server::initialization() {
-
 	try {
 		/* Créer un socket pour le serveur, il s'agit de la socket d' ecoute du serveur */
 		if ((_serverSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -65,12 +63,3 @@ void	Server::initialization() {
 	}
 	catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 }
-
-// void	Server::startServer() {
-
-// 	if (initialization()) {
-// 		//lancer le serveur avec les fonctions de Jlo du main
-// 	}
-// 	else
-// 		throw Server::serverInitFailure();
-// }
