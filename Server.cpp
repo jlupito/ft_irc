@@ -2,9 +2,9 @@
 
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
-Server::Server(std::string portStr, std::string password) {
-	if (portStr != "6667" || password != this->_password)
-		throw serverInitFailure();
+Server::Server(std::string port, std::string password) 
+	: _port(std::stoi(port)), _password(password) {
+	/** Attention, le port et mdp doivent juste etre set up ici**/
 	std::cout << "Hello World! - Server has been created." << std::endl;
 	initialization();
 	initiateCommandHandlers();
@@ -17,9 +17,9 @@ Server::~Server() {
 
 /********************************** GETTERS **********************************/
 
-int		Server::getPort(void) { return _port; }
-int		Server::getServerSocket(void) { return _serverSocket; }
-int		Server::getEpollFd(void) { return _epollFd; }
+int				Server::getPort(void) { return _port; }
+int				Server::getServerSocket(void) { return _serverSocket; }
+int				Server::getEpollFd(void) { return _epollFd; }
 sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }

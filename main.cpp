@@ -1,5 +1,5 @@
 #include "Server.hpp"
-#include "handlers.hpp"
+#include "Handlers.hpp"
 
 int main(int ac, char **av) {
 
@@ -33,7 +33,7 @@ int main(int ac, char **av) {
 				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(client.getClientSocket()); }
 			}
 			else
-				processEvent(server, i);
+				server.processEvent(i);
 		}
 	}
 	for (std::map<const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++)
