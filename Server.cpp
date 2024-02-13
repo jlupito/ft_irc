@@ -2,15 +2,18 @@
 
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
-// pour rappel le port est donne d' emblee en parametre de l'executable
-Server::Server(int port) : _port(port) {
+Server::Server(std::string portStr, std::string password) {
+	if (portStr != "6667" || password != this->_password)
+		throw serverInitFailure();
 	std::cout << "Hello World! - Server has been created." << std::endl;
 	initialization();
+	initiateCommandHandlers();
 }
 
 Server::~Server() {
 	std::cout << "Server has been disconnected - Ciao bitch !" << std::endl;
 }
+
 
 /********************************** GETTERS **********************************/
 
@@ -20,12 +23,18 @@ int		Server::getEpollFd(void) { return _epollFd; }
 sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }
-std::map<const int, Client *>&		Server::getClients(void) { return this->_clients; }
+std::map<const int, Client *>&	Server::getClients(void) { return this->_clients; }
 
 /******************************** EXCEPTIONS ********************************/
 
 const char* Server::serverInitFailure::what() const throw() {
 	return "Error : server has not been initialized."; }
+
+const char* Server::commandNotFound::what() const throw() {
+	return "Error : command not found."; }
+
+const char* Server::errorInCommandParameters::what() const throw() {
+	return "Error : wrong parameter(s)."; }
 
 /***************************** OTHER FUNCTIONS ******************************/
 
@@ -66,11 +75,10 @@ void	Server::initialization() {
 	catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 }
 
-// void	Server::startServer() {
+// on cree std::map<std::string, commandFunction> _commandHandlers;
+void	Server::initiateCommandHandlers() {
 
-// 	if (initialization()) {
-// 		//lancer le serveur avec les fonctions de Jlo du main
-// 	}
-// 	else
-// 		throw Server::serverInitFailure();
-// }
+	_commandHandlers["NICK"] = &Server::handleNickCommand;
+	_commandHandlers["USER"] = &Server::handleUserCommand;
+	// ... entrez toutes les commandes necessaires, cf draft.cpp
+}

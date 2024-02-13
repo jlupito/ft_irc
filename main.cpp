@@ -1,28 +1,12 @@
 #include "Server.hpp"
-
-const int PORT = 6667;
-
-void handleEvent(Server &server, int i) {
-	char buffer[1024];
-	int clientFd = server.getEventsTab()[i].data.fd;
-	std::cout << "Control: client on socket #" << clientFd << "is connected." << std::endl;
-
-	ssize_t bytes_received = recv(clientFd, buffer, sizeof(buffer) - 1, 0);
-	if (bytes_received <= 0) {
-		std::cout << "Client on socket #" << clientFd << " is disconnected." << std::endl;
-		close(clientFd);
-	} else {
-		buffer[bytes_received] = '\0';
-		std::string receivedData(buffer);
-		server.getClients()[clientFd]->setBuffer(receivedData);
-	}
-}
+#include "handlers.hpp"
 
 int main(int ac, char **av) {
 
-	// int port = atoi(av[1]); // verification du int a mettre
-	Server server(atoi(av[1]));
+	if (ac != 3)
+		return (std::cout << "Too few arguments." << std::endl, -1);
 
+	Server server(av[1], av[2]);
 	while (true) {
 		int numEvents = epoll_wait(server.getEpollFd(), server.getEventsTab(), 1024, -1);
 		if (numEvents < 0)
@@ -49,7 +33,7 @@ int main(int ac, char **av) {
 				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(client.getClientSocket()); }
 			}
 			else
-				handleEvent(server, i);
+				processEvent(server, i);
 		}
 	}
 	for (std::map<const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++)
