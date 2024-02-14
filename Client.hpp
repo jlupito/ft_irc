@@ -15,9 +15,11 @@ class Client
         sockaddr_in& 	getClientAddr(void);
         socklen_t& 	    getClientAddrLen(void);
         int 	        getClientSocket(void);
+        std::string&    getBuffer(void);
+        bool            getCAPLS();
+        void            setCAPLS();
         void 	        setClientSocket(int fd);
         void            setBuffer(std::string &buffer);
-        std::string&    getBuffer(void);
         void            fillAttributes(void);
 
         class clientConnectFailure : public std::exception {
@@ -30,7 +32,7 @@ class Client
         socklen_t           _clientAddrLen = sizeof(_clientAddr);
         int                 _clientSocket;
         std::string         _buffer;
-        // std::string         _nickName;
-        // std::string         _userName;
-        bool                _isFirstConnection; // penser a le passer a False
+        std::string         _nickName;
+        std::string         _userID;
+        bool                _capLS; // penser a le passer a False
 };

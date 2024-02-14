@@ -3,35 +3,33 @@
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
 Server::Server(std::string port, std::string password) 
-	: _port(std::stoi(port)), _password(password) {
-	/** Attention, le port et mdp doivent juste etre set up ici**/
+	: _port(std::atoi(port.c_str())), _password(password) {
 	std::cout << "Hello World! - Server has been created." << std::endl;
 	initialization();
-	initiateCommandHandlers();
 }
 
 Server::~Server() {
 	std::cout << "Server has been disconnected - Ciao bitch !" << std::endl;
 }
 
-
 /********************************** GETTERS **********************************/
 
-int				Server::getPort(void) { return _port; }
-int				Server::getServerSocket(void) { return _serverSocket; }
-int				Server::getEpollFd(void) { return _epollFd; }
-sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
-epoll_event&	Server::getEvent(void) { return this->_event; }
-epoll_event*	Server::getEventsTab(void) { return this->_events; }
-std::map<const int, Client *>&	Server::getClients(void) { return this->_clients; }
+int									Server::getPort(void) { return _port; }
+int									Server::getServerSocket(void) { return _serverSocket; }
+int									Server::getEpollFd(void) { return _epollFd; }
+sockaddr_in&						Server::getServerAddr(void) { return this->_serverAddr; }
+epoll_event&						Server::getEvent(void) { return this->_event; }
+epoll_event*						Server::getEventsTab(void) { return this->_events; }
+std::map<const int, Client *>&		Server::getClients(void) { return this->_clients; }
+// typedef void (Server::*cmdFunction)(int, std::vector<std::string>&);
+// std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
+std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
+
 
 /******************************** EXCEPTIONS ********************************/
 
 const char* Server::serverInitFailure::what() const throw() {
 	return "Error : server has not been initialized."; }
-
-const char* Server::commandNotFound::what() const throw() {
-	return "Error : command not found."; }
 
 const char* Server::errorInCommandParameters::what() const throw() {
 	return "Error : wrong parameter(s)."; }
@@ -73,12 +71,4 @@ void	Server::initialization() {
 			throw Server::serverInitFailure(); }
 	}
 	catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
-}
-
-// on cree std::map<std::string, commandFunction> _commandHandlers;
-void	Server::initiateCommandHandlers() {
-
-	_commandHandlers["NICK"] = &Server::handleNickCommand;
-	_commandHandlers["USER"] = &Server::handleUserCommand;
-	// ... entrez toutes les commandes necessaires, cf draft.cpp
 }
