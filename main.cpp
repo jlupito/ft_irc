@@ -20,11 +20,7 @@ int main(int ac, char **av) {
 					if (client.getClientSocket() < 0)
 						throw Client::clientConnectFailure();
 
-					/*  Ajouter le nouveau socket client à l'ensemble epoll */
 					server.getEvent().events = EPOLLIN;
-					/*EPOLLIN: Cet événement est déclenché lorsque des données sont prêtes à être lues depuis
-					le descripteur de fichier associé. Il indique que vous pouvez utiliser des appels
-					de lecture (read ou équivalents) sans bloquer le processus.*/
 					server.getEvent().data.fd = client.getClientSocket();
 					if (epoll_ctl(server.getEpollFd(), EPOLL_CTL_ADD, client.getClientSocket(), &server.getEvent()) < 0) {
 						throw Client::clientConnectFailure(); }

@@ -13,6 +13,7 @@
 class Client;
 
 class Channel {
+
 	private:
 		std::vector<std::string>		_operators;
 		std::vector<std::string>		_kickedUsers;
@@ -53,5 +54,4 @@ class Channel {
 		void							addKickedUsers(std::string &kickedUsername);
 		void							addBannedUsers(std::string &bannedUsername);
 		void							addOperators(std::string &OperUsername);
-
 };

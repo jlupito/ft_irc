@@ -17,11 +17,12 @@ class Client
         int 	        getClientSocket(void);
         std::string&    getBuffer(void);
         std::string&    getUserID(void);
-        std::string&    getNickName(void);
+        std::string&    getNickname(void);
         bool            getCAPLS();
         void            setCAPLS();
         void 	        setClientSocket(int fd);
         void            setBuffer(std::string &buffer);
+        void            setNickname(std::string nickname);
         void            fillAttributes(void);
 
         class clientConnectFailure : public std::exception {

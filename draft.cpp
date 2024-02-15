@@ -23,9 +23,9 @@ Commandes a traiter :
 Command: PASS
 	Parameters: <password>
 Command: NICK
-	Parameters: <nickname> [ <hopcount> ]
+	Parameters: <nickname>
 Command: USER
-	Parameters: <username> <hostname> <servername> <realname>
+   Parameters: <user> <mode> <unused> <realname>
 Command: OPER
 	Parameters: <user> <password>
 Command: QUIT

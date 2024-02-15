@@ -30,6 +30,7 @@ void		sendBytes(Client* client, const char* reply);
 void		handlePASSCommand(Server& server, Client* client, cmdStruct* command);
 int			handleNICKErrors(Server& server, Client* client, cmdStruct* command);
 void		handleNICKCommand(Server& server, Client* client, cmdStruct* command);
+void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
 
 class dataTransferError : public std::exception {
 		public:

@@ -3,6 +3,13 @@
 
 typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
 
+void	sendBytes(Client* client, const char* reply) {
+
+	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
+	if (bytes_transfered <= 0)
+		std::cout << "Server failed to send a reply to client." << std::endl;
+}
+
 void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 
 	std::string cmdName = cmdCut.cmd.substr(0, cmdCut.cmd.find(' '));
@@ -11,11 +18,6 @@ void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 		if (it->first == cmdName)
 			(server.*(it->second))(server, *client, cmdCut);
 	}
-	/******************A METTRE DANS CHAQUE FONCTION: *****************************/
-	// const char* reply = RPL_WELCOME(client.user_id, client.nickname);
-	// ssize_t bytes_transfered = send(client->getClientSocket(), reply, sizeof(reply) - 1, 0);
-	// if (bytes_transfered <= 0)
-	// 	std::cout << "Server failed to send a reply to client." << std::endl; //close??
 }
 
 void	processCmd(Server& server, Client* client, std::string cmdFull) {
@@ -24,7 +26,7 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 	size_t nextSpace = cmdFull.find(' ');
 	size_t colon = cmdFull.find(':');
 
-	if (!colon and cmdFull[colon + 1] != ' ') { 
+	if (!colon and cmdFull[colon + 1] != ' ') {
 		cmdCut.prefix = cmdFull.substr(0, nextSpace - 1);
 		cmdFull.erase(0, nextSpace);
 	}
@@ -34,10 +36,6 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 	}
 	else
 		cmdCut.cmd = cmdFull;
-	// if (cmdCut.message == "CAP LS")
-	// 	client->setCAPLS();
-	// if (client->getCAPLS()) // si pas recu (false)
-	// 	std::cout << "Ouesh pas reçu CAP LS throw erreur" << std::endl; //throw exception;
 	executeCmd(server, client, cmdCut);
 }
 

@@ -74,7 +74,6 @@ void	Channel::removeClientFromChan(std::string &username) {
 		if (*it == username)
 			_operators.erase(it);
 	}
-
 }
 
 void	Channel::removeOperator(std::string &username) {
@@ -82,9 +81,8 @@ void	Channel::removeOperator(std::string &username) {
 		if (*it == username)
 			_operators.erase(it);
 	}
-
 }
 
 void	Channel::addClientToChan(Client &client) {
-	_clientsList[client.getNickName()] = client;
+	_clientsList[client.getNickname()] = client;
 }

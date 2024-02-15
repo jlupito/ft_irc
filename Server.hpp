@@ -23,20 +23,21 @@ class Server {
 		Server(std::string port, std::string password);
 		~Server();
 
-		void								initialization(void);
-		int									getPort(void);
-		int									getServerSocket(void);
-		int									getEpollFd(void);
-		std::string							getServerName(void);
-		std::string 						getPassWord(void);
-		sockaddr_in&						getServerAddr(void);
-		epoll_event&						getEvent(void);
-		epoll_event*						getEventsTab(void);
-		std::map<const int, Client *>&		getClients(void);
-		std::map<std::string, Channel *>&	getChannels(void);
-		std::map<std::string, cmdFunction>&	getCmdList(void);
+		void									initialization(void);
+		int										getPort(void);
+		int										getServerSocket(void);
+		int										getEpollFd(void);
+		std::string								getServerName(void);
+		std::string 							getPassWord(void);
+		sockaddr_in&							getServerAddr(void);
+		epoll_event&							getEvent(void);
+		epoll_event*							getEventsTab(void);
+		std::map<const int, Client *>&			getClients(void);
+		std::map<std::string, Channel *>&		getChannels(void);
+		std::map<std::string, cmdFunction>&		getCmdList(void);
 
 	private:
+		std::string								_serverName = "Mon Petit Poney";
 		struct sockaddr_in 						_serverAddr; //struct pour stocker les infos relatives aux adresses IP
 		struct epoll_event 						_event;
 		struct epoll_event 						_events[1024];

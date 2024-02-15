@@ -1,6 +1,7 @@
 #include "Server.hpp"
 #include "Commands.hpp"
 #include "Replies.hpp"
+#include "Client.hpp"
 #include <cstring>
 
 // ERR_NEEDMOREPARAMS 461

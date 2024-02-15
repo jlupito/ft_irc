@@ -3,6 +3,8 @@
 /*
 https://datatracker.ietf.org/doc/html/rfc2812#section-5
 */
+/*COMMON REPLIES*/
+# define NEEDMOREPARAMS_ERR(command) (": localhost 461 " + command + " :Not enough parameters")
 
 # define RPL_WELCOME(user_id, nickname) (":localhost 001 " + nickname + " :Welcome to the Internet Relay Network " + user_id + "\r\n")
 # define RPL_YOURHOST(client, servername, version) (":localhost 002 " + client + " :Your host is " + servername + " , running version " + version + "\r\n")
@@ -10,7 +12,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_MYINFO() (": localhost 004 " +  "<servername> <version> <available user modes>" +  "<available channel modes>")
 
 /* PASS ERROR REPLIES */
-# define NEEDMOREPARAMS_ERR(command) (": localhost 461 " + command + " :Not enough parameters")
 # define ALREADYREGISTRED_ERR() (": localhost 462 :Unauthorized command (already registered)")
 
 /* NICK ERROR REPLIES */
@@ -22,3 +23,8 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RESTRICTED_ERR() (":localhost 484 :Your connection is restricted!")
 
 /* USER ERROR REPLIES */
+
+/* OPER REPLIES */
+# define YOUREOPER_RPL() (":localhost 381 :You are now an IRC operator")
+# define NOOPERHOST_ERR() (":localhost 491 :No O-lines for your host")
+# define PASSWDMISMATCH_ERR() 464
