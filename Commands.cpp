@@ -6,7 +6,7 @@ typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
 void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 
 	std::string cmdName = cmdCut.cmd.substr(0, cmdCut.cmd.find(' '));
-	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin(); 
+	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin();
 		it != server.getCmdList().end(); ++it) {
 		if (it->first == cmdName)
 			(server.*(it->second))(server, *client, cmdCut);
@@ -19,11 +19,12 @@ void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 }
 
 void	processCmd(Server& server, Client* client, std::string cmdFull) {
+
 	cmdStruct cmdCut;
 	size_t nextSpace = cmdFull.find(' ');
 	size_t colon = cmdFull.find(':');
 
-	if (!colon and cmdFull[colon + 1] != ' ') {
+	if (!colon and cmdFull[colon + 1] != ' ') { 
 		cmdCut.prefix = cmdFull.substr(0, nextSpace - 1);
 		cmdFull.erase(0, nextSpace);
 	}
@@ -33,10 +34,10 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 	}
 	else
 		cmdCut.cmd = cmdFull;
-	if (cmdCut.message == "CAP LS")
-		client->setCAPLS();
-	if (client->getCAPLS())
-		std::cout << "Ouesh pas reçu CAP LS throw erreur" << std::endl; //throw exception;
+	// if (cmdCut.message == "CAP LS")
+	// 	client->setCAPLS();
+	// if (client->getCAPLS()) // si pas recu (false)
+	// 	std::cout << "Ouesh pas reçu CAP LS throw erreur" << std::endl; //throw exception;
 	executeCmd(server, client, cmdCut);
 }
 

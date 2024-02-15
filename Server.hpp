@@ -26,6 +26,8 @@ class Server {
 		int									getPort(void);
 		int									getServerSocket(void);
 		int									getEpollFd(void);
+		std::string							getServerName(void);
+		std::string 						getPassWord(void);
 		sockaddr_in&						getServerAddr(void);
 		epoll_event&						getEvent(void);
 		epoll_event*						getEventsTab(void);
@@ -33,6 +35,7 @@ class Server {
 		std::map<std::string, cmdFunction>&	getCmdList(void);
 
 	private:
+		std::string							_serverName = "Mon Petit Poney";
 		struct sockaddr_in 					_serverAddr; //struct pour stocker les infos relatives aux adresses IP
 		struct epoll_event 					_event;
 		struct epoll_event 					_events[1024];
@@ -42,12 +45,12 @@ class Server {
 		int 								_epollFd;
 		std::string							_password;
 		std::map<std::string, cmdFunction> _cmdList; // map pour contenir les noms et pointeurs sur f()
-	
+
 	class serverInitFailure : public std::exception {
 		public:
 		virtual const char* what() const throw();
 	};
-	
+
 	class errorInCommandParameters : public std::exception {
 		public:
 		virtual const char* what() const throw();

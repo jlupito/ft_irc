@@ -16,6 +16,7 @@
 class Server;
 
 struct cmdStruct {
+
 	std::string prefix;
 	std::string	cmd;
 	std::string message;
@@ -24,6 +25,11 @@ struct cmdStruct {
 void 		processEvent(Server& server, int i);
 void		processCmd(Server& server, Client* client, std::string cmdFull);
 void		executeCmd(Server& server, Client* client, cmdStruct cmdCut);
+
+void		sendBytes(Client* client, const char* reply);
+void		handlePASSCommand(Server& server, Client* client, cmdStruct* command);
+int			handleNICKErrors(Server& server, Client* client, cmdStruct* command);
+void		handleNICKCommand(Server& server, Client* client, cmdStruct* command);
 
 class dataTransferError : public std::exception {
 		public:

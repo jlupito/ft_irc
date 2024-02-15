@@ -2,7 +2,7 @@
 
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
-Server::Server(std::string port, std::string password) 
+Server::Server(std::string port, std::string password)
 	: _port(std::atoi(port.c_str())), _password(password) {
 	std::cout << "Hello World! - Server has been created." << std::endl;
 	initialization();
@@ -17,6 +17,8 @@ Server::~Server() {
 int		Server::getPort(void) { return _port; }
 int		Server::getServerSocket(void) { return _serverSocket; }
 int		Server::getEpollFd(void) { return _epollFd; }
+std::string		Server::getServerName(void) { return _serverName; }
+std::string 	Server::getPassWord(void) { return _password; }
 sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }
