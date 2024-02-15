@@ -22,26 +22,27 @@ class Server {
 		Server(std::string port, std::string password);
 		~Server();
 
-		void	initialization(); // micro parsing, condition pour demarrer le server
-		// void	startServer(); // lancement du serveur dans un second temps, hors construction
-		int		getPort(void);
-		int		getServerSocket(void);
-		int		getEpollFd(void);
-		sockaddr_in&	getServerAddr(void);
-		epoll_event&	getEvent(void);
-		epoll_event*	getEventsTab(void);
+		void								initialization(void);
+		int									getPort(void);
+		int									getServerSocket(void);
+		int									getEpollFd(void);
+		sockaddr_in&						getServerAddr(void);
+		epoll_event&						getEvent(void);
+		epoll_event*						getEventsTab(void);
 		std::map<const int, Client *>&		getClients(void);
+		std::map<std::string, cmdFunction>&	getCmdList(void);
 
 	private:
-		struct sockaddr_in _serverAddr; //struct pour stocker les infos relatives aux adresses IP
-		struct epoll_event _event;
-		struct epoll_event _events[1024];
-		std::map<const int, Client *> _clients; // le int est le fd attribue au client(socket) - non cessible
-		int _port;
-		int _serverSocket;
-		int _epollFd;
-
-
+		struct sockaddr_in 					_serverAddr; //struct pour stocker les infos relatives aux adresses IP
+		struct epoll_event 					_event;
+		struct epoll_event 					_events[1024];
+		std::map<const int, Client *> 		_clients; // le int est le fd attribue au client(socket) - non cessible
+		int									_port;
+		int 								_serverSocket;
+		int 								_epollFd;
+		std::string							_password;
+		std::map<std::string, cmdFunction> _cmdList; // map pour contenir les noms et pointeurs sur f()
+	
 	class serverInitFailure : public std::exception {
 		public:
 		virtual const char* what() const throw();
