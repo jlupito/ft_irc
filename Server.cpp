@@ -14,6 +14,8 @@ Server::~Server() {
 
 /********************************** GETTERS **********************************/
 
+typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+
 int		Server::getPort(void) { return _port; }
 int		Server::getServerSocket(void) { return _serverSocket; }
 int		Server::getEpollFd(void) { return _epollFd; }
@@ -23,9 +25,8 @@ sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }
 std::map<const int, Client *>&		Server::getClients(void) { return this->_clients; }
-typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+std::map<std::string, Channel *>&	Server::getChannels(void) { return this->_channels; }
 std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
-
 
 /******************************** EXCEPTIONS ********************************/
 

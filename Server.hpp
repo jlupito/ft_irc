@@ -15,6 +15,7 @@
 typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
 
 class Client;
+class Channel;
 
 class Server {
 
@@ -32,19 +33,20 @@ class Server {
 		epoll_event&						getEvent(void);
 		epoll_event*						getEventsTab(void);
 		std::map<const int, Client *>&		getClients(void);
+		std::map<std::string, Channel *>&	getChannels(void);
 		std::map<std::string, cmdFunction>&	getCmdList(void);
 
 	private:
-		std::string							_serverName = "Mon Petit Poney";
-		struct sockaddr_in 					_serverAddr; //struct pour stocker les infos relatives aux adresses IP
-		struct epoll_event 					_event;
-		struct epoll_event 					_events[1024];
-		std::map<const int, Client *> 		_clients; // le int est le fd attribue au client(socket) - non cessible
-		int									_port;
-		int 								_serverSocket;
-		int 								_epollFd;
-		std::string							_password;
-		std::map<std::string, cmdFunction> _cmdList; // map pour contenir les noms et pointeurs sur f()
+		struct sockaddr_in 						_serverAddr; //struct pour stocker les infos relatives aux adresses IP
+		struct epoll_event 						_event;
+		struct epoll_event 						_events[1024];
+		int										_port;
+		int 									_serverSocket;
+		int 									_epollFd;
+		std::string								_password;
+		std::map< std::string, cmdFunction > 	_cmdList; // map pour contenir les noms et pointeurs sur f()
+		std::map< const int, Client * > 		_clients; // le int est le fd attribue au client(socket) - non cessible
+		std::map< std::string, Channel * >		_channels;
 
 	class serverInitFailure : public std::exception {
 		public:
