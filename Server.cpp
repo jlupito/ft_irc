@@ -2,8 +2,8 @@
 
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
-// pour rappel le port est donne d' emblee en parametre de l'executable
-Server::Server(int port) : _port(port) {
+Server::Server(std::string port, std::string password) 
+	: _port(std::atoi(port.c_str())), _password(password) {
 	std::cout << "Hello World! - Server has been created." << std::endl;
 	initialization();
 }
@@ -14,18 +14,24 @@ Server::~Server() {
 
 /********************************** GETTERS **********************************/
 
-int				Server::getPort(void) { return _port; }
-int				Server::getServerSocket(void) { return _serverSocket; }
-int				Server::getEpollFd(void) { return _epollFd; }
+int		Server::getPort(void) { return _port; }
+int		Server::getServerSocket(void) { return _serverSocket; }
+int		Server::getEpollFd(void) { return _epollFd; }
 sockaddr_in&	Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }
 std::map<const int, Client *>&		Server::getClients(void) { return this->_clients; }
+typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
+
 
 /******************************** EXCEPTIONS ********************************/
 
 const char* Server::serverInitFailure::what() const throw() {
 	return "Error : server has not been initialized."; }
+
+const char* Server::errorInCommandParameters::what() const throw() {
+	return "Error : wrong parameter(s)."; }
 
 /***************************** OTHER FUNCTIONS ******************************/
 
