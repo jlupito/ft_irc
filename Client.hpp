@@ -16,6 +16,8 @@ class Client
         socklen_t& 	    getClientAddrLen(void);
         int 	        getClientSocket(void);
         std::string&    getBuffer(void);
+        std::string&    getUserID(void);
+        std::string&    getNickName(void);
         bool            getCAPLS();
         void            setCAPLS();
         void 	        setClientSocket(int fd);
