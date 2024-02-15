@@ -10,7 +10,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include "Server.hpp"
+// #include "Server.hpp"
 #pragma once
 
 class Server;
@@ -21,10 +21,6 @@ struct cmdStruct {
 	std::string message;
 };
 
-typedef void (Server::*cmdFunction)(int, std::vector<std::string>&);
-
-void		handleNickCommand(int clientSocket, std::vector<std::string>& params);
-void		handleUserCommand(int clientSocket, std::vector<std::string>& params);
 void 		processEvent(Server& server, int i);
 void		processCmd(Server& server, Client* client, std::string cmdFull);
 void		executeCmd(Server& server, Client* client, cmdStruct cmdCut);
@@ -34,4 +30,4 @@ class dataTransferError : public std::exception {
 		virtual const char* what() const throw() {
 			return "Error : failure in send or receive.";
 		}
-	};
+};

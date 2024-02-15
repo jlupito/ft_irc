@@ -9,9 +9,13 @@
 #include <map>
 #include <vector>
 #include "Client.hpp"
+#include "Commands.hpp"
 #pragma once
 
+typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+
 class Client;
+
 class Server {
 
 	public:
@@ -37,7 +41,6 @@ class Server {
 		int 								_serverSocket;
 		int 								_epollFd;
 		std::string							_password;
-		typedef void (Server::*cmdFunction)(int, std::vector<std::string>&);
 		std::map<std::string, cmdFunction> _cmdList; // map pour contenir les noms et pointeurs sur f()
 	
 	class serverInitFailure : public std::exception {

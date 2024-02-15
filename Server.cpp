@@ -21,8 +21,7 @@ sockaddr_in&						Server::getServerAddr(void) { return this->_serverAddr; }
 epoll_event&						Server::getEvent(void) { return this->_event; }
 epoll_event*						Server::getEventsTab(void) { return this->_events; }
 std::map<const int, Client *>&		Server::getClients(void) { return this->_clients; }
-// typedef void (Server::*cmdFunction)(int, std::vector<std::string>&);
-// std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
+typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
 std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
 
 

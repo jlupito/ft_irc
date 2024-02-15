@@ -1,39 +1,24 @@
 #include "Server.hpp"
 #include "Commands.hpp"
 
-void handleNickCommand(int clientSocket, std::vector<std::string>& params) {
-
-	// if (params.size() != 1)
-		// throw errorInCommandParameters();
-	// set le nickname, respecter un format ?
-}
-
-
-
-void handleUserCommand(int clientSocket, std::vector<std::string>& params) {}
-
-// ... FAIRE LISTE DES handlers.
-
+typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
 
 void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 
-	std::string cmdName = cmdCut.cmd.substr(0, cmdCut.cmd.find(' ') - 1);
-	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin(); it != server.getCmdList().end(); ++it) {
+	std::string cmdName = cmdCut.cmd.substr(0, cmdCut.cmd.find(' '));
+	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin(); 
+		it != server.getCmdList().end(); ++it) {
 		if (it->first == cmdName)
-			(*it->second)(cmdCut, client);
-			(this->*(handlerIt->second))(clientSocket, it->second);
-		else
-			std::cout << "Unknown command: " << commandName << std::endl;
+			(server.*(it->second))(server, *client, cmdCut);
 	}
 	/******************A METTRE DANS CHAQUE FONCTION: *****************************/
-	const char* reply = processCmd(server, client, cmdFull);
-	ssize_t bytes_transfered = send(client->getClientSocket(), reply, sizeof(reply) - 1, 0);
-	if (bytes_transfered <= 0)
-		std::cout << "Server failed to send a reply to client." << std::endl; //close??
+	// const char* reply = RPL_WELCOME(client.user_id, client.nickname);
+	// ssize_t bytes_transfered = send(client->getClientSocket(), reply, sizeof(reply) - 1, 0);
+	// if (bytes_transfered <= 0)
+	// 	std::cout << "Server failed to send a reply to client." << std::endl; //close??
 }
 
 void	processCmd(Server& server, Client* client, std::string cmdFull) {
-
 	cmdStruct cmdCut;
 	size_t nextSpace = cmdFull.find(' ');
 	size_t colon = cmdFull.find(':');
