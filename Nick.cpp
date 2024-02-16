@@ -63,14 +63,6 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 	sendBytes(client, reply.c_str());
 }
 
-/*
-Quelle politique pour le nickname ? limiter la taille (overflow)
-size_t spacePos = command.find(' ', 5);
-if (spacePos != std::string::npos)
-    // Trop de paramètres, renvoyer une erreur.
-else
-    std::string nickName = command.substr(5);
-*/
 int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 
 	int	codeError;
