@@ -22,3 +22,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RESTRICTED_ERR() (":localhost 484 :Your connection is restricted!")
 
 /* USER ERROR REPLIES */
+
+/* NICK ERROR REPLIES */
+# define RPL_KICK() (":localhost 431 :No nickname given")

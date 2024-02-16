@@ -14,10 +14,8 @@ void	sendBytes(Client* client, const char* reply) {
 void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 
 	std::string cmdName = "";
-	if (!cmdCut.params.empty()) {
+	if (!cmdCut.params.empty())
 		cmdName = *cmdCut.params.begin();
-        cmdCut.params.erase(cmdCut.params.begin());
-    }
 	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin();
 		it != server.getCmdList().end(); ++it) {
 		if (it->first == cmdName)
@@ -40,9 +38,9 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 		cmdFull.erase(colon, cmdCut.message.size() + 1);
 	}
     std::istringstream iss(cmdFull);
-    std::string token;
-    while (std::getline(iss, token, ' '))
-        cmdCut.params.push_back(token);
+    std::string line;
+    while (std::getline(iss, line, ' '))
+        cmdCut.params.push_back(line);
 	executeCmd(server, client, cmdCut);
 }
 

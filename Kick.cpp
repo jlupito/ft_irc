@@ -1,6 +1,7 @@
 #include "Server.hpp"
 #include "Commands.hpp"
 #include "Replies.hpp"
+#include "Channel.hpp"
 #include <cstring>
 
 # define ERR_NEEDMOREPARAMS 461
@@ -17,41 +18,64 @@
 // Returned by the server whenever a client tries to perform a channel 
 // affecting command for which the client isn't a member.
 
-<channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
+//<channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
 
-int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
-	command.erase()
+int	handleKICKErrors(Channel* channel, std::string &nick, cmdStruct* command) {
+	
+	if (!command->params.size())
+		return ERR_NEEDMOREPARAMS;
+	if (!channel)
+		return ERR_NOSUCHCHANNEL;
+	if (!channel->isClient(nick))
+		return ERR_USERNOTINCHANNEL;
+	if (!channel->isOperator(nick))
+		return ERR_CHANOPRIVSNEEDED;
 }
 
 void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
-	int errorCode = handleKICKErrors(server, client, command);
+	Channel *channel = server.getChannels()[command->params[1]];
+	std::string nick = command->params[2];
+	int errorCode = handleKICKErrors(channel, nick, command);
 
 	switch (errorCode) {
 
-		case NONICKNAMEGIVEN:
-		reply = NONICKNAMEGIVEN_ERR();
+		case ERR_NEEDMOREPARAMS:
+		reply = ;
 		break;
 
-		case ERRONEUSNICKNAME:
-		reply = ERRONEUSNICKNAME_ERR(client->getNickname());
+		case ERR_USERNOTINCHANNEL:
+		reply = ;
 		break;
 
-		case NICKNAMEINUSE:
-		reply = NICKNAMEINUSE_ERR(client->getNickname());
+		case ERR_NOSUCHCHANNEL:
+		reply = ;
 		break;
 
-		case NICKCOLLISION:
-		reply = NICKCOLLISION_ERR(client->getNickname(), client->getUserID(), server.getServerName());
+		case ERR_CHANOPRIVSNEEDED :
+		reply = ;
 		break;
 
-		case UNAVAILRESOURCE:
-		// reply = UNAVAILRESOURCE_ERR(command->cmd.substr(0, command->cmd.find(' ')));
+		case ERR_NOTONCHANNEL:
+		reply = ;
 		break;
 
-		case RESTRICTED:
-		reply = RESTRICTED_ERR();
+		default:
+		for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
+			it != channel->getClientsList().end(); it++) {
+				reply = 
+				sendBytes(client, reply.c_str());
+			}
+	
+	while (member != channel.getClientList().end())
+	{
+		addToClientBuffer(server, member->second.getClientFd(), \
+			RPL_KICK(user_id(client.getNickname(), client.getUsername()), channel.getName(), kicked, reason));
+		member++;
+	}
+		reply = ;
 		break;
+
 	}
 	sendBytes(client, reply.c_str());
 }
