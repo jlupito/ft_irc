@@ -10,6 +10,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <vector>
 // #include "Server.hpp"
 #pragma once
 
@@ -17,9 +18,9 @@ class Server;
 
 struct cmdStruct {
 
-	std::string prefix;
-	std::string	cmd;
-	std::string message;
+	std::string 				prefix;
+	std::vector<std::string>	params;
+	std::string 				message;
 };
 
 void 		processEvent(Server& server, int i);

@@ -23,13 +23,6 @@ bool nickFormat(std::string nickname) {
 	return true;
 }
 
-void	sendBytes(Client* client, const char* reply) {
-
-	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
-	if (bytes_transfered <= 0)
-		std::cout << "Server failed to send a reply to client." << std::endl;
-}
-
 void handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply;

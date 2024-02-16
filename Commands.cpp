@@ -3,19 +3,26 @@
 
 typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
 
+
+void	sendBytes(Client* client, const char* reply) {
+
+	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
+	if (bytes_transfered <= 0)
+		std::cout << "Server failed to send a reply to client." << std::endl;
+}
+
 void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
 
-	std::string cmdName = cmdCut.cmd.substr(0, cmdCut.cmd.find(' '));
+	std::string cmdName = "";
+	if (!cmdCut.params.empty()) {
+		cmdName = *cmdCut.params.begin();
+        cmdCut.params.erase(cmdCut.params.begin());
+    }
 	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin();
 		it != server.getCmdList().end(); ++it) {
 		if (it->first == cmdName)
 			(server.*(it->second))(server, *client, cmdCut);
 	}
-	/******************A METTRE DANS CHAQUE FONCTION: *****************************/
-	// const char* reply = RPL_WELCOME(client.user_id, client.nickname);
-	// ssize_t bytes_transfered = send(client->getClientSocket(), reply, sizeof(reply) - 1, 0);
-	// if (bytes_transfered <= 0)
-	// 	std::cout << "Server failed to send a reply to client." << std::endl; //close??
 }
 
 void	processCmd(Server& server, Client* client, std::string cmdFull) {
@@ -26,18 +33,16 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 
 	if (!colon and cmdFull[colon + 1] != ' ') { 
 		cmdCut.prefix = cmdFull.substr(0, nextSpace - 1);
-		cmdFull.erase(0, nextSpace);
+		cmdFull.erase(0, cmdCut.prefix.size());
 	}
-	else if (colon and colon != std::string::npos) {
-		cmdCut.cmd = cmdFull.substr(0, colon - 1);
+	if (colon and colon != std::string::npos) {
 		cmdCut.message = cmdFull.substr(colon + 1, *cmdFull.end() - 1);
+		cmdFull.erase(colon, cmdCut.message.size() + 1);
 	}
-	else
-		cmdCut.cmd = cmdFull;
-	// if (cmdCut.message == "CAP LS")
-	// 	client->setCAPLS();
-	// if (client->getCAPLS()) // si pas recu (false)
-	// 	std::cout << "Ouesh pas reçu CAP LS throw erreur" << std::endl; //throw exception;
+    std::istringstream iss(cmdFull);
+    std::string token;
+    while (std::getline(iss, token, ' '))
+        cmdCut.params.push_back(token);
 	executeCmd(server, client, cmdCut);
 }
 
