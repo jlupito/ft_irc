@@ -22,6 +22,8 @@ void  	Client::setClientSocket(int fd) { _clientSocket = fd; }
 void 	Client::setBuffer(std::string &buffer) { _buffer = buffer; }
 void    Client::setConnectionStatus(int connexion) { _connected = connexion; }
 void	Client::setNickname(std::string nickname) { _nickname = nickname; }
+void    Client::setUserName(std::string username) { _userName = username; }
+void    Client::setRealName(std::string realname) { _realName = realname; }
 
 /******************************** EXCEPTIONS ********************************/
 

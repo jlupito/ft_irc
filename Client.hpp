@@ -20,10 +20,13 @@ class Client
         std::string&    getUserName(void);
         std::string&    getRealName(void);
         int             getConnectionStatus(void);
+
         void            setConnectionStatus(int connexion);
         void 	        setClientSocket(int fd);
         void            setBuffer(std::string &buffer);
         void            setNickname(std::string nickname);
+        void            setUserName(std::string nickname);
+        void            setRealName(std::string nickname);
 
         class clientConnectFailure : public std::exception {
             public:
