@@ -12,11 +12,10 @@
 #include "Commands.hpp"
 #pragma once
 
-typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
 class Client;
 class Channel;
-
 class Server {
 
 	public:
@@ -24,6 +23,7 @@ class Server {
 		~Server();
 
 		void									initialization(void);
+		void									initCommandMap(void);
 		int										getPort(void);
 		int										getServerSocket(void);
 		int										getEpollFd(void);
@@ -37,7 +37,7 @@ class Server {
 		std::map<std::string, cmdFunction>&		getCmdList(void);
 
 	private:
-		std::string								_serverName = "Mon Petit Poney";
+		std::string								_serverName;
 		struct sockaddr_in 						_serverAddr; //struct pour stocker les infos relatives aux adresses IP
 		struct epoll_event 						_event;
 		struct epoll_event 						_events[1024];

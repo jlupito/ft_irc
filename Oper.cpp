@@ -10,9 +10,9 @@ Command: OPER
 
 void	handleOPERCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = NULL;
-	const std::string userName = command->cmd.substr(5, command->cmd.find(' '));
-	const std::string passwordSubmitted = command->cmd.substr((userName.length() + 6), command->cmd.find(' '));
+	std::string			reply = NULL;
+	const std::string	userName = command->params[1];
+	const std::string	passwordSubmitted = command->params[2];
 	if (userName.empty())
 		reply = NEEDMOREPARAMS_ERR(userName);
 	else {
@@ -22,8 +22,7 @@ void	handleOPERCommand(Server& server, Client* client, cmdStruct* command) {
 				reply = YOUREOPER_RPL();
 			else
 				reply = PASSWDMISMATCH_ERR();
-		}
-		else
+		} else
 			reply = NOOPERHOST_ERR();
 	}
 	sendBytes(client, reply.c_str());

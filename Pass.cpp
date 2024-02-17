@@ -9,24 +9,29 @@
 
 void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = NULL;
-	if (command->cmd.empty()) // attention a corriger car la cmdStruct differente
-	{
-		reply = NEEDMOREPARAMS_ERR(command->cmd.substr(0, command->cmd.find(' ')));
+	// std::cout << "UTILISATION COMMANDE PASS" << std::endl; //ok
+	std::string reply = "Connexion failure";
+	int connexion = client->getConnectionStatus();
+	if (command->params.empty()) {
+		// std::cout << "Test mdp sur PASS" << std::endl;
+		reply = NEEDMOREPARAMS_ERR(command->params[0]);
 		ssize_t bytes_transfered = send(client->getClientSocket(), reply.c_str(), sizeof(reply) - 1, 0);
 		if (bytes_transfered <= 0)
 			std::cout << "Server failed to send a reply to client." << std::endl;
 	}
-	if (client->getCAPLS()== true) {
+	else if (connexion & 0x02) { // si on a deja valide cette etape
+
+	// std::cout << "Test regsiterded  sur PASS" << std::endl;
 		reply = ALREADYREGISTRED_ERR();
 		ssize_t bytes_transfered = send(client->getClientSocket(), reply.c_str(), sizeof(reply) - 1, 0);
 		if (bytes_transfered <= 0)
 			std::cout << "Server failed to send a reply to client." << std::endl;
 	}
-	else if (command->message == "CAP LS")
-		client->setCAPLS();
-	reply = RPL_WELCOME(client->getUserID(), client->getNickname()).c_str();
-	ssize_t bytes_transferred = send(client->getClientSocket(), reply.c_str(), strlen(reply.c_str()), 0);
-	if (bytes_transferred <= 0)
-		std::cout << "Server failed to send a reply to client." << std::endl;
+	else if ((connexion & 0x01) && (command->params[1] == server.getPassWord())
+		&& command->params.size() == 2) // si on a juste passe l'etape CAPLS
+		{
+			// std::cout << "Test réussi sur PASS" << std::endl; // ok
+			client->setConnectionStatus(connexion | 0x02);
+			std::cout << "Valid password." << std::endl;
+		}
 }

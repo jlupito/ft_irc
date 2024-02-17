@@ -16,14 +16,14 @@ class Client
         socklen_t& 	    getClientAddrLen(void);
         int 	        getClientSocket(void);
         std::string&    getBuffer(void);
-        std::string&    getUserID(void);
         std::string&    getNickname(void);
-        bool            getCAPLS();
-        void            setCAPLS();
+        std::string&    getUserName(void);
+        std::string&    getRealName(void);
+        int             getConnectionStatus(void);
+        void            setConnectionStatus(int connexion);
         void 	        setClientSocket(int fd);
         void            setBuffer(std::string &buffer);
         void            setNickname(std::string nickname);
-        void            fillAttributes(void);
 
         class clientConnectFailure : public std::exception {
             public:
@@ -32,10 +32,11 @@ class Client
 
     private:
         struct sockaddr_in  _clientAddr;
-        socklen_t           _clientAddrLen = sizeof(_clientAddr);
+        socklen_t           _clientAddrLen;
         int                 _clientSocket;
         std::string         _buffer;
-        std::string         _nickName;
-        std::string         _userID;
-        bool                _capLS; // penser a le passer a False
+        std::string         _nickname;
+        std::string         _userName;
+        std::string         _realName;
+        bool                _connected; // pour calcul en binaire
 };

@@ -11,7 +11,7 @@ Command: QUIT
 void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply = NULL;
-	const std::string quitMessage = command->cmd.substr(command->cmd.find(":") + 1);
+	const std::string quitMessage = command->params[1];
 	reply = "QUIT";
 	if (quitMessage.empty())
 		reply = "QUIT" + quitMessage;

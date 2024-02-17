@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Commands.hpp"
 
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
@@ -14,7 +15,7 @@ Server::~Server() {
 
 /********************************** GETTERS **********************************/
 
-typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
 int		Server::getPort(void) { return _port; }
 int		Server::getServerSocket(void) { return _serverSocket; }
@@ -26,7 +27,8 @@ epoll_event&	Server::getEvent(void) { return this->_event; }
 epoll_event*	Server::getEventsTab(void) { return this->_events; }
 std::map<const int, Client *>&		Server::getClients(void) { return this->_clients; }
 std::map<std::string, Channel *>&	Server::getChannels(void) { return this->_channels; }
-std::map<std::string, cmdFunction>&	Server::getCmdList(void) { return this->_cmdList; }
+std::map<std::string, cmdFunction>& Server::getCmdList() { return this->_cmdList;
+}
 
 /******************************** EXCEPTIONS ********************************/
 
@@ -38,37 +40,69 @@ const char* Server::errorInCommandParameters::what() const throw() {
 
 /***************************** OTHER FUNCTIONS ******************************/
 
-void	Server::initialization() {
+void	Server::initCommandMap(void) {
+
+    _cmdList.insert(std::make_pair("CAP", &handleCAP_LSCommand));
+    _cmdList.insert(std::make_pair("PASS", &handlePASSCommand));
+    _cmdList.insert(std::make_pair("NICK", &handleNICKCommand));
+	_cmdList.insert(std::make_pair("USER", &handleUSERCommand));
+	// _cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
+    // _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
+	// _cmdList.insert(std::make_pair("ERROR", &handleERRORCommand));
+    // _cmdList.insert(std::make_pair("KILL", &handleKILLCommand));
+    // _cmdList.insert(std::make_pair("PRVMSG", &handlePRVMSGCommand));
+
+    // _cmdList.insert(std::make_pair("JOIN", &handleJOINCommand));
+	// _cmdList.insert(std::make_pair("PART", &handlePARTCommand));
+    // _cmdList.insert(std::make_pair("NAMES", &handleNAMESCommand));
+	// _cmdList.insert(std::make_pair("LIST", &handleLISTCommand));
+
+    // _cmdList.insert(std::make_pair("KICK", &handleKICKCommand));
+	// _cmdList.insert(std::make_pair("INVITE", &handleINVITECommand));
+    // _cmdList.insert(std::make_pair("TOPIC", &handleTOPICCommand));
+	// _cmdList.insert(std::make_pair("MODE", &handleMODECommand));
+}
+
+void	Server::initialization(void) {
+
 	try {
-		/* Créer un socket pour le serveur, il s'agit de la socket d' ecoute du serveur */
 		if ((_serverSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 			throw Server::serverInitFailure();
 
-		/* Configurer l adresse du serveur */
 		memset(&_serverAddr, 0, sizeof(_serverAddr));
-		_serverAddr.sin_family = AF_INET; // Famille d'adresses (AF_INET pour ipv4)
-		_serverAddr.sin_addr.s_addr = INADDR_ANY; // Contient l'adresse IP du serveur en format binaire.
-		_serverAddr.sin_port = htons(_port); //numero de port htons = "host to network short", garantit que le numéro de port est correctement converti dans le format réseau
+		_serverAddr.sin_family = AF_INET;
+		_serverAddr.sin_addr.s_addr = INADDR_ANY;
+		_serverAddr.sin_port = htons(_port);
 
-		/* Lier le socket à l'adresse et au port */
 		if (bind(_serverSocket, (struct sockaddr*)&_serverAddr, sizeof(_serverAddr)) < 0) {
 			throw Server::serverInitFailure(); }
 
-		/* Mettre le socket en mode ecoute */
 		if (listen(_serverSocket, SOMAXCONN) < 0) {
 			throw Server::serverInitFailure(); }
 
-		/* Créer un descripteur de fichier epoll */
 		_epollFd = epoll_create1(0);
 		if (_epollFd < 0) {
 			throw Server::serverInitFailure(); }
 
-		/* Ajouter le socket du serveur à l'ensemble epoll */
 		_event.events = EPOLLIN;
 		_event.data.fd = _serverSocket;
 		if (epoll_ctl(_epollFd, EPOLL_CTL_ADD, _serverSocket, &_event) == -1) {
 			close(_epollFd);
 			throw Server::serverInitFailure(); }
+
+		initCommandMap(); // fonction d'init de la map _cmdList contenant le repertoire des commandes
 	}
 	catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 }
+
+/*
+Fonction initialization(), étapes :
+- Créer un socket pour le serveur, il s'agit de la socket d' ecoute du serveur.
+- Configurer l adresse du serveur : Famille d'adresses (AF_INET pour ipv4), adresse IP
+ du serveur en format binaire. numero de port htons = "host to network short", garantit
+ que le numéro de port est correctement converti dans le format réseau
+- Lier le socket à l'adresse et au port
+- Mettre le socket en mode ecoute avec la fonction listen(),
+- Créer un descripteur de fichier epoll(),
+- Ajouter le socket du serveur à l'ensemble epoll().
+*/

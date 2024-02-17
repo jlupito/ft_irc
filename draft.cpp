@@ -20,6 +20,7 @@ Examples :
 
 Commandes a traiter :
 
+CAP_LS implementee en commande
 Command: PASS
 	Parameters: <password>
 Command: NICK

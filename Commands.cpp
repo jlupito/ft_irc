@@ -1,7 +1,7 @@
 #include "Server.hpp"
 #include "Commands.hpp"
 
-typedef void (Server::*cmdFunction)(Server, Client, cmdStruct);
+typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
 void	sendBytes(Client* client, const char* reply) {
 
@@ -10,33 +10,43 @@ void	sendBytes(Client* client, const char* reply) {
 		std::cout << "Server failed to send a reply to client." << std::endl;
 }
 
-void	executeCmd(Server& server, Client* client, cmdStruct cmdCut) {
+void executeCmd(Server& server, Client* client, cmdStruct* cmdCut) {
 
-	std::string cmdName = cmdCut.cmd.substr(0, cmdCut.cmd.find(' '));
-	for (std::map< std::string, cmdFunction >::iterator it = server.getCmdList().begin();
-		it != server.getCmdList().end(); ++it) {
-		if (it->first == cmdName)
-			(server.*(it->second))(server, *client, cmdCut);
+	if (!cmdCut->params.empty()) {
+
+		try {
+			std::string cmdName = cmdCut->params[0];
+
+			std::map< std::string, cmdFunction >& cmdList = server.getCmdList();
+			std::map<std::string, cmdFunction>::iterator it = cmdList.find(cmdName);
+			if (it != cmdList.end())
+				it->second(server, client, cmdCut);
+			else
+				throw commandDoesntExist();
+		}
+		catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 	}
 }
 
 void	processCmd(Server& server, Client* client, std::string cmdFull) {
 
-	cmdStruct cmdCut;
-	size_t nextSpace = cmdFull.find(' ');
-	size_t colon = cmdFull.find(':');
+	cmdStruct	cmdCut;
+	size_t		nextSpace = cmdFull.find(' ');
+	size_t		colon = cmdFull.find(':');
 
-	if (!colon and cmdFull[colon + 1] != ' ') {
+	if (!colon and cmdFull[colon + 1] != ' ') { // on preleve le prefix et on l'efface de la chaine de cmd
 		cmdCut.prefix = cmdFull.substr(0, nextSpace - 1);
-		cmdFull.erase(0, nextSpace);
+		cmdFull.erase(0, cmdCut.prefix.size());
 	}
-	else if (colon and colon != std::string::npos) {
-		cmdCut.cmd = cmdFull.substr(0, colon - 1);
+	if (colon and colon != std::string::npos) { // idem avec le message parametre long
 		cmdCut.message = cmdFull.substr(colon + 1, *cmdFull.end() - 1);
+		cmdFull.erase(colon, cmdCut.message.size() + 1);
 	}
-	else
-		cmdCut.cmd = cmdFull;
-	executeCmd(server, client, cmdCut);
+	std::istringstream iss(cmdFull);
+	std::string token;
+	while (std::getline(iss, token, ' '))
+		cmdCut.params.push_back(token);
+	executeCmd(server, client, &cmdCut);
 }
 
 void processEvent(Server& server, int i) {
