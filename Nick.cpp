@@ -15,6 +15,7 @@ bool nickFormat(std::string nickname) {
 	std::cout << nickname << std::endl;
 	if (nickname.length() > 9)
 		return false;
+
 	for (int i = 0; i < nickname.length(); i++) {
 		char currentChar = nickname[i];
 		if (!((currentChar == '-') || (currentChar >= 'A' && currentChar <= 'Z')
@@ -54,9 +55,10 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 			case 0:
 			client->setNickname(command->params[1]);
-			reply = "Nickname was successfully set/updated.";
+			client->setConnectionStatus(connexion | 0x07);
+			reply = "NICK - Nickname was successfully set/updated.";
 			break ;
-			}
+		}
 	}
 	sendBytes(client, reply.c_str());
 }
@@ -65,6 +67,7 @@ int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 
 	int	codeError = 0;
 	std::string nickName = command->params[1];
+
 	if (nickName.empty()) {
 		std::cout << "Test : nickname EMPTY." << std::endl;
 		codeError = 431;
@@ -76,11 +79,14 @@ int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 	for (std::map<const int, Client *>::iterator it = server.getClients().begin();
 		it != server.getClients().end(); it++) {
 		if (it->second->getNickname() == nickName) {
-
 			std::cout << "Test : nickname ALREADY EXISTING." << std::endl;
-			codeError = 433;
-		}
+			codeError = 433; }
 	}
+	return codeError;
+}
+
+// A arbitrer :
+
 	// if () // politique de changements en fonction des delais de Maj du nickname. A FAIRE ?
 	// {
 	// 	codeError = 437;
@@ -89,5 +95,3 @@ int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 	// {
 	// 	codeError = 484;
 	// }
-	return codeError;
-}
