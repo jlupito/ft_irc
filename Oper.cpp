@@ -10,7 +10,7 @@ Command: OPER
 
 void	handleOPERCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string			reply = NULL;
+	std::string			reply = "OPER command request failed.";
 	const std::string	userName = command->params[1];
 	const std::string	passwordSubmitted = command->params[2];
 	if (userName.empty())

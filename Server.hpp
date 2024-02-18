@@ -35,6 +35,7 @@ class Server {
 		std::map<const int, Client *>&			getClients(void);
 		std::map<std::string, Channel *>&		getChannels(void);
 		std::map<std::string, cmdFunction>&		getCmdList(void);
+		void									removeClient(const std::string& nickname);
 
 	private:
 		std::string								_serverName;

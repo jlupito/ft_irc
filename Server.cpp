@@ -46,8 +46,8 @@ void	Server::initCommandMap(void) {
     _cmdList.insert(std::make_pair("PASS", &handlePASSCommand));
     _cmdList.insert(std::make_pair("NICK", &handleNICKCommand));
 	_cmdList.insert(std::make_pair("USER", &handleUSERCommand));
-	// _cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
-    // _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
+	_cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
+    _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
 	// _cmdList.insert(std::make_pair("ERROR", &handleERRORCommand));
     // _cmdList.insert(std::make_pair("KILL", &handleKILLCommand));
     // _cmdList.insert(std::make_pair("PRVMSG", &handlePRVMSGCommand));
@@ -106,3 +106,20 @@ Fonction initialization(), étapes :
 - Créer un descripteur de fichier epoll(),
 - Ajouter le socket du serveur à l'ensemble epoll().
 */
+
+void Server::removeClient(const std::string& nickname) {
+
+	std::map<const int, Client*>& clientList = this->getClients();
+	std::map<const int, Client*>::iterator it;
+
+	for (it = clientList.begin(); it != clientList.end(); ++it) {
+
+		if (it->second->getNickname() == nickname) {
+			const int clientSocket = it->first;
+			close(clientSocket);
+			delete it->second;
+			clientList.erase(it);
+			break;
+		}
+	}
+}

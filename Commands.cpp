@@ -60,7 +60,6 @@ void processEvent(Server& server, int i) {
 		std::cout << "Server failed to receive client's reply." << std::endl;
 		close(clientSocket); // faire une fonction handleDisconnect(&server, clienFd); plutot ?
 	}
-
 	else {
 		buffer[bytes_transfered] = '\0'; // on ajoute un octet nul
 		std::string receivedData(buffer);
@@ -69,6 +68,7 @@ void processEvent(Server& server, int i) {
 		std::string cmdFull;
 		size_t pos;
 		while ((pos = receivedData.find("\r\n")) != std::string::npos) {
+
 			cmdFull = receivedData.substr(0, pos);
 			receivedData.erase(0, pos + 2);
 			processCmd(server, client, cmdFull);
