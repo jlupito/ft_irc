@@ -53,5 +53,24 @@ Command: TOPIC
    Parameters: <channel> [<topic>]
 Command: MODE >> cf sujet
 
+POINTS D'ARBITRAGE :
+
+- Limites de certaines commandes comme NICK : ressources disponibles //
+ délais de modification du mdp + finir les modes.
+
+- Stockage de sclients dans la map des channels ; sockets ou names ?
+ On n'a à priori pas besoin de conserver les infos des clients entre
+ deux connexions. Or les sockets sont + simples à parser et stocker.
+
+Autres pistes de travail :
+Gestion des Connexions et Déconnexions :
+gérer correctement les connexions et les déconnexions des clients.
+(libération de la mémoire associée à un client lors de la deconnexion).
+
+Gestion des Canaux :
+rejoindre, quitter, et interagir avec les canaux de manière appropriée.
+
+Sécurité : verifier la politique mdp et operators.
+Journal des logs ?
 
 */

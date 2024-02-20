@@ -11,12 +11,11 @@
 #pragma once
 
 class Client;
-
 class Channel {
 
 	private:
-		std::vector<std::string>		_operators;
-		std::vector<std::string>		_kickedUsers;
+		std::vector<std::string>		_operators; // doit-on repertorier les op par sockets ou par strings ? nick? realname ?
+		std::vector<std::string>		_kickedUsers; // idem
 		std::vector<std::string>		_bannedUsers;
 		std::map<std::string, Client> 	_clientsList;
 		std::string 					_name;
