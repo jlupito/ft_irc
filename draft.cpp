@@ -31,10 +31,7 @@ Command: OPER
 	Parameters: <user> <password>
 Command: QUIT
 	Parameters: [<Quit message>]
-Command: ERROR
-   Parameters: <error message>
-Command: KILL
-   Parameters: <nickname> <comment>
+
 Command: PRIVMSG
    Parameters: <receiver>{,<receiver>} <text to be sent>
 
@@ -47,6 +44,7 @@ Command: NAMES
 Command: LIST
    Parameters: [<channel>{,<channel>} [<server>]]
 
+Commandes specifiques aux operateurs de canaux :
 Command: KICK
    Parameters: <channel> <user> [<comment>]
 Command: INVITE

@@ -35,9 +35,7 @@ void		handleNICKCommand(Server& server, Client* client, cmdStruct* command);
 void		handleUSERCommand(Server& server, Client* client, cmdStruct* command);
 void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
 void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleERRORCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleKILLCommand(Server& server, Client* client, cmdStruct* command);
-// void		handlePRVMSGCommand(Server& server, Client* client, cmdStruct* command);
+void		handlePRVMSGCommand(Server& server, Client* client, cmdStruct* command);
 
 // void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
 // void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);
