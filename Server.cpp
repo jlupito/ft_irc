@@ -48,8 +48,6 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("USER", &handleUSERCommand));
 	_cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
     _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
-	// _cmdList.insert(std::make_pair("ERROR", &handleERRORCommand));
-    // _cmdList.insert(std::make_pair("KILL", &handleKILLCommand));
     // _cmdList.insert(std::make_pair("PRVMSG", &handlePRVMSGCommand));
 
     // _cmdList.insert(std::make_pair("JOIN", &handleJOINCommand));

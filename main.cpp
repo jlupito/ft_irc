@@ -19,6 +19,10 @@ int main(int ac, char **av) {
 					client.setClientSocket(tmp);
 					if (client.getClientSocket() < 0)
 						throw Client::clientConnectFailure();
+					// Configuration du socket en mode non bloquant
+					int flag = fcntl(client.getClientSocket(), F_GETFL, 0); // on recupere l'indice de controle dans flag.
+					fcntl(client.getClientSocket(), F_SETFL, flag | O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
+					// verification du retour des deux fonctions (-1?) cf commentaires
 
 					server.getEvent().events = EPOLLIN;
 					server.getEvent().data.fd = client.getClientSocket();
@@ -38,3 +42,19 @@ int main(int ac, char **av) {
 
 	return 0;
 }
+
+/*
+Pour les verifications de retour de fonctions :
+int flags = fcntl(client.getClientSocket(), F_GETFL, 0);
+if (flags == -1) {
+	throw ...
+	close(client.getClientSocket());
+	throw Client::clientConnectFailure();
+}
+
+if (fcntl(client.getClientSocket(), F_SETFL, flags | O_NONBLOCK) == -1) {
+	throw ...
+	close(client.getClientSocket());
+	throw Client::clientConnectFailure();
+}
+*/

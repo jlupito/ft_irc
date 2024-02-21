@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <map>
 #include <vector>
+#include <fcntl.h>
 #include "Client.hpp"
 #include "Commands.hpp"
 #pragma once

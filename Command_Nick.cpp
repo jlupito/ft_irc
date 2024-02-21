@@ -5,7 +5,7 @@
 #include <cstring>
 
 # define NONICKNAMEGIVEN 431
-# define ERRONEUSNICKNAME 432
+# define ONEUSNICKNAME 432
 # define NICKNAMEINUSE 433
 # define UNAVAILRESOURCE 437
 # define RESTRICTED 484
@@ -40,29 +40,31 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 			case NONICKNAMEGIVEN:
 			reply = NONICKNAMEGIVEN_ERR();
 			break;
-			case ERRONEUSNICKNAME:
+			case ONEUSNICKNAME:
 			reply = ERRONEUSNICKNAME_ERR(client->getNickname());
 			break;
 			case NICKNAMEINUSE:
 			reply = NICKNAMEINUSE_ERR(client->getNickname());
 			break;
-			case UNAVAILRESOURCE:
-			// reply = UNAVAILRESOURCE_ERR(command->cmd.substr(0, command->cmd.find(' ')));
-			break;
-			case RESTRICTED:
-			reply = RESTRICTED_ERR();
-			break;
 
 			case 0:
+			// nouveau pseudo en cas de nouvelle connexion :
+			if (client->getNickname().empty()) {
+				client->setNickname(command->params[1]);
+				client->setConnectionStatus(connexion | 0x07);
+				reply = "NICK - Nickname was successfully set.";
+			} else {
+			// Changement de pseudonyme
+			std::string oldNickname = client->getNickname();
 			client->setNickname(command->params[1]);
-			client->setConnectionStatus(connexion | 0x07);
-			reply = "NICK - Nickname was successfully set/updated.";
+			reply = "NICK - Nickname changed from " + oldNickname + " to " + client->getNickname() + ".";
+			//informOtherClientsOfNickChange(server, client, oldNickname);
+			}
 			break ;
 		}
 	}
 	sendBytes(client, reply.c_str());
 }
-
 int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 
 	int	codeError = 0;
@@ -84,14 +86,3 @@ int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 	}
 	return codeError;
 }
-
-// A arbitrer :
-
-	// if () // politique de changements en fonction des delais de Maj du nickname. A FAIRE ?
-	// {
-	// 	codeError = 437;
-	// }
-	// if () // Erreur liee au mode utilisateur et aux potentielles restreintes. Cf Mode avant de finir ce if()
-	// {
-	// 	codeError = 484;
-	// }
