@@ -3,6 +3,19 @@
 
 typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
+// FONCTION POUR iMPRIMER la CmdStruct
+void printCmdStruct(cmdStruct& command) {
+
+    std::cout << "Prefix: " << command.prefix << std::endl;
+    std::cout << "Params: ";
+    for (std::vector<std::string>::const_iterator it = command.params.begin(); it != command.params.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Message: " << command.message << std::endl;
+}
+
+
 void	sendBytes(Client* client, const char* reply) {
 
 	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
@@ -21,8 +34,10 @@ void executeCmd(Server& server, Client* client, cmdStruct* cmdCut) {
 			std::map<std::string, cmdFunction>::iterator it = cmdList.find(cmdName);
 			if (it != cmdList.end())
 				it->second(server, client, cmdCut);
-			else
+			else {
+				printCmdStruct(*cmdCut);
 				throw commandDoesntExist();
+			}
 		}
 		catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 	}
@@ -39,7 +54,7 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 		cmdFull.erase(0, cmdCut.prefix.size());
 	}
 	if (colon and colon != std::string::npos) { // idem avec le message parametre long
-		cmdCut.message = cmdFull.substr(colon + 1, *cmdFull.end() - 1);
+		cmdCut.message = cmdFull.substr(colon, *cmdFull.end() - 1); // modif (+ 1) apres colon faite 
 		cmdFull.erase(colon, cmdCut.message.size() + 1);
 	}
 	std::istringstream iss(cmdFull);

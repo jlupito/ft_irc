@@ -7,8 +7,6 @@
 # define NONICKNAMEGIVEN 431
 # define ONEUSNICKNAME 432
 # define NICKNAMEINUSE 433
-# define UNAVAILRESOURCE 437
-# define RESTRICTED 484
 
 bool nickFormat(std::string nickname) {
 
@@ -27,44 +25,19 @@ bool nickFormat(std::string nickname) {
 	return true;
 }
 
-void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
+void	informAllClientsOfNickChange(Server& server, Client* client, std::string oldNickname) {
 
-	std::string reply = "Connexion failure";
-	int errorCode = handleNICKErrors(server, client, command);
-	int connexion = client->getConnectionStatus();
+	std::string messageToAll = ":" + oldNickname + " NICK " + client->getNickname() + "\r\n";
+	const std::map<const int, Client*> clientsList = server.getClients();
 
-	if (connexion & 0x03)
-	{
-		switch (errorCode) {
-
-			case NONICKNAMEGIVEN:
-			reply = NONICKNAMEGIVEN_ERR();
-			break;
-			case ONEUSNICKNAME:
-			reply = ERRONEUSNICKNAME_ERR(client->getNickname());
-			break;
-			case NICKNAMEINUSE:
-			reply = NICKNAMEINUSE_ERR(client->getNickname());
-			break;
-
-			case 0:
-			// nouveau pseudo en cas de nouvelle connexion :
-			if (client->getNickname().empty()) {
-				client->setNickname(command->params[1]);
-				client->setConnectionStatus(connexion | 0x07);
-				reply = "NICK - Nickname was successfully set.";
-			} else {
-			// Changement de pseudonyme
-			std::string oldNickname = client->getNickname();
-			client->setNickname(command->params[1]);
-			reply = "NICK - Nickname changed from " + oldNickname + " to " + client->getNickname() + ".";
-			//informOtherClientsOfNickChange(server, client, oldNickname);
-			}
-			break ;
-		}
+	for (std::map<const int, Client*>::const_iterator it = clientsList.begin();
+		it != clientsList.end(); ++it) {
+		int clientSocket = it->first;
+		if (clientSocket != client->getClientSocket())
+			sendBytes(it->second, messageToAll.c_str());
 	}
-	sendBytes(client, reply.c_str());
 }
+
 int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 
 	int	codeError = 0;
@@ -85,4 +58,44 @@ int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 			codeError = 433; }
 	}
 	return codeError;
+}
+
+void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
+
+	std::string reply = "Connexion failure.\r\n";
+	int errorCode = handleNICKErrors(server, client, command);
+	int connexion = client->getConnectionStatus();
+	if (connexion & 0x03)
+	{
+		switch (errorCode) {
+
+			case NONICKNAMEGIVEN:
+			reply = NONICKNAMEGIVEN_ERR;
+			break;
+			case ONEUSNICKNAME:
+			reply = ERRONEUSNICKNAME_ERR(client->getNickname());
+			break;
+			case NICKNAMEINUSE:
+			reply = NICKNAMEINUSE_ERR(client->getNickname());
+			break;
+
+			case 0:
+			if (client->getNickname().empty()) {
+
+				client->setNickname(command->params[1]);
+				client->setConnectionStatus(connexion | 0x07);
+				reply = "NICK - Nickname was successfully set.\r\n";
+				std::cout << "Etape NICK ok" << std::endl;
+			}
+			else {
+
+				std::string oldNickname = client->getNickname();
+				client->setNickname(command->params[1]);
+				reply = "NICK - Nickname changed from " + oldNickname + " to " + client->getNickname() + ". \r\n";
+				informAllClientsOfNickChange(server, client, oldNickname);
+			}
+			break ;
+		}
+	}
+	sendBytes(client, reply.c_str());
 }

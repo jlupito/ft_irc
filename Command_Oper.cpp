@@ -10,7 +10,7 @@ Command: OPER
 
 void	handleOPERCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string			reply = "OPER command request failed.";
+	std::string			reply = "OPER command request failed.\r\n";
 	const std::string	userName = command->params[1];
 	const std::string	passwordSubmitted = command->params[2];
 
@@ -21,13 +21,13 @@ void	handleOPERCommand(Server& server, Client* client, cmdStruct* command) {
 		if (it != server.getClients().end()) {
 			if (passwordSubmitted == server.getPassWord()) {
 
-				// Action pour register l'auteur de la request dans les operateurs IRC
-				reply = YOUREOPER_RPL();
+				// Action pour register l'auteur de la request dans les operateurs de la channel
+				reply = YOUREOPER_RPL;
 			}
 			else
-				reply = PASSWDMISMATCH_ERR();
+				reply = PASSWDMISMATCH_ERR;
 		} else
-			reply = NOOPERHOST_ERR();
+			reply = NOOPERHOST_ERR;
 	}
 	sendBytes(client, reply.c_str());
 }

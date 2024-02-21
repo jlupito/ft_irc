@@ -6,13 +6,13 @@
 
 void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = "Connexion failure";
+	std::string reply = "Connexion failure.\r\n";
 	int connexion = client->getConnectionStatus(); // doit être égal à 0;
 
-	if (connexion == 0) {
+	if (connexion == 0x00) {
 		if (command->params[1] == "LS" && command->params.size() == 2) {
 			client->setConnectionStatus(connexion | 0x01);
-			reply = "CAP_ACK LS"; // cette reponse est OBLIGATOIRE, refus de Irssi de connexion sinon.
+			reply = "CAP_ACK LS\r\n";
 		}
 	}
 	sendBytes(client, reply.c_str());

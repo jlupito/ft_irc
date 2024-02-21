@@ -10,12 +10,12 @@ Command: QUIT
 
 void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = "QUIT";
+	std::string reply = "QUIT\r\n";
 	const std::string quitMessage = command->params[1];
 	if (command->params.size() > 2)
 		return ;
 	if (quitMessage.empty())
-		reply = "QUIT" + quitMessage;
+		reply = "QUIT" + quitMessage + "\r\n";
 	sendBytes(client, reply.c_str());
 	server.removeClient(client->getNickname());
 }

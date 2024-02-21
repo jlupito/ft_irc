@@ -55,9 +55,6 @@ Command: MODE >> cf sujet
 
 POINTS D'ARBITRAGE :
 
-- Limites de certaines commandes comme NICK : ressources disponibles //
- délais de modification du mdp + finir les modes.
-
 - Stockage de sclients dans la map des channels ; sockets ou names ?
  On n'a à priori pas besoin de conserver les infos des clients entre
  deux connexions. Or les sockets sont + simples à parser et stocker.
@@ -126,11 +123,6 @@ fstat: Récupère les informations sur le statut d'un fichier.
 fcntl: Contrôle divers aspects des descripteurs de fichiers, y compris la modification du mode bloquant/non bloquant.
 
 poll: Attends que l'état d'un descripteur de fichier change.
-
-
-
-
-
 
 
 */
