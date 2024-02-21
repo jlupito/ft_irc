@@ -24,4 +24,4 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 /* USER ERROR REPLIES */
 
 /* NICK ERROR REPLIES */
-# define RPL_KICK() (":localhost 431 :No nickname given")
+# define RPL_KICK(operator, ) (":" + operator + "!" + operator @irc.server.com KICK #channel user123 :Motif de l'expulsion")

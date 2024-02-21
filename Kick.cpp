@@ -61,21 +61,17 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 		break;
 
 		default:
+		/* kick le user et add to kicklist */ 
+		channel->removeClientFromChan(nick);
+		channel->addToKicked(nick);
+		/*envoyer le message de kick au user kicked de la part de l operateur (client)*/ 
+		reply = ":operator!operator@irc.server.com KICK #channel user123 :Motif de l'expulsion";
+		sendBytes(client, reply.c_str());
+		// envoyer la notif de kick a tous les users du channel
 		for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
 			it != channel->getClientsList().end(); it++) {
-				reply = 
-				sendBytes(client, reply.c_str());
+				reply = ":user123!user@host.com PART #channel :Motif de l'expulsion";
+				sendBytes(*(it->second), reply.c_str());
 			}
-	
-	while (member != channel.getClientList().end())
-	{
-		addToClientBuffer(server, member->second.getClientFd(), \
-			RPL_KICK(user_id(client.getNickname(), client.getUsername()), channel.getName(), kicked, reason));
-		member++;
-	}
-		reply = ;
-		break;
-
-	}
 	sendBytes(client, reply.c_str());
 }

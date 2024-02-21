@@ -18,8 +18,8 @@ void	Channel::setNbrUsersLimit(int limit) { this->_nbrUsersLimit = limit; }
 void	Channel::setTopic(std::string topic) { this->_topic = topic; }
 void	Channel::setChannelPwd(std::string channelPwd) { this->_channelPwd = channelPwd; }
 
-void	Channel::addKickedUsers(std::string &kickedUsername) {this->_kickedUsers.push_back(kickedUsername);}
-void	Channel::addBannedUsers(std::string &bannedUsername) {this->_bannedUsers.push_back(bannedUsername);}
+void	Channel::addToKicked(std::string &kickedUsername) {this->_kickedUsers.push_back(kickedUsername);}
+void	Channel::addToBanned(std::string &bannedUsername) {this->_bannedUsers.push_back(bannedUsername);}
 void	Channel::addOperators(std::string &OperUsername) {this->_operators.push_back(OperUsername);}
 
 void	Channel::addMode(std::string mode) {

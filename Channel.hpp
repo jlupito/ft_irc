@@ -50,8 +50,8 @@ class Channel {
 		void							removeOperator(std::string &username);
 		void							removeClientFromChan(std::string &username);
 		void							addClientToChan(Client &client);
-		void							addKickedUsers(std::string &kickedUsername);
-		void							addBannedUsers(std::string &bannedUsername);
+		void							addToKicked(std::string &kickedUsername);
+		void							addToBanned(std::string &bannedUsername);
 		void							addOperators(std::string &OperUsername);
 
 };
