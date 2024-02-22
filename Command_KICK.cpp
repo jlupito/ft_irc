@@ -5,77 +5,67 @@
 #include <cstring>
 
 # define ERR_NEEDMOREPARAMS 461
-# define ERR_BADCHANMASK 476 "<channel> :Bad Channel Mask"
-# define ERR_USERNOTINCHANNEL 441 "<nick> <channel> :They aren't on that channel"
-// Returned by the server to indicate that the target user of the command is not on the given channel.
-# define ERR_NOSUCHCHANNEL 403 "<channel name> :No such channel"
-// Used to indicate the given channel name is invalid.
-# define ERR_CHANOPRIVSNEEDED 482 "<channel> :You're not channel operator"
-// Any command requiring 'chanop' privileges (such as MODE messages) MUST 
-// return this error if the client making the attempt is not a chanop on the 
-// specified channel.
-# define ERR_NOTONCHANNEL 442 "<channel> :You're not on that channel"
-// Returned by the server whenever a client tries to perform a channel 
-// affecting command for which the client isn't a member.
+# define ERR_BADCHANMASK 476
+# define ERR_USERNOTINCHANNEL 441
+# define ERR_NOSUCHCHANNEL 403
+# define ERR_CHANOPRIVSNEEDED 482
+# define ERR_NOTONCHANNEL 442
 
-//<channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
+// KICK <channel> <user> *( "," <user> ) [<comment>]
 
-int	handleKICKErrors(Channel* channel, std::string &nick, cmdStruct* command) {
+bool handleKickErrors(Client* client, std::string &user, Channel* channel, std::string &nickKicked, cmdStruct* command) {
 	
-	if (!command->params.size())
-		return ERR_NEEDMOREPARAMS;
-	if (!channel)
-		return ERR_NOSUCHCHANNEL;
-	if (!channel->isClient(nick))
-		return ERR_USERNOTINCHANNEL;
-	if (!channel->isOperator(nick))
-		return ERR_CHANOPRIVSNEEDED;
+	std::string reply;
+
+	if (!command->params.size() != 3)
+		reply = NEEDMOREPARAMS_ERR(command->params[0]);
+	else if (!channel)
+		reply = NOSUCHCHANNEL_ERR(command->params[1]);
+	else if (!channel->isClient(nickKicked))
+		reply = USERNOTINCHANNEL_ERR(user, nickKicked, command->params[1]);
+	else if (!channel->isClient(user))
+		reply = NOTONCHANNEL_ERR(user, command->params[1]);
+	else if (!channel->isOperator(user))
+		reply = CHANOPRIVSNEEDED_ERR(command->params[1]);
+	if (!reply.empty()) {
+		sendBytes(client, reply.c_str());
+		return true;
+	}
+	return false;
 }
 
 void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
-	Channel *channel = server.getChannels()[command->params[1]];
-	std::string nick = command->params[2];
-	int errorCode = handleKICKErrors(channel, nick, command);
+	std::string channelName = command->params[1];
+	if (!channelName.empty() and channelName.find("#") == 0)
+		channelName.erase(0, 1);
+	Channel *channel = server.getChannels()[channelName];
+	std::string user = client->getNickName();
+	std::string nickKicked = command->params[2];
 
-	switch (errorCode) {
+	if (handleKickErrors(client, user, channel, nickKicked, command))
+		return ;
 
-		case ERR_NEEDMOREPARAMS:
-		reply = ;
-		break;
-
-		case ERR_USERNOTINCHANNEL:
-		reply = ;
-		break;
-
-		case ERR_NOSUCHCHANNEL:
-		reply = ;
-		break;
-
-		case ERR_CHANOPRIVSNEEDED :
-		reply = ;
-		break;
-
-		case ERR_NOTONCHANNEL:
-		reply = ;
-		break;
-
-		default:
-		for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
-			it != channel->getClientsList().end(); it++) {
-				reply = 
-				sendBytes(client, reply.c_str());
-			}
+	Client kickedClient;
+	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().begin(); it++) {
+		if (it->second->getNickName() == nickKicked)
+			kickedClient = *it->second;
+	}
+	std::string reason = (!command->message.empty()) ? command->message : ":Kicked by the channel's operator";
+	std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
 	
-	while (member != channel.getClientList().end())
-	{
-		addToClientBuffer(server, member->second.getClientFd(), \
-			RPL_KICK(user_id(client.getNickname(), client.getUsername()), channel.getName(), kicked, reason));
-		member++;
-	}
-		reply = ;
-		break;
+	channel->removeClientFromChan(nickKicked);
+	channel->addToKicked(nickKicked);
 
-	}
+	reply = RPL_KICK(userID, command->params[1], nickKicked, reason);
 	sendBytes(client, reply.c_str());
+
+	for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
+		it != channel->getClientsList().end(); it++) {
+			userID = ":" + (&it->second)->getNickName() + "!" + (&it->second)->getUserName() + "@" + (&it->second)->getRealName();
+			reply = RPL_PART(userID, command->params[1], reason);
+			sendBytes(&it->second, reply.c_str());
+		}
+
+	return ;
 }

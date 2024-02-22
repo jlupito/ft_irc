@@ -11,7 +11,7 @@ sockaddr_in& 	Client::getClientAddr(void) { return this->_clientAddr; }
 socklen_t& 		Client::getClientAddrLen(void) { return this->_clientAddrLen; }
 std::string&    Client::getBuffer() { return this->_buffer; }
 bool            Client::getCAPLS() { return this->_capLS; }
-std::string& 	Client::getUserID() { return this->_userID; }
+std::string& 	Client::getUserName() { return this->_userName; }
 std::string& 	Client::getNickName() { return this->_nickName; }
 
 

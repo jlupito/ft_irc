@@ -16,7 +16,7 @@ class Client
         socklen_t& 	    getClientAddrLen(void);
         int 	        getClientSocket(void);
         std::string&    getBuffer(void);
-        std::string&    getUserID(void);
+        std::string&    getUserName(void);
         std::string&    getNickName(void);
         bool            getCAPLS();
         void            setCAPLS();
@@ -35,6 +35,6 @@ class Client
         int                 _clientSocket;
         std::string         _buffer;
         std::string         _nickName;
-        std::string         _userID;
+        std::string         _userName;
         bool                _capLS; // penser a le passer a False
 };
