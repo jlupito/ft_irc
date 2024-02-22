@@ -34,7 +34,7 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 		cmdFull.erase(0, cmdCut.prefix.size());
 	}
 	if (colon and colon != std::string::npos) {
-		cmdCut.message = cmdFull.substr(colon + 1, *cmdFull.end() - 1);
+		cmdCut.message = cmdFull.substr(colon, *cmdFull.end() - 1);
 		cmdFull.erase(colon, cmdCut.message.size() + 1);
 	}
     std::istringstream iss(cmdFull);

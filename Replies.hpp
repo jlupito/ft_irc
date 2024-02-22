@@ -25,3 +25,12 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 
 /* NICK ERROR REPLIES */
 # define RPL_KICK(operator, ) (":" + operator + "!" + operator @irc.server.com KICK #channel user123 :Motif de l'expulsion")
+
+/* INVITE ERROR REPLIES */
+# define RPL_INVITING(client, nickname, channel) (":localhost 341 " + client + " " + nickname + " " + channel)
+# define RPL_INVITELIST(client, channel) (":localhost 336 " + client + " " + channel)
+# define RPL_ENDOFINVITELIST(client) (":localhost 337 " + client + ":End of /INVITE list")
+# define NOSUCHCHANNEL_ERR(channel) (":localhost 403 " + channel + ":No such channel")
+# define CHANOPRIVSNEEDED_ERR(channel) (":localhost 482 " + channel + ":You're not channel operator")
+# define NOTONCHANNEL_ERR(channel) (":localhost 442 " + channel + ":You're not on that channel")
+# define USERONCHANNEL_ERR(client, nickname, channel) (":localhost 443 " + client + " " + nickname + " " + channel + ":is already on channel")
