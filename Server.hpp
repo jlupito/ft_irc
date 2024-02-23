@@ -46,6 +46,7 @@ class Server {
 		struct epoll_event 						_events[1024];
 		int										_port;
 		int 									_serverSocket;
+		std::string 							_serverName;
 		int 									_epollFd;
 		std::string								_password;
 		std::map< std::string, cmdFunction > 	_cmdList; // map pour contenir les noms et pointeurs sur f()

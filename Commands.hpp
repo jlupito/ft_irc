@@ -18,6 +18,8 @@
 class Server;
 class Channel;
 
+class Channel;
+
 struct cmdStruct {
 
 	std::string					prefix;

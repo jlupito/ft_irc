@@ -44,14 +44,14 @@ class Channel {
 		void							addMode(std::string mode);
 		void							removeMode(std::string mode);
 
-		bool							isClient(std::string &username);
-		bool							isOperator(std::string &username);
-		bool							isBanned(std::string &username);
+		bool							isClient(std::string &nickname);
+		bool							isOperator(std::string &nickname);
+		bool							isBanned(std::string &nickname);
 
-		void							removeOperator(std::string &username);
-		void							removeClientFromChan(std::string &username);
+		void							removeOperator(std::string &nickname);
+		void							removeClientFromChan(std::string &nickname);
 		void							addClientToChan(Client &client);
-		void							addKickedUsers(std::string &kickedUsername);
-		void							addBannedUsers(std::string &bannedUsername);
+		void							addToKicked(std::string &kickedUsername);
+		void							addToBanned(std::string &bannedUsername);
 		void							addOperators(std::string &OperUsername);
 };
