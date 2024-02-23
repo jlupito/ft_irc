@@ -52,9 +52,9 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 			inviteeClient = *it->second;
 	}
 
-	std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
+	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
 	
-	reply = RPL_INVITE(userID, invitee, command->params[1]);
+	reply = RPL_INVITE(command->prefix, invitee, command->params[1]);
 	sendBytes(&inviteeClient, reply.c_str());
 	reply = RPL_INVITING(inviter, invitee, command->params[1]);
 	sendBytes(client, reply.c_str());

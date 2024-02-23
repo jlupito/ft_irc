@@ -35,51 +35,51 @@ void	Channel::removeMode(std::string mode) {
 		_mode.erase(pos, 1);
 }
 
-bool	Channel::isClient(std::string &username) {
+bool	Channel::isClient(std::string &nickname) {
 	if (_clientsList.empty())
 		return false;
-	std::map< std::string, Client>::iterator it = _clientsList.find(username);
+	std::map< std::string, Client>::iterator it = _clientsList.find(nickname);
 	if (it != _clientsList.end())
 		return true;
 	return false;
 }
 
-bool	Channel::isOperator(std::string &username) {
+bool	Channel::isOperator(std::string &nickname) {
 	if (_operators.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
-		if (*it == username)
+		if (*it == nickname)
 			return true;
 	}
 	return false;
 }
 
-bool	Channel::isBanned(std::string &username) {
+bool	Channel::isBanned(std::string &nickname) {
 	if (_bannedUsers.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _bannedUsers.begin(); it != _bannedUsers.end(); it++) {
-		if (*it == username)
+		if (*it == nickname)
 			return true;
 	}
 	return false;
 }
 
-void	Channel::removeClientFromChan(std::string &username) {
+void	Channel::removeClientFromChan(std::string &nickname) {
 	if (_clientsList.empty())
 		return ;
-	std::map< std::string, Client>::iterator it = _clientsList.find(username);
+	std::map< std::string, Client>::iterator it = _clientsList.find(nickname);
 	if (it != _clientsList.end())
 		_clientsList.erase(it);
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
-		if (*it == username)
+		if (*it == nickname)
 			_operators.erase(it);
 	}
 
 }
 
-void	Channel::removeOperator(std::string &username) {
+void	Channel::removeOperator(std::string &nickname) {
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
-		if (*it == username)
+		if (*it == nickname)
 			_operators.erase(it);
 	}
 

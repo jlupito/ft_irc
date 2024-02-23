@@ -46,3 +46,13 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_TOPICWHOTIME(client, channel, nick, setat) (":localhost 333 " + client + " " + channel + " " + nick + " " + setat + "\r\n")
 
 # define RPL_CHANNELMODEIS(client, channel, modestring) (":localhost 324 " + client + " " + channel + " " + modestring + " " + "\r\n")
+# define UNKNOWNMODE_ERR(modeChar, channel) (":localhost 472 " + std::string(1, modeChar) + ":is unknown mode char to me for " + channel + "\r\n")
+# define KEYSET_ERR(channel) (":localhost 467 " + channel + ":Channel key already set" + "\r\n")
+
+# define ERR_TOOMANYCHANNELS(client, channel) (":localhost 405 " + client + " " + channel + ":You have joined too many channels" + "\r\n")
+# define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + ":Cannot join channel (+l)")
+# define ERR_INVITEONLYCHAN(client, channel) (":localhost 473 " + client + " " + channel + ":Cannot join channel (+i)")
+# define ERR_BADCHANNELKEY(client, channel) (":localhost 475 " + client + " " + channel + ":Cannot join channel (+k)" )
+# define ERR_INVALIDKEY(client, channel) (":localhost 525 " + client + " " + channel + ":Key is not well-formed")
+
+

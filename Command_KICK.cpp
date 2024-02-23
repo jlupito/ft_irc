@@ -52,7 +52,8 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 			kickedClient = *it->second;
 	}
 	std::string reason = (!command->message.empty()) ? command->message : ":Kicked by the channel's operator";
-	std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
+	std::string userID = command->prefix;
+	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
 	
 	channel->removeClientFromChan(nickKicked);
 	channel->addToKicked(nickKicked);
