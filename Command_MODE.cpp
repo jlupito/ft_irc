@@ -28,7 +28,7 @@ bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	else if (!channel->isOperator(user))
 		reply = CHANOPRIVSNEEDED_ERR(command->params[2]);
 	if (!reply.empty()) {
-		sendBytes(client, reply.c_str());
+		sendBytesToClient(client, reply.c_str());
 		return true;
 	}
 	return false;
@@ -40,7 +40,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	if (!channelName.empty() and channelName.find("#") == 0)
 		channelName.erase(0, 1);
 	Channel *channel = server.getChannels()[channelName];
-	std::string user = client->getNickName();
+	std::string user = client->getNickname();
 
 	if (handleModeErrors(client, channel, user, command))
 		return;
@@ -116,14 +116,14 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 				}
 				else {
 					reply = KEYSET_ERR(command->params[1]);
-					sendBytes(client, reply.c_str());
+					sendBytesToClient(client, reply.c_str());
 				}
 			}
 			break ;
 
 		default : 
 			reply = UNKNOWNMODE_ERR(command->params[2][1], command->params[1]);
-			sendBytes(client, reply.c_str());
+			sendBytesToClient(client, reply.c_str());
 			break;
 	}
 	return ;

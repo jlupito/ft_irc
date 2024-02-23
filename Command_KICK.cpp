@@ -28,7 +28,7 @@ bool handleKickErrors(Client* client, std::string &user, Channel* channel, std::
 	else if (!channel->isOperator(user))
 		reply = CHANOPRIVSNEEDED_ERR(command->params[1]);
 	if (!reply.empty()) {
-		sendBytes(client, reply.c_str());
+		sendBytesToClient(client, reply.c_str());
 		return true;
 	}
 	return false;
@@ -40,7 +40,7 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	if (!channelName.empty() and channelName.find("#") == 0)
 		channelName.erase(0, 1);
 	Channel *channel = server.getChannels()[channelName];
-	std::string user = client->getNickName();
+	std::string user = client->getNickname();
 	std::string nickKicked = command->params[2];
 
 	if (handleKickErrors(client, user, channel, nickKicked, command))
@@ -48,24 +48,24 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 	Client kickedClient;
 	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().begin(); it++) {
-		if (it->second->getNickName() == nickKicked)
+		if (it->second->getNickname() == nickKicked)
 			kickedClient = *it->second;
 	}
 	std::string reason = (!command->message.empty()) ? command->message : ":Kicked by the channel's operator";
 	std::string userID = command->prefix;
-	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
+	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickname() + "!" + client->getUserName() + "@" + client->getRealName());
 	
 	channel->removeClientFromChan(nickKicked);
 	channel->addToKicked(nickKicked);
 
 	reply = RPL_KICK(userID, command->params[1], nickKicked, reason);
-	sendBytes(client, reply.c_str());
+	sendBytesToClient(client, reply.c_str());
 
 	for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
 		it != channel->getClientsList().end(); it++) {
-			userID = ":" + (&it->second)->getNickName() + "!" + (&it->second)->getUserName() + "@" + (&it->second)->getRealName();
+			userID = ":" + (&it->second)->getNickname() + "!" + (&it->second)->getUserName() + "@" + (&it->second)->getRealName();
 			reply = RPL_PART(userID, command->params[1], reason);
-			sendBytes(&it->second, reply.c_str());
+			sendBytesToClient(&it->second, reply.c_str());
 		}
 
 	return ;
