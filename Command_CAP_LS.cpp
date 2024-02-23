@@ -15,6 +15,6 @@ void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 			reply = "CAP_ACK LS\r\n";
 		}
 	}
-	sendBytes(client, reply.c_str());
+	sendBytesToClient(client, reply.c_str());
 	std::cout << "CAPLS received by Client." << std::endl;
 }

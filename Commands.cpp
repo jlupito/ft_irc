@@ -1,6 +1,8 @@
 #include "Server.hpp"
 #include "Commands.hpp"
 
+/************************ FONCTIONS SUPPORTS **************************/
+
 typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
 // FONCTION POUR iMPRIMER la CmdStruct
@@ -15,13 +17,22 @@ void printCmdStruct(cmdStruct& command) {
     std::cout << "Message: " << command.message << std::endl;
 }
 
-
-void	sendBytes(Client* client, const char* reply) {
+void	sendBytesToClient(Client* client, const char* reply) {
 
 	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
 	if (bytes_transfered <= 0)
 		std::cout << "Server failed to send a reply to client." << std::endl;
 }
+
+void	sendBytesToChannel(Channel* channel, const char* reply) {
+
+	std::string channelName = channel->getChannelName();
+	for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
+			it != channel->getClientsList().end(); it++)
+			sendBytesToClient(&it->second, reply);
+}
+
+/************************ TRAITEMENT DE COMMANDE **************************/
 
 void executeCmd(Server& server, Client* client, cmdStruct* cmdCut) {
 
@@ -54,7 +65,7 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 		cmdFull.erase(0, cmdCut.prefix.size());
 	}
 	if (colon and colon != std::string::npos) { // idem avec le message parametre long
-		cmdCut.message = cmdFull.substr(colon, *cmdFull.end() - 1); // modif (+ 1) apres colon faite 
+		cmdCut.message = cmdFull.substr(colon, *cmdFull.end() - 1); // modif (+ 1) apres colon faite
 		cmdFull.erase(colon, cmdCut.message.size() + 1);
 	}
 	std::istringstream iss(cmdFull);

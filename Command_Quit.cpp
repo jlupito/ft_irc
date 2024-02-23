@@ -16,6 +16,6 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 		return ;
 	if (quitMessage.empty())
 		reply = "QUIT" + quitMessage + "\r\n";
-	sendBytes(client, reply.c_str());
+	sendBytesToClient(client, reply.c_str());
 	server.removeClient(client->getNickname());
 }

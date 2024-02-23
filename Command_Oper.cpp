@@ -29,5 +29,5 @@ void	handleOPERCommand(Server& server, Client* client, cmdStruct* command) {
 		} else
 			reply = NOOPERHOST_ERR;
 	}
-	sendBytes(client, reply.c_str());
+	sendBytesToClient(client, reply.c_str());
 }

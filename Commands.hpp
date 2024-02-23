@@ -11,9 +11,12 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <vector>
+#include "Client.hpp"
+#include "Channel.hpp"
 #pragma once
 
 class Server;
+class Channel;
 
 struct cmdStruct {
 
@@ -26,19 +29,21 @@ void 		processEvent(Server& server, int i);
 void		processCmd(Server& server, Client* client, std::string cmdFull);
 void		executeCmd(Server& server, Client* client, cmdStruct *cmdCut);
 
-void		sendBytes(Client* client, const char* reply);
+void		sendBytesToClient(Client* client, const char* reply);
+void		sendBytesToChannel(Channel* channel, const char* reply);
 void		handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePASSCommand(Server& server, Client* client, cmdStruct* command);
 int			handleNICKErrors(Server& server, Client* client, cmdStruct* command);
 void		informAllClientsOfNickChange(Server& server, Client* client, std::string oldNickname);
 void		handleNICKCommand(Server& server, Client* client, cmdStruct* command);
 void		handleUSERCommand(Server& server, Client* client, cmdStruct* command);
-void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
-void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
-int			handlePRVMSGrrors(Server& server, Client* client, cmdStruct* command);
-void		handlePRVMSGCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePINGCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePONGCommand(Server& server, Client* client, cmdStruct* command);
+void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
+void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
+int			handlePRIVMSGErrors(Server& server, Client* client, cmdStruct* command);
+void   		sendPRIVMSG(Server& server, cmdStruct* command);
+void		handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command);
 
 // void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
 // void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);

@@ -13,6 +13,10 @@ Server::~Server() {
 	std::cout << "Server has been disconnected - Ciao bitch !" << std::endl;
 }
 
+/********************************** SETTERS **********************************/
+
+void	Server::setServerName(std::string servername) { this->_serverName = servername; }
+
 /********************************** GETTERS **********************************/
 
 typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
@@ -48,7 +52,7 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("USER", &handleUSERCommand));
 	_cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
     _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
-    // _cmdList.insert(std::make_pair("PRVMSG", &handlePRVMSGCommand));
+    _cmdList.insert(std::make_pair("PRIVMSG", &handlePRIVMSGCommand));
 	_cmdList.insert(std::make_pair("PING", &handlePINGCommand));
 	_cmdList.insert(std::make_pair("PONG", &handlePONGCommand));
 

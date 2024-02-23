@@ -20,11 +20,11 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 		if (bytes_transfered <= 0)
 			std::cout << "Server failed to send a reply to client." << std::endl;
 	}
-	// else if (connexion & 0x03) { // si on a deja valide cette etape
+	// else if (connexion & 0x03) { // si on a deja valide cette etape // TESTER avec "==" ou "|"
 
 	// 	std::cout << "TEST PASS 2" << std::endl; //ok
 	// 	reply = ALREADYREGISTRED_ERR();
-	// 	sendBytes(client, reply.c_str());
+	// 	sendBytesToClient(client, reply.c_str());
 	// 	return ; // handleDisconnect();
 	// }
 	else if ((connexion & 0x01) && (command->params[1] == server.getPassWord())
@@ -35,5 +35,5 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 		client->setConnectionStatus(connexion | 0x03);
 		std::cout << "PASS - Valid password." << std::endl;
 	}
-	sendBytes(client, reply.c_str());
+	sendBytesToClient(client, reply.c_str());
 }

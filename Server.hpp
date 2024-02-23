@@ -28,6 +28,7 @@ class Server {
 		int										getPort(void);
 		int										getServerSocket(void);
 		int										getEpollFd(void);
+		void									setServerName(std::string servername);
 		std::string								getServerName(void);
 		std::string 							getPassWord(void);
 		sockaddr_in&							getServerAddr(void);

@@ -22,9 +22,18 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define UNAVAILRESOURCE_ERR ":localhost 437\r\n" // "<nick/channel> :Nick/channel is temporarily unavailable" cf avec channels
 # define RESTRICTED_ERR ":localhost 484 :Your connection is restricted!\r\n"
 
-/* USER ERROR REPLIES */
-
 /* OPER REPLIES */
 # define YOUREOPER_RPL ":localhost 381 :You are now an IRC operator\r\n"
 # define NOOPERHOST_ERR ":localhost 491 :No O-lines for your host\r\n"
 # define PASSWDMISMATCH_ERR ":Password incorrect\r\n"
+
+/* PRIVMSG REPLIES */
+// quid de 413 et 414 ? Notion de mask et host.
+# define ERR_NOSUCHNICK(nickname) (":localhost 401 " + nickname + " :No such nick/channel\r\n")
+# define ERR_CANNOTSENDTOCHAN(channelname) (": localhost 404 " + channelname + " :Cannot send to channel\r\n")
+# define ERR_TOOMANYTARGETS(target) (":localhost 407 " + target + " :Duplicate recipients/no message delivered\r\n")
+# define ERR_NORECIPIENT(command) (": localhost 411 :No recipient given" + command + "\r\n")
+# define ERR_NOTEXTTOSEND ": localhost 412 :No text to send\r\n"
+# define ERR_NOTOPLEVEL(mask) (":localhost 413 " + mask +" :No toplevel domain specified\r\n")
+# define ERR_WILDTOPLEVEL(mask) (":localhost 414 " + mask +" :Wildcard in toplevel domain\r\n")
+# define RPL_AWAY(nickname) (":localhost 301 " + nickname + "away :\r\n")

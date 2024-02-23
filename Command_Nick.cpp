@@ -34,7 +34,7 @@ void	informAllClientsOfNickChange(Server& server, Client* client, std::string ol
 		it != clientsList.end(); ++it) {
 		int clientSocket = it->first;
 		if (clientSocket != client->getClientSocket())
-			sendBytes(it->second, messageToAll.c_str());
+			sendBytesToClient(it->second, messageToAll.c_str());
 	}
 }
 
@@ -51,6 +51,7 @@ int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 		std::cout << "Test : nickname INVALID FORMAT." << std::endl;
 		codeError = 432;
 	}
+	// ATTENTION, apparemment cette protection ne fonctionne pas (en cas de double connexion avec le mm nick)
 	for (std::map<const int, Client *>::iterator it = server.getClients().begin();
 		it != server.getClients().end(); it++) {
 		if (it->second->getNickname() == nickName) {
@@ -97,5 +98,5 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 			break ;
 		}
 	}
-	sendBytes(client, reply.c_str());
+	sendBytesToClient(client, reply.c_str());
 }

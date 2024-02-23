@@ -14,8 +14,8 @@ class Client;
 class Channel {
 
 	private:
-		std::vector<std::string>		_operators; // string nickname ?
-		std::vector<std::string>		_kickedUsers; // idem
+		std::vector<std::string>		_operators;
+		std::vector<std::string>		_kickedUsers;
 		std::vector<std::string>		_bannedUsers;
 		std::map<std::string, Client> 	_clientsList;
 		std::string 					_name;
@@ -30,6 +30,7 @@ class Channel {
 
 		std::map<std::string, Client>&	getClientsList();
 		int								getNbrUsersLimit( void );
+		std::string&					getChannelName( void );
 		std::string&					getChannelPwd( void );
 		std::string&					getTopic( void );
 		std::string&					getMode( void );
