@@ -10,7 +10,6 @@
 
 bool nickFormat(std::string nickname) {
 
-	std::cout << "Le NICK utilisé est : " << nickname << std::endl;
 	if (nickname.length() > 9)
 		return false;
 
@@ -45,23 +44,18 @@ int handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 	std::map<const int, Client*>&  clientsList = server.getClients();
 
 	if (nickName.empty()) {
-		// std::cout << "Test : nickname EMPTY." << std::endl; //ok
+		std::cout << "Test : nickname EMPTY." << std::endl; //ok
 		codeError = 431;
 	}
 	else if (!nickFormat(nickName)) {
-		// std::cout << "Test : nickname INVALID FORMAT." << std::endl; //ok
+		std::cout << "Test : nickname INVALID FORMAT." << std::endl; //ok
 		codeError = 432;
 	}
 	else {
 
-		std::cout << "Size of ClientsList : " << clientsList.size() << std::endl;
 		for (std::map<const int, Client*>::iterator it = clientsList.begin();
 			it != clientsList.end(); it++) {
-			std::cout << "socket of client in error handle: " << it->first << std::endl;
-			std::cout << "nick in error handle: " << (it->second)->getNickname() << std::endl;
-            std::cout << "user in error handle: " << (it->second)->getUserName() << std::endl;
 			if ((it->second)->getNickname() == nickName) {
-				std::cout << "Test : nickname ALREADY EXISTING." << std::endl;
 				codeError = 433;
 				break;
 			}
@@ -74,7 +68,6 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply = "Connexion failure.\r\n";
 	int errorCode = handleNICKErrors(server, client, command);
-	std::cout << "errorCode is :" << errorCode << std::endl;
 	int connexion = client->getConnectionStatus();
 
 	if (connexion == 2) {
@@ -93,8 +86,6 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 			if (client->getNickname().empty()) {
 
 				client->setNickname(command->params[1]);
-				std::cout << "Nom dans la liste des clients : " << client->getNickname() << std::endl;
-				// std::cout << "CE qui est mis en NICK lors de la connexion w/ parameters is : " << command->params[1] << std::endl;
 				connexion = 3;
 				client->setConnectionStatus(connexion);
 				reply = "NICK - Nickname was successfully set.\r\n";
