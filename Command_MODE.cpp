@@ -38,8 +38,8 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply;
 	std::string channelName = command->params[1];
-	if (!channelName.empty() and channelName.find("#") == 0)
-		channelName.erase(0, 1);
+	if (!channelName.empty() and channelName[0] != '#')
+		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
 	std::string user = client->getNickname();
 
@@ -116,14 +116,14 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 					channel->setChannelPwd(modeparam);
 				}
 				else {
-					reply = KEYSET_ERR(command->params[1]);
+					reply = KEYSET_ERR(channelName);
 					sendBytesToClient(client, reply.c_str());
 				}
 			}
 			break ;
 
 		default :
-			reply = UNKNOWNMODE_ERR(command->params[2][1], command->params[1]);
+			reply = UNKNOWNMODE_ERR(command->params[2][1], channelName);
 			sendBytesToClient(client, reply.c_str());
 			break;
 	}

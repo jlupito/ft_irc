@@ -83,6 +83,7 @@ bool	Channel::isBanned(std::string &nickname) {
 	return false;
 }
 
+
 void	Channel::removeClientFromChan(std::string &nickname) {
 	if (_clients.empty())
 		return ;

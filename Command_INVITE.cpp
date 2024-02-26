@@ -36,8 +36,8 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
 
 	std::string channelName = command->params[2];
-	if (!channelName.empty() and channelName.find("#") == 0)
-		channelName.erase(0, 1);
+	if (!channelName.empty() and channelName[0] != '#')
+		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
 
 	std::string invitee = command->params[1];

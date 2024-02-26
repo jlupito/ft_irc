@@ -37,8 +37,8 @@ bool handleKickErrors(Client* client, std::string &user, Channel* channel, std::
 void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
 	std::string channelName = command->params[1];
-	if (!channelName.empty() and channelName.find("#") == 0)
-		channelName.erase(0, 1);
+	if (!channelName.empty() and channelName[0] != '#')
+		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
 	std::string user = client->getNickname();
 	std::string nickKicked = command->params[2];
@@ -61,10 +61,12 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	reply = RPL_KICK(userID, command->params[1], nickKicked, reason);
 	sendBytesToClient(client, reply.c_str());
 
+
+
 	for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
 		it != channel->getClientsList().end(); it++) {
 			userID = ":" + (&it->second)->getNickname() + "!" + (&it->second)->getUserName() + "@" + (&it->second)->getRealName();
-			reply = RPL_PART(userID, command->params[1], reason);
+			reply = RPL_PART(nickKicked, command->params[1], reason);
 			sendBytesToClient(&it->second, reply.c_str());
 		}
 

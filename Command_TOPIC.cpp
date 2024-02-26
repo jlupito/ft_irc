@@ -33,8 +33,8 @@ bool	handleTopicErrors(Client *client, Channel* channel, std::string &user, cmdS
 void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
 	std::string channelName = command->params[1];
-	if (!channelName.empty() and channelName.find("#") == 0)
-		channelName.erase(0, 1);
+	if (!channelName.empty() and channelName[0] != '#')
+		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
 	std::string user = client->getNickname();
 
@@ -52,21 +52,21 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 			channel->setTopic(command->message.erase(0, 1));
 		for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
 		it != channel->getClientsList().end(); it++) {
-			reply = RPL_TOPIC((&it->second)->getNickname(), command->params[1], channel->getTopic());
+			reply = RPL_TOPIC((&it->second)->getNickname(), channelName, channel->getTopic());
 			sendBytesToClient(&it->second, reply.c_str());
-			reply = RPL_TOPICWHOTIME((&it->second)->getNickname(), command->params[1], client->getNickname(), time);
+			reply = RPL_TOPICWHOTIME((&it->second)->getNickname(), channelName, client->getNickname(), time);
 			sendBytesToClient(&it->second, reply.c_str());
 		}
 	}
 	else {
 		if (!channel->getTopic().empty()) {
-			reply = RPL_TOPIC(user, command->params[1], channel->getTopic());
+			reply = RPL_TOPIC(user, channelName, channel->getTopic());
 			sendBytesToClient(client, reply.c_str());
-			reply = RPL_TOPICWHOTIME(user, command->params[1], client->getNickname(), time);
+			reply = RPL_TOPICWHOTIME(user, channelName, client->getNickname(), time);
 			sendBytesToClient(client, reply.c_str());
 		}
 		else {
-			reply = RPL_NOTOPIC(user, command->params[1]);
+			reply = RPL_NOTOPIC(user, channelName);
 			sendBytesToClient(client, reply.c_str());
 		}
 	}
