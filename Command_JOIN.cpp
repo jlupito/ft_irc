@@ -39,7 +39,8 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 
 	if (handleJoinErrors(client, channel, user, command))
 		return;
-
+	if (channel->getMode().find("i") != std::string::npos)
+		
 
 	return ;
 

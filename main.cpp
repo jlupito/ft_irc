@@ -13,25 +13,25 @@ int main(int ac, char **av) {
 			return -1;
 		for (int i = 0; i < numEvents; ++i) {
 			if (server.getEventsTab()[i].data.fd == server.getServerSocket()) {
-				Client client;
+				Client* newClient = new Client;
 				try {
-					int tmp = accept(server.getServerSocket(), (struct sockaddr*)&client.getClientAddr(), &client.getClientAddrLen());
-					client.setClientSocket(tmp);
-					if (client.getClientSocket() < 0)
+					int tmp = accept(server.getServerSocket(), (struct sockaddr*)&newClient->getClientAddr(), &newClient->getClientAddrLen());
+					newClient->setClientSocket(tmp);
+					if (newClient->getClientSocket() < 0)
 						throw Client::clientConnectFailure();
 					// Configuration du socket en mode non bloquant
-					int flag = fcntl(client.getClientSocket(), F_GETFL, 0); // on recupere l'indice de controle dans flag.
-					fcntl(client.getClientSocket(), F_SETFL, flag | O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
+					int flag = fcntl(newClient->getClientSocket(), F_GETFL, 0); // on recupere l'indice de controle dans flag.
+					fcntl(newClient->getClientSocket(), F_SETFL, flag | O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
 					// verification du retour des deux fonctions (-1?) cf commentaires
 
 					server.getEvent().events = EPOLLIN;
-					server.getEvent().data.fd = client.getClientSocket();
-					if (epoll_ctl(server.getEpollFd(), EPOLL_CTL_ADD, client.getClientSocket(), &server.getEvent()) < 0) {
+					server.getEvent().data.fd = newClient->getClientSocket();
+					if (epoll_ctl(server.getEpollFd(), EPOLL_CTL_ADD, newClient->getClientSocket(), &server.getEvent()) < 0) {
 						throw Client::clientConnectFailure(); }
-					server.getClients()[client.getClientSocket()] = &client;
+					server.getClients()[newClient->getClientSocket()] = newClient;
 					// std::cout << "CREATION // adress client: " <<  &client << std::endl;
 				}
-				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(client.getClientSocket()); }
+				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(newClient->getClientSocket()); }
 			}
 			else
 				processEvent(server, i);
