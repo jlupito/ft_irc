@@ -38,7 +38,7 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 
 	else if (command->message.empty()) {
 
-	std::cout << "### Test 2 ###" << std::endl;
+		std::cout << "### Test 2 ###" << std::endl;
 
 		reply = ERR_NOTEXTTOSEND; // erreur 412
 		sendBytesToClient(client, reply.c_str());

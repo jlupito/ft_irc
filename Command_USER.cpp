@@ -15,13 +15,12 @@ void	handleUSERCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply = "Connexion failure.\r\n";
 	int connexion = client->getConnectionStatus();
-	// si le flag _connected est equivalent à 0111 (0x07 vaut 00000111)
 
-	for (int i = 0; i < command->params.size(); i++)
-		std::cout << "USER Param " << i << " est : " << command->params[i] << std::endl; //ok
-	std::cout << "Le dernier param stocke en message est : " << command->message << std::endl;
+	// for (int i = 0; i < command->params.size(); i++) // test ok
+	// 	std::cout << "USER IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
+	// std::cout << "Le dernier param stocke en message est : " << command->message << std::endl; // ok
 
-	if (connexion & 0x07) {
+	if (connexion == 3) {
 
 		if (command->params.size() != 4 || command->message.empty()) { // on a 4 params ET le message rempli par le realname
 			reply = NEEDMOREPARAMS_ERR(command->params[0]); sendBytesToClient(client, reply.c_str()); return ; }
@@ -35,9 +34,9 @@ void	handleUSERCommand(Server& server, Client* client, cmdStruct* command) {
 		client->setUserName(command->params[1]);
 		server.setServerName(command->params[3]);
 		client->setRealName(command->message);
-		client->setConnectionStatus(connexion | 0xF);
+		connexion = 4;
+		client->setConnectionStatus(connexion);
 		reply = RPL_WELCOME(client->getUserName(), client->getNickname()).c_str();
-		std::cout << "USER - Fin de la phase." << std::endl;
-		sendBytesToClient(client, reply.c_str());
 	}
+	sendBytesToClient(client, reply.c_str());
 }

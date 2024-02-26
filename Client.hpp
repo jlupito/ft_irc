@@ -21,12 +21,12 @@ class Client
         std::string&    getRealName(void);
         int             getConnectionStatus(void);
 
-        void            setConnectionStatus(int connexion);
-        void 	        setClientSocket(int fd);
+        void            setConnectionStatus(int& connexion);
+        void 	        setClientSocket(int& fd);
         void            setBuffer(std::string &buffer);
-        void            setNickname(std::string nickname);
-        void            setUserName(std::string nickname);
-        void            setRealName(std::string nickname);
+        void            setNickname(std::string& nickname);
+        void            setUserName(std::string& nickname);
+        void            setRealName(std::string& nickname);
 
         class clientConnectFailure : public std::exception {
             public:
@@ -41,5 +41,5 @@ class Client
         std::string         _nickname;
         std::string         _userName;
         std::string         _realName;
-        bool                _connected; // pour calcul en binaire
+        int                 _connexion;
 };
