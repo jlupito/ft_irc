@@ -30,6 +30,7 @@ bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdSt
 }
 
 void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
+
 	std::string reply;
 	std::string channelName = command->params[1];
 	if (!channelName.empty() and channelName.find("#") == 0)

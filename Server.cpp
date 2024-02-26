@@ -52,19 +52,19 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("USER", &handleUSERCommand));
 	_cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
     _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
-    _cmdList.insert(std::make_pair("MSG", &handlePRIVMSGCommand)); // attention diff entre command MSG et son nom IRSSI PRIVMSG
+    _cmdList.insert(std::make_pair("MSG", &handlePRIVMSGCommand));
 	_cmdList.insert(std::make_pair("PING", &handlePINGCommand));
 	_cmdList.insert(std::make_pair("PONG", &handlePONGCommand));
 
-    // _cmdList.insert(std::make_pair("JOIN", &handleJOINCommand));
+    _cmdList.insert(std::make_pair("JOIN", &handleJOINCommand));
 	// _cmdList.insert(std::make_pair("PART", &handlePARTCommand));
     // _cmdList.insert(std::make_pair("NAMES", &handleNAMESCommand));
 	// _cmdList.insert(std::make_pair("LIST", &handleLISTCommand));
 
-    // _cmdList.insert(std::make_pair("KICK", &handleKICKCommand));
-	// _cmdList.insert(std::make_pair("INVITE", &handleINVITECommand));
-    // _cmdList.insert(std::make_pair("TOPIC", &handleTOPICCommand));
-	// _cmdList.insert(std::make_pair("MODE", &handleMODECommand));
+    _cmdList.insert(std::make_pair("KICK", &handleKICKCommand));
+	_cmdList.insert(std::make_pair("INVITE", &handleINVITECommand));
+    _cmdList.insert(std::make_pair("TOPIC", &handleTOPICCommand));
+	_cmdList.insert(std::make_pair("MODE", &handleMODECommand));
 }
 
 void	Server::initialization(void) {

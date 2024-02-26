@@ -29,12 +29,15 @@ void	Channel::addToKicked(std::string &kickedUsername) {this->_kickedUsers.push_
 void	Channel::addToBanned(std::string &bannedUsername) {this->_bannedUsers.push_back(bannedUsername);}
 void	Channel::addOperators(std::string &OperUsername) {this->_operators.push_back(OperUsername);}
 
+
 void	Channel::addMode(std::string mode) {
+
 	if (_mode.find(mode) == std::string::npos)
 		_mode += mode;
 }
 
 void	Channel::removeMode(std::string mode) {
+
 	if (_mode.empty())
 		return;
 	size_t pos = _mode.find(mode);
@@ -43,6 +46,7 @@ void	Channel::removeMode(std::string mode) {
 }
 
 bool	Channel::isClient(std::string &nickname) {
+
 	if (_clientsList.empty())
 		return false;
 	std::map< std::string, Client>::iterator it = _clientsList.find(nickname);
@@ -52,6 +56,7 @@ bool	Channel::isClient(std::string &nickname) {
 }
 
 bool	Channel::isOperator(std::string &nickname) {
+
 	if (_operators.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
@@ -62,6 +67,7 @@ bool	Channel::isOperator(std::string &nickname) {
 }
 
 bool	Channel::isBanned(std::string &nickname) {
+
 	if (_bannedUsers.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _bannedUsers.begin(); it != _bannedUsers.end(); it++) {
@@ -72,6 +78,7 @@ bool	Channel::isBanned(std::string &nickname) {
 }
 
 void	Channel::removeClientFromChan(std::string &nickname) {
+
 	if (_clientsList.empty())
 		return ;
 	std::map< std::string, Client>::iterator it = _clientsList.find(nickname);
@@ -85,11 +92,11 @@ void	Channel::removeClientFromChan(std::string &nickname) {
 }
 
 void	Channel::removeOperator(std::string &nickname) {
+
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
 		if (*it == nickname)
 			_operators.erase(it);
 	}
-
 }
 
 void	Channel::addClientToChan(Client &client) {
