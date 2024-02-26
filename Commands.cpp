@@ -10,7 +10,8 @@ void printCmdStruct(cmdStruct& command) {
 
     std::cout << "Prefix: " << command.prefix << std::endl;
     std::cout << "Params: ";
-    for (std::vector<std::string>::const_iterator it = command.params.begin(); it != command.params.end(); ++it) {
+    for (std::vector<std::string>::const_iterator it = command.params.begin();
+		it != command.params.end(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << std::endl;

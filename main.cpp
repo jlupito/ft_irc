@@ -29,14 +29,23 @@ int main(int ac, char **av) {
 					if (epoll_ctl(server.getEpollFd(), EPOLL_CTL_ADD, client.getClientSocket(), &server.getEvent()) < 0) {
 						throw Client::clientConnectFailure(); }
 					server.getClients()[client.getClientSocket()] = &client;
+					// std::cout << "CREATION // adress client: " <<  &client << std::endl;
 				}
 				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(client.getClientSocket()); }
 			}
 			else
 				processEvent(server, i);
+	    //     for (std::map<const int, Client*>::iterator it = server.getClients().begin();
+        //     it != server.getClients().end(); it++) {
+        //         std::cout << "nick: " << it->second->getNickname() << std::endl;
+        //         std::cout << "user: " << it->second->getUserName() << std::endl;
+        //         std::cout << "socket client: " << &(it->second) << std::endl;
+        //     }
 		}
 	}
-	for (std::map<const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++)
+
+
+	for (std::map<const int, Client* >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++)
 		close(it->first); // verifier gestion memoire pointeurs Client*
 	close(server.getEpollFd());
 

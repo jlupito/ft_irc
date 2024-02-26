@@ -54,11 +54,13 @@ int handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 	}
 	else {
 
-		std::cout << "Size of ClientsList" << clientsList.size() << std::endl;
+		std::cout << "Size of ClientsList : " << clientsList.size() << std::endl;
 		for (std::map<const int, Client*>::iterator it = clientsList.begin();
 			it != clientsList.end(); it++) {
-			std::cout << "socket of client: " << it->first << std::endl;
-			if (it->second->getNickname() == nickName) {
+			std::cout << "socket of client in error handle: " << it->first << std::endl;
+			std::cout << "nick in error handle: " << (it->second)->getNickname() << std::endl;
+            std::cout << "user in error handle: " << (it->second)->getUserName() << std::endl;
+			if ((it->second)->getNickname() == nickName) {
 				std::cout << "Test : nickname ALREADY EXISTING." << std::endl;
 				codeError = 433;
 				break;
@@ -74,9 +76,6 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 	int errorCode = handleNICKErrors(server, client, command);
 	std::cout << "errorCode is :" << errorCode << std::endl;
 	int connexion = client->getConnectionStatus();
-
-	for (int i = 0; i < command->params.size(); i++) // test ok
-		std::cout << "NICK IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
 
 	if (connexion == 2) {
 
@@ -95,7 +94,7 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 				client->setNickname(command->params[1]);
 				std::cout << "Nom dans la liste des clients : " << client->getNickname() << std::endl;
-				std::cout << "CE qui est mis en NICK lors de la connexion w/ parameters is : " << command->params[1] << std::endl;
+				// std::cout << "CE qui est mis en NICK lors de la connexion w/ parameters is : " << command->params[1] << std::endl;
 				connexion = 3;
 				client->setConnectionStatus(connexion);
 				reply = "NICK - Nickname was successfully set.\r\n";
