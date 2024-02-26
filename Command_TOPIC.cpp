@@ -13,7 +13,7 @@
 //command = TOPIC <channel> [<topic>]
 
 bool	handleTopicErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command) {
-	
+
 	std::string reply;
 	if (command->params.size() != 2)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);

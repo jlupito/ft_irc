@@ -10,7 +10,7 @@
 
 bool nickFormat(std::string nickname) {
 
-	std::cout << nickname << std::endl;
+	std::cout << "Le NICK utilisé est : " << nickname << std::endl;
 	if (nickname.length() > 9)
 		return false;
 
@@ -38,25 +38,34 @@ void	informAllClientsOfNickChange(Server& server, Client* client, std::string ol
 	}
 }
 
-int	handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
+int handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 
-	int	codeError = 0;
+	int codeError = 0;
 	std::string nickName = command->params[1];
+	std::map<const int, Client*>&  clientsList = server.getClients();
 
 	if (nickName.empty()) {
-		std::cout << "Test : nickname EMPTY." << std::endl;
+		// std::cout << "Test : nickname EMPTY." << std::endl; //ok
 		codeError = 431;
 	}
-	if (!nickFormat(nickName)) {
-		std::cout << "Test : nickname INVALID FORMAT." << std::endl;
+	else if (!nickFormat(nickName)) {
+		// std::cout << "Test : nickname INVALID FORMAT." << std::endl; //ok
 		codeError = 432;
 	}
-	// ATTENTION, apparemment cette protection ne fonctionne pas (en cas de double connexion avec le mm nick)
-	for (std::map<const int, Client *>::iterator it = server.getClients().begin();
-		it != server.getClients().end(); it++) {
-		if (it->second->getNickname() == nickName) {
-			std::cout << "Test : nickname ALREADY EXISTING." << std::endl;
-			codeError = 433; }
+	else {
+
+		std::cout << "Size of ClientsList : " << clientsList.size() << std::endl;
+		for (std::map<const int, Client*>::iterator it = clientsList.begin();
+			it != clientsList.end(); it++) {
+			std::cout << "socket of client in error handle: " << it->first << std::endl;
+			std::cout << "nick in error handle: " << (it->second)->getNickname() << std::endl;
+            std::cout << "user in error handle: " << (it->second)->getUserName() << std::endl;
+			if ((it->second)->getNickname() == nickName) {
+				std::cout << "Test : nickname ALREADY EXISTING." << std::endl;
+				codeError = 433;
+				break;
+			}
+		}
 	}
 	return codeError;
 }
@@ -65,17 +74,17 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply = "Connexion failure.\r\n";
 	int errorCode = handleNICKErrors(server, client, command);
+	std::cout << "errorCode is :" << errorCode << std::endl;
 	int connexion = client->getConnectionStatus();
-	if (connexion & 0x03)
-	{
+
+	if (connexion == 2) {
+
 		switch (errorCode) {
 
 			case NONICKNAMEGIVEN:
 			reply = NONICKNAMEGIVEN_ERR;
 			break;
-			case ONEUSNICKNAME:
-			reply = ERRONEUSNICKNAME_ERR(client->getNickname());
-			break;
+
 			case NICKNAMEINUSE:
 			reply = NICKNAMEINUSE_ERR(client->getNickname());
 			break;
@@ -84,9 +93,11 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 			if (client->getNickname().empty()) {
 
 				client->setNickname(command->params[1]);
-				client->setConnectionStatus(connexion | 0x07);
+				std::cout << "Nom dans la liste des clients : " << client->getNickname() << std::endl;
+				// std::cout << "CE qui est mis en NICK lors de la connexion w/ parameters is : " << command->params[1] << std::endl;
+				connexion = 3;
+				client->setConnectionStatus(connexion);
 				reply = "NICK - Nickname was successfully set.\r\n";
-				std::cout << "Etape NICK ok" << std::endl;
 			}
 			else {
 

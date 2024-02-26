@@ -18,13 +18,12 @@
 class Server;
 class Channel;
 
-class Channel;
-
 struct cmdStruct {
 
 	std::string					prefix;
 	std::vector<std::string>	params;
 	std::string					message;
+
 };
 
 void 		processEvent(Server& server, int i);
@@ -43,8 +42,6 @@ void		handlePINGCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePONGCommand(Server& server, Client* client, cmdStruct* command);
 void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
 void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
-int			handlePRIVMSGErrors(Server& server, Client* client, cmdStruct* command);
-void   		sendPRIVMSG(Server& server, cmdStruct* command);
 void		handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command);
 
 // void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);

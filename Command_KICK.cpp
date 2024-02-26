@@ -14,10 +14,10 @@
 // KICK <channel> <user> *( "," <user> ) [<comment>]
 
 bool handleKickErrors(Client* client, std::string &user, Channel* channel, std::string &nickKicked, cmdStruct* command) {
-	
+
 	std::string reply;
 
-	if (!command->params.size() != 3)
+	if (command->params.size() != 3)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
 	else if (!channel)
 		reply = NOSUCHCHANNEL_ERR(command->params[1]);
@@ -53,8 +53,8 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	}
 	std::string reason = (!command->message.empty()) ? command->message : ":Kicked by the channel's operator";
 	std::string userID = command->prefix;
-	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickname() + "!" + client->getUserName() + "@" + client->getRealName());
-	
+	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
+
 	channel->removeClientFromChan(nickKicked);
 	channel->addToKicked(nickKicked);
 

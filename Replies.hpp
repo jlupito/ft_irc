@@ -6,11 +6,14 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 /*COMMON REPLIES*/
 # define NEEDMOREPARAMS_ERR(command) (": localhost 461 " + command + " :Not enough parameters" + "\r\n")
 
-# define RPL_WELCOME(user_id, nickname) (":localhost 001 " + nickname + " :Welcome to the Internet Relay Network " + user_id + "\r\n")
+// "Welcome to the Internet Relay Network John!user123@irc.example.com"
+// "Welcome to the Internet Relay Network Alice!alice_22@myserver.net"
+// "Welcome to the Internet Relay Network <nick>!<user>@<host>"
+# define RPL_WELCOME(userName, nickname) (":localhost 001 " + nickname + " :Welcome to the Internet Relay Network " + nickname + "!" + userName + "\r\n")
 # define RPL_YOURHOST(client, servername, version) (":localhost 002 " + client + " :Your host is " + servername + " , running version " + version + "\r\n")
 # define RPL_CREATED (": localhost 003 " + "This server was created <date>")
-# define RPL_MYINFO (": localhost 004 " +  "<servername> <version> <available user modes>" +  "<available channel modes>")
-# define RPL_INVITING(client, nickname, channel) (":localhost 341 " + client + " " + nickname + " " + channel)
+# define RPL_MYINFO (": localhost 004 " + "<servername> <version> <available user modes>" +  "<available channel modes>")
+# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n")
 // # define RPL_INVITELIST(client, channel) (":localhost 336 " + client + " " + channel)
 // # define RPL_ENDOFINVITELIST(client) (":localhost 337 " + client + ":End of /INVITE list")
 
@@ -42,8 +45,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_AWAY(nickname) (":localhost 301 " + nickname + "away :\r\n")
 /* USER ERROR REPLIES */
 
-/* NICK ERROR REPLIES */
-
 /* INVITE ERROR REPLIES */
 # define NOSUCHCHANNEL_ERR(channel) (":localhost 403 " + channel + ":No such channel" + "\r\n")
 # define USERNOTINCHANNEL_ERR(client, nickname, channel) (":localhost 441 " + client + " " + nickname + " " + channel + ":They aren't on that channel" + "\r\n")
@@ -56,7 +57,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_PART(user_id, channel, reason) (user_id + " PART #" + channel + " " + (reason.empty() ? "." : reason ) + "\r\n")
 //:user123!user@host.com PART #channel :Motif de l'expulsion
 # define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " #" + channel + "\r\n")
-# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n")
 # define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + ":No topic is set" + "\r\n")
 # define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " :" + topic + "\r\n")
 # define RPL_TOPICWHOTIME(client, channel, nick, setat) (":localhost 333 " + client + " " + channel + " " + nick + " " + setat + "\r\n")

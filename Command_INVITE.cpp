@@ -13,7 +13,7 @@
 //command = INVITE <nickname> <channel>
 
 bool	handleInviteErrors(Client *client, Channel* channel, std::string &invitee, std::string &inviter, cmdStruct* command) {
-	
+
 	std::string reply;
 	if (command->params.size() != 3)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
@@ -26,7 +26,7 @@ bool	handleInviteErrors(Client *client, Channel* channel, std::string &invitee, 
 	else if (channel->isClient(invitee))
 		reply = USERONCHANNEL_ERR(inviter, invitee, command->params[2]);
 	if (!reply.empty()) {
-		sendBytes(client, reply.c_str());
+		sendBytesToClient(client, reply.c_str());
 		return true;
 	}
 	return false;
@@ -41,24 +41,22 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 	Channel *channel = server.getChannels()[channelName];
 
 	std::string invitee = command->params[1];
-	std::string inviter = client->getNickName();
+	std::string inviter = client->getNickname();
 
 	if (handleInviteErrors(client, channel, invitee, inviter, command))
 		return ;
 
 	Client inviteeClient;
 	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().begin(); it++) {
-		if (it->second->getNickName() == invitee)
+		if (it->second->getNickname() == invitee)
 			inviteeClient = *it->second;
 	}
 
-	// std::string userID = (!command->prefix.empty()) ? command->prefix : (":" + client->getNickName() + "!" + client->getUserName() + "@" + client->getRealName());
-	
+	channel->addToInvited(invitee);
 	reply = RPL_INVITE(command->prefix, invitee, command->params[1]);
-	sendBytes(&inviteeClient, reply.c_str());
+	sendBytesToClient(&inviteeClient, reply.c_str());
 	reply = RPL_INVITING(inviter, invitee, command->params[1]);
-	sendBytes(client, reply.c_str());
-	
+	sendBytesToClient(client, reply.c_str());
 	return ;
 }
 

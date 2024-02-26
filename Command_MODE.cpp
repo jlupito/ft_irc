@@ -11,17 +11,17 @@
 # define ERR_NOSUCHCHANNEL 403
 # define ERR_CHANOPRIVSNEEDED 482
 # define ERR_NOTONCHANNEL 442
-# define ERR_UNKNOWNMODE 472 
+# define ERR_UNKNOWNMODE 472
 
 //command = MODE <target> [<modestring> [<mode arguments>...]]
 
 bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command) {
-	
+
 	std::string reply;
 	std::string modestring;
 	if (!channel->getMode().empty())
 		modestring = "+" + channel->getMode();
-	if (!command->params.size() <= 1)
+	if (command->params.size() <= 1)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
 	else if (command->params.size() == 2)
 		reply = RPL_CHANNELMODEIS(user, command->params[1], modestring);
@@ -35,6 +35,7 @@ bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdSt
 }
 
 void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
+
 	std::string reply;
 	std::string channelName = command->params[1];
 	if (!channelName.empty() and channelName.find("#") == 0)
@@ -121,7 +122,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 			}
 			break ;
 
-		default : 
+		default :
 			reply = UNKNOWNMODE_ERR(command->params[2][1], command->params[1]);
 			sendBytesToClient(client, reply.c_str());
 			break;

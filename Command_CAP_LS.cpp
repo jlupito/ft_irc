@@ -7,11 +7,16 @@
 void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply = "Connexion failure.\r\n";
-	int connexion = client->getConnectionStatus(); // doit être égal à 0;
+	int connexion = client->getConnectionStatus();
 
-	if (connexion == 0x00) {
+	for (int i = 0; i < command->params.size(); i++) // test ok
+		std::cout << "NICK IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
+
+	if (connexion == 0)
+	{
 		if (command->params[1] == "LS" && command->params.size() == 2) {
-			client->setConnectionStatus(connexion | 0x01);
+			connexion = 1;
+			client->setConnectionStatus(connexion);
 			reply = "CAP_ACK LS\r\n";
 		}
 	}

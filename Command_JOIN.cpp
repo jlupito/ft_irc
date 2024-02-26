@@ -13,7 +13,7 @@
 //command = JOIN <channel>{,<channel>} [<key>{,<key>}]
 
 bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command) {
-	
+
 	std::string reply;
 	if (command->params.size() < 2)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
@@ -23,7 +23,7 @@ bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdSt
 		reply = NOTONCHANNEL_ERR(user, command->params[1]);
 
 	if (!reply.empty()) {
-		sendBytes(client, reply.c_str());
+		sendBytesToClient(client, reply.c_str());
 		return true;
 	}
 	return false;
@@ -35,12 +35,13 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 	if (!channelName.empty() and channelName.find("#") == 0)
 		channelName.erase(0, 1);
 	Channel *channel = server.getChannels()[channelName];
-	std::string user = client->getNickName();
+	std::string user = client->getNickname();
 
 	if (handleJoinErrors(client, channel, user, command))
 		return;
+	if (channel->getMode().find("i") != std::string::npos)
+		
 
-	
 	return ;
 
 }

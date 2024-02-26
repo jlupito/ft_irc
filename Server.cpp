@@ -52,7 +52,7 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("USER", &handleUSERCommand));
 	_cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
     _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
-    _cmdList.insert(std::make_pair("PRIVMSG", &handlePRIVMSGCommand));
+    _cmdList.insert(std::make_pair("MSG", &handlePRIVMSGCommand)); // attention diff entre command MSG et son nom IRSSI PRIVMSG
 	_cmdList.insert(std::make_pair("PING", &handlePINGCommand));
 	_cmdList.insert(std::make_pair("PONG", &handlePONGCommand));
 
