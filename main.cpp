@@ -13,8 +13,10 @@ int main(int ac, char **av) {
 			return -1;
 		for (int i = 0; i < numEvents; ++i) {
 			if (server.getEventsTab()[i].data.fd == server.getServerSocket()) {
-				Client* newClient = new Client;
+				Client* newClient = new Client;  // Allocation dynamique avec new
+
 				try {
+
 					int tmp = accept(server.getServerSocket(), (struct sockaddr*)&newClient->getClientAddr(), &newClient->getClientAddrLen());
 					newClient->setClientSocket(tmp);
 					if (newClient->getClientSocket() < 0)
@@ -44,9 +46,11 @@ int main(int ac, char **av) {
 		}
 	}
 
+	for (std::map<const int, Client* >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
 
-	for (std::map<const int, Client* >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++)
+		delete it->second;
 		close(it->first); // verifier gestion memoire pointeurs Client*
+	}
 	close(server.getEpollFd());
 
 	return 0;
