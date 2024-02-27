@@ -72,3 +72,4 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define ERR_INVALIDKEY(client, channel) (":localhost 525 " + client + " " + channel + ":Key is not well-formed" + "\r\n")
 
 # define RPL_NAMREPLY(client, channel, list) (":localhost 353 " + client + " = " + channel + " :" + list + "\r\n")
+# define RPL_ENDOFNAMES(channel) (":localhost 366 " + channel + ":End of /NAMES list" + "\r\n")

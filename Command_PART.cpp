@@ -32,23 +32,42 @@ bool	handlePartErrors(Client *client, Channel* channel, std::string &user, cmdSt
 }
 
 void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
+	
 	std::string reply;
-	std::string channelName = command->params[1];
-	if (!channelName.empty() and channelName[0] != '#')
-		channelName.insert(0, "#");
-	Channel *channel = server.getChannels()[channelName];
-	std::string user = client->getNickname();
+	std::vector<std::string> chanToLeave;
 
-	if (handlePartErrors(client, channel, user, command))
-		return;
+	if (command->params[1].find(",") != std::string::npos) {
+		std::istringstream iss(command->params[1]);
+		std::string chan;
+		while (std::getline(iss, chan, ','))
+			chanToLeave.push_back(chan);
+	}
+	else
+		chanToLeave.push_back(command->params[1]);
 
-	reply = RPL_PART(command->prefix, channelName, command->message);
-	sendBytesToClient(client, reply.c_str());
-	channel->removeClientFromChan(user);
-	if (channel->isOperator(user))
-		channel->removeOperator(user);
-	reply = RPL_PART(command->prefix, channelName, command->message);
-	sendBytesToChannel(channel, reply.c_str());
+
+	for (std::vector<std::string>::iterator it = chanToLeave.begin(); it != chanToLeave.end(); it++) {
+		
+		std::string channelName = *it;
+		if (!channelName.empty() and channelName[0] != '#')
+			channelName.insert(0, "#");
+		Channel *channel = server.getChannels()[channelName];
+		std::string user = client->getNickname();
+
+		if (handlePartErrors(client, channel, user, command))
+			continue ;
+
+		channel->removeClientFromChan(user);
+		if (channel->isOperator(user))
+			channel->removeOperator(user);
+		for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().begin(); it++) {
+		if (*it == channel->getChannelName())
+			client->getJoinedChan().erase(it);
+	}
+		reply = RPL_PART(command->prefix, channelName, command->message);
+		sendBytesToClient(client, reply.c_str());
+		sendBytesToChannel(channel, reply.c_str());
+	}
 
 	return ;
 

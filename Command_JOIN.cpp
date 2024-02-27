@@ -30,10 +30,10 @@ bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	return false;
 }
 
-bool joinChannel(Server& server, Channel *channel, Client* client, cmdStruct* command) {
+bool joinChannel(Server& server, Channel *channel, Client* client, std::string key, std::string userID) {
 	std::string reply;
 	if (channel->getMode().find("k") != std::string::npos) {
-			if (channel->getChannelPwd() != command->params[2]) {
+			if (channel->getChannelPwd() != key) {
 				reply = ERR_BADCHANNELKEY(client->getNickname(), channel->getChannelName());
 				sendBytesToClient(client, reply.c_str());
 				return false;
@@ -58,6 +58,8 @@ bool joinChannel(Server& server, Channel *channel, Client* client, cmdStruct* co
 	}
 	channel->addToChan(*client);
 	client->addJoinedChan(channel->getChannelName());
+	reply = userID + " JOIN " + channel->getChannelName();
+	sendBytesToChannel(channel, reply.c_str());
 	reply = ":" + server.getServerName() + " JOIN:" + channel->getChannelName();
 	sendBytesToClient(client, reply.c_str());
 	reply = RPL_TOPIC(client->getNickname(), channel->getChannelName(), channel->getTopic());
@@ -74,28 +76,54 @@ bool joinChannel(Server& server, Channel *channel, Client* client, cmdStruct* co
 	}
 	reply = RPL_NAMREPLY(client->getNickname(), channel->getChannelName(), list);
 	sendBytesToClient(client, reply.c_str());
+	reply = RPL_ENDOFNAMES(channel->getChannelName());
+	sendBytesToClient(client, reply.c_str());
 	return true;
 }
 
 void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
+	
 	std::string reply;
-	std::string channelName = command->params[1];
-	if (!channelName.empty() and channelName[0] != '#')
-		channelName.insert(0, "#");
-	Channel *channel = server.getChannels()[channelName];
+	std::map<std::string, std::string> chanToJoin;
 	std::string user = client->getNickname();
 
-	if (handleJoinErrors(client, channel, user, command))
-		return;
+	if (command->params[1].find(",") != std::string::npos and command->params[2].size()) {
+		std::istringstream iss1(command->params[1]);
+		std::istringstream iss2(command->params[2]);
+		std::string chan = "", key = "";
+		while (std::getline(iss1, chan, ',')) {
+			if (std::getline(iss2, key, ','))
+				chanToJoin[chan] = key;
+		}
+	}
+	else if (command->params[1].find(",") != std::string::npos) {
+		std::istringstream iss1(command->params[1]);
+		std::string chan = "", key = "";
+		while (std::getline(iss1, chan, ',')) {
+			chanToJoin[chan] = key;
+		}
+	}
+	else 
+		chanToJoin[command->params[1]] = "";
 
-	std::map<std::string, Channel * >::iterator it = std::find(server.getChannels().begin(), server.getChannels().end(), command->params[1]);
-	if (it->first == command->params[1])
-		joinChannel(server, it->second, client, command);
-	else {
-		Channel* newChannel = new Channel(command->params[1]);
-		server.getChannels()[newChannel->getChannelName()] = newChannel;
+	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
+		for (std::map<std::string, Channel * >::iterator chanList = server.getChannels().begin(); chanList != server.getChannels().end(); chanList++) {
+
+			std::string channelName = chanCmd->first;
+			if (!channelName.empty() and channelName[0] != '#')
+				channelName.insert(0, "#");
+			Channel *channel = server.getChannels()[channelName];
+
+			if (handleJoinErrors(client, channel, user, command))
+				continue ;
+
+			if (chanCmd->first == chanList->first)
+				joinChannel(server, chanList->second, client, chanCmd->second, command->prefix);
+			else {
+				Channel* newChannel = new Channel(chanCmd->first);
+				server.getChannels()[newChannel->getChannelName()] = newChannel;
+			}
+		}
 	}
 	return ;
-
 }
-
