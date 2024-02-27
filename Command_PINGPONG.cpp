@@ -16,6 +16,7 @@ void	handlePINGCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string	reply = "No Ping-Pong today.\r\n";
 	const std::string	userName = command->params[1];
 
+	(void)server;
 	if (!command->params[1].empty())
 		reply = "PONG " + command->params[1] + "\r\n"; // ceci est un PONG
 	else
@@ -26,7 +27,7 @@ void	handlePINGCommand(Server& server, Client* client, cmdStruct* command) {
 void	handlePONGCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string	reply = "No Ping-Pong today.\r\n";
-	
+
 	if (!command->params[1].empty())
 		reply = server.getServerName() + "\r\n";
 	sendBytesToClient(client, reply.c_str());

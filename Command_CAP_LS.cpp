@@ -9,6 +9,7 @@ void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply = "Connexion failure.\r\n";
 	int connexion = client->getConnectionStatus();
 
+	(void)server;
 	if (connexion == 0)
 	{
 		if (command->params[1] == "LS" && command->params.size() == 2) {

@@ -6,9 +6,27 @@ CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 DEPS = ${OBJS:.o=.d}
 
 INC =   \
-  
-SRCS = main.cpp  \
-        
+
+SRCS =	Command_CAP_LS.cpp \
+		Command_INVITE.cpp \
+		Command_JOIN.cpp \
+		Command_KICK.cpp \
+		Command_MODE.cpp \
+		Command_NICK.cpp \
+		Command_NOTICE.cpp \
+		Command_OPER.cpp \
+		Command_PASS.cpp \
+		Command_PINGPONG.cpp \
+		Command_PRIVMSG.cpp \
+		Command_QUIT.cpp \
+		Command_TOPIC.cpp \
+		Command_USER.cpp \
+		Channel.cpp \
+		Commands.cpp \
+		Client.cpp \
+		Server.cpp \
+		main.cpp  \
+
 OBJS_PATH = ./objs
 OBJS_NAMES = $(SRCS:.cpp=.o)
 OBJS = $(addprefix $(OBJS_PATH)/, $(OBJS_NAMES))

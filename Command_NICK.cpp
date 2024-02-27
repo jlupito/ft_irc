@@ -13,7 +13,7 @@ bool nickFormat(std::string nickname) {
 	if (nickname.length() > 9)
 		return false;
 
-	for (int i = 0; i < nickname.length(); i++) {
+	for (unsigned long i = 0; i < nickname.length(); i++) {
 		char currentChar = nickname[i];
 		if (!((currentChar == '-') || (currentChar >= 'A' && currentChar <= 'Z')
 			|| (currentChar >= 'a' && currentChar <= 'z')
@@ -43,6 +43,7 @@ int handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 	std::string nickName = command->params[1];
 	std::map<const int, Client*>&  clientsList = server.getClients();
 
+	(void)client;
 	if (nickName.empty()) {
 		std::cout << "Test : nickname EMPTY." << std::endl; //ok
 		codeError = 431;

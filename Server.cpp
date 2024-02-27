@@ -53,6 +53,7 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("OPER", &handleOPERCommand));
     _cmdList.insert(std::make_pair("QUIT", &handleQUITCommand));
     _cmdList.insert(std::make_pair("PRIVMSG", &handlePRIVMSGCommand));
+	_cmdList.insert(std::make_pair("NOTICE", &handleNOTICECommand));
 	_cmdList.insert(std::make_pair("PING", &handlePINGCommand));
 	_cmdList.insert(std::make_pair("PONG", &handlePONGCommand));
 
