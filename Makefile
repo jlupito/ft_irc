@@ -1,7 +1,7 @@
 NAME = ircserv
 
 CXX = c++
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -g3
 
 DEPS = ${OBJS:.o=.d}
 
@@ -14,13 +14,11 @@ SRCS =	Command_CAP_LS.cpp \
 		Command_MODE.cpp \
 		Command_NICK.cpp \
 		Command_NOTICE.cpp \
-		Command_OPER.cpp \
+		Command_PART.cpp \
 		Command_PASS.cpp \
 		Command_PINGPONG.cpp \
 		Command_PRIVMSG.cpp \
 		Command_QUIT.cpp \
-		Command_KILL.cpp \
-		Command_DIE.cpp \
 		Command_TOPIC.cpp \
 		Command_USER.cpp \
 		Channel.cpp \

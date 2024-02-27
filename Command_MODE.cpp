@@ -43,15 +43,13 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	Channel *channel = server.getChannels()[channelName];
 	std::string user = client->getNickname();
 
-	if (handleModeErrors(client, channel, user, command))
+	if (!channel or handleModeErrors(client, channel, user, command) or
+		(command->params[2][0] != '-' and command->params[2][0] != '+'))
 		return;
-
-	if (command->params[2][0] != '-' and command->params[2][0] != '+')
-		return ;
 
 	int remove;
 	std::vector<std::string> modeParams;
-	int nbParams = command->params.size() - 3;
+	size_t nbParams = command->params.size() - 3;
 
 	for (size_t i = 0; i <= nbParams; i++)
 		modeParams.push_back(command->params[i]);
@@ -80,7 +78,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 				if (++itParam != modeParams.end())
 					itParam++;
 				else 
-					*itParam == "";
+					*itParam = "";
 				break ;
 
 			case ('t'):
@@ -121,7 +119,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 					if (++itParam != modeParams.end())
 						itParam++;
 					else 
-						*itParam == "";
+						*itParam = "";
 				}
 				break ;
 
@@ -140,7 +138,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 						if (++itParam != modeParams.end())
 							itParam++;
 						else 
-							*itParam == "";
+							*itParam = "";
 					}
 					else {
 						reply = KEYSET_ERR(channelName);

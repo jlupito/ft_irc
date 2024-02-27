@@ -16,7 +16,7 @@
 //command = JOIN <channel>{,<channel>} [<key>{,<key>}]
 class Channel;
 
-bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command) {
+bool	handleJoinErrors(Client *client, Channel* channel, cmdStruct* command) {
 
 	std::string reply;
 	if (command->params.size() < 2)
@@ -107,23 +107,23 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 		chanToJoin[command->params[1]] = "";
 
 	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
-		for (std::map<std::string, Channel * >::iterator chanList = server.getChannels().begin(); chanList != server.getChannels().end(); chanList++) {
+		// for (std::map<std::string, Channel * >::iterator chanList = server.getChannels().begin(); chanList != server.getChannels().end(); chanList++) {
 
 			std::string channelName = chanCmd->first;
 			if (!channelName.empty() and channelName[0] != '#')
 				channelName.insert(0, "#");
 			Channel *channel = server.getChannels()[channelName];
-
-			if (handleJoinErrors(client, channel, user, command))
-				continue ;
-
-			if (chanCmd->first == chanList->first)
-				joinChannel(server, chanList->second, client, chanCmd->second, command->prefix);
-			else {
+			if (!channel) {
 				Channel* newChannel = new Channel(chanCmd->first);
 				server.getChannels()[newChannel->getChannelName()] = newChannel;
 			}
-		}
+			// else {
+				if (handleJoinErrors(client, channel, command))
+					continue ;
+				// if (chanCmd->first == chanList->first)
+				joinChannel(server, channel, client, chanCmd->second, command->prefix);
+			// }
+		// }
 	}
 	return ;
 }
