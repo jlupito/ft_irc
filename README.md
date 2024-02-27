@@ -1,6 +1,6 @@
 
 # se connecter à un serveur: `/connect DALnet`
-# export les logs send/receive: `/rawlog open ~IRC/t.log`
+# export les logs send/receive: `/rawlog open ~/IRC/t.log`
 
 # ft_irc
 L’objectif de ce projet est de reproduire le fonctionnement d’un serveur IRC.

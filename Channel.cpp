@@ -8,7 +8,7 @@ Channel::~Channel() {}
 
 /********************************** GETTERS **********************************/
 
-int				Channel::getNbrUsersLimit( void ) { return this->_nbrUsersLimit; }
+size_t			Channel::getNbrUsersLimit( void ) { return this->_nbrUsersLimit; }
 std::string&	Channel::getChannelName( void ) { return this->_name; }
 std::string&	Channel::getChannelPwd( void ) { return this->_channelPwd; }
 std::string&	Channel::getTopic( void ) { return this->_topic; }

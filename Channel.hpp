@@ -23,14 +23,14 @@ class Channel {
 		std::string						_channelPwd;
 		std::string						_topic;
 		std::string						_mode;
-		int								_nbrUsersLimit;
+		size_t							_nbrUsersLimit;
 
 	public:
 		Channel(const std::string &name);
 		~Channel();
 
-		std::map<std::string, Client >&	getClientsList( void );
-		int								getNbrUsersLimit( void );
+		std::map<std::string, Client >&	getClientsList();
+		size_t							getNbrUsersLimit( void );
 		std::string&					getChannelName( void );
 		std::string&					getChannelPwd( void );
 		std::string&					getTopic( void );
