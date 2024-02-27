@@ -44,18 +44,14 @@ void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
 void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command);
 void		handleNOTICECommand(Server& server, Client* client, cmdStruct* command);
-void		handleKILLCommand(Server& server, Client* client, cmdStruct* command);
-void		handleDIECommand(Server& server, Client* client, cmdStruct* command);
 
-// void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
-// void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleNAMESCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleLISTCommand(Server& server, Client* client, cmdStruct* command);
+void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
+void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);
 
-// void		handleKICKCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleINVITECommand(Server& server, Client* client, cmdStruct* command);
-// void		handleTOPICCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleMODECommand(Server& server, Client* client, cmdStruct* command);
+void		handleKICKCommand(Server& server, Client* client, cmdStruct* command);
+void		handleINVITECommand(Server& server, Client* client, cmdStruct* command);
+void		handleTOPICCommand(Server& server, Client* client, cmdStruct* command);
+void		handleMODECommand(Server& server, Client* client, cmdStruct* command);
 
 void	printCmdStruct(cmdStruct& command);
 

@@ -29,7 +29,7 @@ class Channel {
 		Channel(const std::string &name);
 		~Channel();
 
-		std::map<std::string, Client >&		getClientsList();
+		std::map<std::string, Client >&	getClientsList( void );
 		int								getNbrUsersLimit( void );
 		std::string&					getChannelName( void );
 		std::string&					getChannelPwd( void );

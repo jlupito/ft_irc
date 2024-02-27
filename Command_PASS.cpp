@@ -6,7 +6,7 @@
 
 void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = "Connexion failure.";
+	std::string reply = "Connexion failure PASS.";
 	int connexion = client->getConnectionStatus();
 
 	// for (size_t i = 0; i < command->params.size(); i++) // test ok

@@ -1,6 +1,13 @@
 #include "Server.hpp"
 #include "Commands.hpp"
 
+/*
+	Pour un test en nc, on entre "nc localhost 6667", apres avoir lancé le
+	serveur sur le port voulu avec le mdp. Ensuite, on entre manuellement
+	dans le client nc, les commandes de connexion dans l'ordre, se terminant
+	toutes par CTRL+V+M + Enter.
+*/
+
 int main(int ac, char **av) {
 
 	if (ac != 3)
