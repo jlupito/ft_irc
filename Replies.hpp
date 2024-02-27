@@ -66,9 +66,10 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define KEYSET_ERR(channel) (":localhost 467 " + channel + ":Channel key already set" + "\r\n")
 
 # define ERR_TOOMANYCHANNELS(client, channel) (":localhost 405 " + client + " " + channel + ":You have joined too many channels" + "\r\n")
-# define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + ":Cannot join channel (+l)")
-# define ERR_INVITEONLYCHAN(client, channel) (":localhost 473 " + client + " " + channel + ":Cannot join channel (+i)")
-# define ERR_BADCHANNELKEY(client, channel) (":localhost 475 " + client + " " + channel + ":Cannot join channel (+k)" )
-# define ERR_INVALIDKEY(client, channel) (":localhost 525 " + client + " " + channel + ":Key is not well-formed")
+# define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + ":Cannot join channel (+l)" + "\r\n")
+# define ERR_INVITEONLYCHAN(client, channel) (":localhost 473 " + client + " " + channel + ":Cannot join channel (+i)" + "\r\n")
+# define ERR_BADCHANNELKEY(client, channel) (":localhost 475 " + client + " " + channel + ":Cannot join channel (+k)" + "\r\n")
+# define ERR_INVALIDKEY(client, channel) (":localhost 525 " + client + " " + channel + ":Key is not well-formed" + "\r\n")
 
-
+# define RPL_NAMREPLY(client, channel, list) (":localhost 353 " + client + " = " + channel + " :" + list + "\r\n")
+# define RPL_ENDOFNAMES(channel) (":localhost 366 " + channel + ":End of /NAMES list" + "\r\n")
