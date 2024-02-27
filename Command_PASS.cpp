@@ -9,8 +9,8 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply = "Connexion failure.";
 	int connexion = client->getConnectionStatus();
 
-	for (int i = 0; i < command->params.size(); i++) // test ok
-		std::cout << "PASS IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
+	// for (size_t i = 0; i < command->params.size(); i++) // test ok
+	// 	std::cout << "PASS IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
 
 	if (command->params.empty()) {
 

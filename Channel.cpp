@@ -31,12 +31,15 @@ void	Channel::addToKicked(std::string &nickname) {this->_kicked.push_back(nickna
 void	Channel::addToBanned(std::string &nickname) {this->_banned.push_back(nickname);}
 void	Channel::addOperators(std::string &nickname) {this->_operators.push_back(nickname);}
 
+
 void	Channel::addMode(std::string mode) {
+
 	if (_mode.find(mode) == std::string::npos)
 		_mode += mode;
 }
 
 void	Channel::removeMode(std::string mode) {
+
 	if (_mode.empty())
 		return;
 	size_t pos = _mode.find(mode);
@@ -64,6 +67,7 @@ bool	Channel::isInvited(std::string &nickname) {
 }
 
 bool	Channel::isOperator(std::string &nickname) {
+
 	if (_operators.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
@@ -96,6 +100,7 @@ void	Channel::removeClientFromChan(std::string &nickname) {
 }
 
 void	Channel::removeOperator(std::string &nickname) {
+
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
 		if (*it == nickname)
 			_operators.erase(it);

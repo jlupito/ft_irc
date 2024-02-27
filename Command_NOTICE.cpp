@@ -5,7 +5,12 @@
 #include "Channel.hpp"
 #include <vector>
 
-void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
+/*
+Command: NOTICE
+   Parameters: <nickname> <text>
+*/
+
+void handleNOTICECommand(Server& server, Client* client, cmdStruct* command) {
 
 	const std::string message = command->message;
 	std::vector<std::string> receiversList;
@@ -20,16 +25,6 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 		std::string receiver;
 		while (std::getline(iss, receiver, ','))
 			receiversList.push_back(receiver);
-		// // Test erreur 413
-		// for (size_t i = 0; i < receiversList.size(); i++) {
-		// 	if (receiversList[i].find('.') == std::string::npos)
-		// 		errorMessages.push_back(ERR_NOTOPLEVEL(receiversList[i])); // erreur 413
-		// }
-		// // Test erreur 414
-		// for (size_t i = 0; i < receiversList.size(); i++) {
-		// 	if (receiversList[i].find('*') != std::string::npos)
-		// 		errorMessages.push_back(ERR_WILDTOPLEVEL(receiversList[i])); // erreur 414
-		// }
 	}
 
 	else if (command->message.empty()) {
@@ -83,5 +78,9 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 	}
 	for (std::vector<std::string>::const_iterator it = errorMessages.begin();
 		it != errorMessages.end(); ++it) {
-		sendBytesToClient(client, it->c_str()); }
+		sendBytesToClient(client, it->c_str());
 }
+
+}
+
+// Mettre ERR_NORECIPIENT

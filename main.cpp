@@ -21,9 +21,9 @@ int main(int ac, char **av) {
 					newClient->setClientSocket(tmp);
 					if (newClient->getClientSocket() < 0)
 						throw Client::clientConnectFailure();
+
 					// Configuration du socket en mode non bloquant
-					int flag = fcntl(newClient->getClientSocket(), F_GETFL, 0); // on recupere l'indice de controle dans flag.
-					fcntl(newClient->getClientSocket(), F_SETFL, flag | O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
+					fcntl(newClient->getClientSocket(), F_SETFL, O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
 					// verification du retour des deux fonctions (-1?) cf commentaires
 
 					server.getEvent().events = EPOLLIN;
@@ -37,19 +37,13 @@ int main(int ac, char **av) {
 			}
 			else
 				processEvent(server, i);
-	    //     for (std::map<const int, Client*>::iterator it = server.getClients().begin();
-        //     it != server.getClients().end(); it++) {
-        //         std::cout << "nick: " << it->second->getNickname() << std::endl;
-        //         std::cout << "user: " << it->second->getUserName() << std::endl;
-        //         std::cout << "socket client: " << &(it->second) << std::endl;
-        //     }
 		}
 	}
 
 	for (std::map<const int, Client* >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
 
-		delete it->second;
 		close(it->first); // verifier gestion memoire pointeurs Client*
+		// delete it->second; // verifier si removeClient() fonctionne.
 	}
 	close(server.getEpollFd());
 
@@ -57,6 +51,9 @@ int main(int ac, char **av) {
 }
 
 /*
+Premier jet avec fcntl() : (cf correction)
+	int flag = fcntl(newClient->getClientSocket(), F_GETFL, 0); // on recupere l'indice de controle dans flag.
+	fcntl(newClient->getClientSocket(), F_SETFL, flag | O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
 Pour les verifications de retour de fonctions :
 int flags = fcntl(client.getClientSocket(), F_GETFL, 0);
 if (flags == -1) {

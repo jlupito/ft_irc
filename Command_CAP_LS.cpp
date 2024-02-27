@@ -9,9 +9,7 @@ void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply = "Connexion failure.\r\n";
 	int connexion = client->getConnectionStatus();
 
-	for (int i = 0; i < command->params.size(); i++) // test ok
-		std::cout << "NICK IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
-
+	(void)server;
 	if (connexion == 0)
 	{
 		if (command->params[1] == "LS" && command->params.size() == 2) {
@@ -21,5 +19,4 @@ void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 		}
 	}
 	sendBytesToClient(client, reply.c_str());
-	std::cout << "CAPLS received by Client." << std::endl;
 }
