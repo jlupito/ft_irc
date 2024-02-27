@@ -19,6 +19,8 @@ SRCS =	Command_CAP_LS.cpp \
 		Command_PINGPONG.cpp \
 		Command_PRIVMSG.cpp \
 		Command_QUIT.cpp \
+		Command_KILL.cpp \
+		Command_DIE.cpp \
 		Command_TOPIC.cpp \
 		Command_USER.cpp \
 		Channel.cpp \

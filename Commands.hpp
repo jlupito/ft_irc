@@ -44,6 +44,8 @@ void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
 void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command);
 void		handleNOTICECommand(Server& server, Client* client, cmdStruct* command);
+void		handleKILLCommand(Server& server, Client* client, cmdStruct* command);
+void		handleDIECommand(Server& server, Client* client, cmdStruct* command);
 
 // void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
 // void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);

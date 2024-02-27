@@ -56,6 +56,8 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("NOTICE", &handleNOTICECommand));
 	_cmdList.insert(std::make_pair("PING", &handlePINGCommand));
 	_cmdList.insert(std::make_pair("PONG", &handlePONGCommand));
+	_cmdList.insert(std::make_pair("KILL", &handlePINGCommand));
+	_cmdList.insert(std::make_pair("DIE", &handlePONGCommand));
 
     // _cmdList.insert(std::make_pair("JOIN", &handleJOINCommand));
 	// // _cmdList.insert(std::make_pair("PART", &handlePARTCommand));

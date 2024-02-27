@@ -43,7 +43,7 @@ int main(int ac, char **av) {
 	for (std::map<const int, Client* >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
 
 		close(it->first); // verifier gestion memoire pointeurs Client*
-		// delete it->second;
+		// delete it->second; // verifier si removeClient() fonctionne.
 	}
 	close(server.getEpollFd());
 
