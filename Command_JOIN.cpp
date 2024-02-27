@@ -18,6 +18,7 @@ class Channel;
 
 bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command) {
 
+	(void)user;
 	std::string reply;
 	if (command->params.size() < 2)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
@@ -82,7 +83,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 }
 
 void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
-	
+
 	std::string reply;
 	std::map<std::string, std::string> chanToJoin;
 	std::string user = client->getNickname();
@@ -103,7 +104,7 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			chanToJoin[chan] = key;
 		}
 	}
-	else 
+	else
 		chanToJoin[command->params[1]] = "";
 
 	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
