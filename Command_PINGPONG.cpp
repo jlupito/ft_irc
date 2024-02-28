@@ -28,7 +28,7 @@ void	handlePONGCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string	reply = "No Ping-Pong today.\r\n";
 
-	if (!command->params[1].empty())
+	if ((command->params.size() == 2) && (!command->params[1].empty()))
 		reply = server.getServerName() + "\r\n";
 	sendBytesToClient(client, reply.c_str());
 }

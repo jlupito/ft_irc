@@ -14,7 +14,13 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 	std::map<std::string, Channel *> channelsList = server.getChannels();
 	std::vector<std::string> errorMessages;
 
-	if (!command->params[1].empty()) {
+	if (command->params.size() == 1) {
+
+		reply = ERR_NORECIPIENT(command->params[0]); // erreur 411
+		sendBytesToClient(client, reply.c_str());
+		return;
+	}
+	else if (!command->params[1].empty()) {
 
 		std::istringstream iss(command->params[1]);
 		std::string receiver;
@@ -31,21 +37,18 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 		// 		errorMessages.push_back(ERR_WILDTOPLEVEL(receiversList[i])); // erreur 414
 		// }
 	}
-
 	else if (command->message.empty()) {
 
 		reply = ERR_NOTEXTTOSEND; // erreur 412
 		sendBytesToClient(client, reply.c_str());
 		return;
 	}
-
 	for (size_t i = 0; i < receiversList.size(); i++) {
 
 		// si c'est un format channel
 		if (!receiversList[i].empty() && receiversList[i][0] == '#') {
 			std::string channelReceiving = receiversList[i];
 			bool channelFound = false;
-			std::cout << "### Test receiver is a #channel ###" << std::endl;
 
 			for (std::map<std::string, Channel*>::iterator it = channelsList.begin();
 				it != channelsList.end(); it++) {

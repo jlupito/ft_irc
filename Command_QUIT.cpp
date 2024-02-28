@@ -10,14 +10,17 @@ Command: QUIT
 
 void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = command->prefix + " QUIT\r\n";
-	std::string user = client->getNickname();
-	const std::string reason = command->params[1];
 	if (command->params.size() > 2)
 		return ;
-	if (!reason.empty())
+
+	std::string reply = command->prefix + " QUIT\r\n";
+	std::string user = client->getNickname();
+	std::string reason = "";
+
+	if (command->params.size() == 2 && (!command->params[1].empty())) {
+		reason = command->params[1];
 		reply = command->prefix + " QUIT :" + reason + "\r\n";
-	sendBytesToClient(client, reply.c_str());
+	}
 
 	for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().begin(); it++) {
 		std::string channelName = *it;
@@ -29,6 +32,10 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 				channel->removeOperator(user);
 			client->getJoinedChan().erase(it);
 			sendBytesToChannel(channel, reply.c_str());
-		}
+			return ;
+	}
+	sendBytesToClient(client, reply.c_str());
 	server.removeClient(client->getNickname());
 }
+// verfiier que le QUIT sans param et le QUIT avec param sont bien affichés dans
+// les channels dans lesquels le client qui QUIT se trouve.
