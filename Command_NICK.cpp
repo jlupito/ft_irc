@@ -89,7 +89,7 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 			}
 		}
 	}
-	else if (connexion == 4) { // faire une reply si jamais on change un NICK pour le meme NICK ?
+	else if (connexion == 4) {
 
 		std::string oldNickname = client->getNickname();
 		client->setNickname(command->params[1]);

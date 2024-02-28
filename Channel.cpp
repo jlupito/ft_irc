@@ -3,7 +3,7 @@
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
 Channel::Channel(const std::string &name) : _name(name), _mode("+") {
-	
+
 	std::time_t timestamp = std::time(NULL);
 	_creationTime = timestamp;
 }
@@ -22,7 +22,7 @@ std::vector<std::string>&		Channel::getKicked( void ) { return this->_kicked; }
 std::vector<std::string>&		Channel::getBanned( void ) { return this->_banned; }
 std::vector<std::string>&		Channel::getOperators( void ) { return this->_operators; }
 std::vector<std::string>&		Channel::getInvited() { return this->_invited; }
-std::map<std::string, Client>&	Channel::getClientsList() { return this->_clients; }
+std::map<std::string, Client*>&	Channel::getClientsList() { return this->_clients; }
 
 /********************************** SETTERS **********************************/
 

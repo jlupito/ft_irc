@@ -45,20 +45,12 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 	else
 		chanToLeave.push_back(command->params[1]);
 
-
 	for (std::vector<std::string>::iterator it = chanToLeave.begin(); it != chanToLeave.end(); it++) {
 
 		std::string channelName = *it;
-		if (!channelName.empty() or channelName[0] != '#')
+		if (!channelName.empty() and channelName[0] != '#')
 			channelName.insert(0, "#");
-		Channel *channel = NULL;
-		for (std::map<std::string, Channel * >::iterator it = server.getChannels().begin(); it != server.getChannels().end(); it++) {
-			if (it->first == channelName) {
-				channel = it->second;
-				std::cout << "channel is :" << (it->second)->getChannelName() << std::endl;
-
-			}
-		}
+		Channel *channel = server.getChannels()[channelName];
 		std::string user = client->getNickname();
 
 		if (handlePartErrors(client, channel, user, command))

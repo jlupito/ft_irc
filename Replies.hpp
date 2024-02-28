@@ -5,7 +5,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 */
 /*COMMON REPLIES*/
 # define NEEDMOREPARAMS_ERR(command) (": localhost 461 " + command + " :Not enough parameters" + "\r\n")
-# define ERR_NORECIPIENT(command) (": localhost 411 :No recipient given " + command + "\r\n")
 
 // "Welcome to the Internet Relay Network John!user123@irc.example.com"
 // "Welcome to the Internet Relay Network <nick>!<user>@<host>"
@@ -13,9 +12,7 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_YOURHOST(client, servername, version) (":localhost 002 " + client + " :Your host is " + servername + " , running version " + version + "\r\n")
 # define RPL_CREATED (": localhost 003 " + "This server was created <date>")
 # define RPL_MYINFO (": localhost 004 " + "<servername> <version> <available user modes>" +  "<available channel modes>")
-# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n")
-// # define RPL_INVITELIST(client, channel) (":localhost 336 " + client + " " + channel)
-// # define RPL_ENDOFINVITELIST(client) (":localhost 337 " + client + ":End of /INVITE list")
+# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n");
 
 /* PASS ERROR REPLIES */
 # define ALREADYREGISTRED_ERR ": localhost 462 :Unauthorized command (already registered)\r\n"
@@ -33,7 +30,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define PASSWDMISMATCH_ERR ":Password incorrect\r\n"
 
 /* PRIVMSG REPLIES */
-// quid de 413 et 414 ? Notion de mask et host.
 # define ERR_NOSUCHNICK(nickname) (":localhost 401 " + nickname + " :No such nick/channel\r\n")
 # define ERR_CANNOTSENDTOCHAN(channelname) (": localhost 404 " + channelname + " :Cannot send to channel\r\n")
 # define ERR_TOOMANYTARGETS(target) (":localhost 407 " + target + " :Duplicate recipients/no message delivered\r\n")
@@ -42,7 +38,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define ERR_NOTOPLEVEL(mask) (":localhost 413 " + mask +" :No toplevel domain specified\r\n")
 # define ERR_WILDTOPLEVEL(mask) (":localhost 414 " + mask +" :Wildcard in toplevel domain\r\n")
 # define RPL_AWAY(nickname) (":localhost 301 " + nickname + "away :\r\n")
-/* USER ERROR REPLIES */
 
 /* INVITE ERROR REPLIES */
 # define NOSUCHCHANNEL_ERR(channel) (":localhost 403 " + channel + " :No such channel" + "\r\n")

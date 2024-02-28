@@ -68,7 +68,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 			list += "@";
 		list += (&it->second)->getNickname();
 		std::map<std::string, Client>::iterator nextIt = it;
-    	++nextIt;
+		++nextIt;
 		if (nextIt != channel->getClientsList().end())
 			list += " ";
 	}
