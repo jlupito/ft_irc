@@ -17,6 +17,7 @@ typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
 class Client;
 class Channel;
+class SignalMonitor;
 class Server {
 
 	public:
@@ -38,6 +39,7 @@ class Server {
 		std::map<std::string, Channel *>&		getChannels(void);
 		std::map<std::string, cmdFunction>&		getCmdList(void);
 		void									removeClient(const std::string& nickname);
+		void									handleDisconnect(Server &server);
 
 	private:
 		std::string								_serverName;

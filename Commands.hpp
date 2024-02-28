@@ -48,6 +48,7 @@ void		handleNOTICECommand(Server& server, Client* client, cmdStruct* command);
 // void		handleDIECommand(Server& server, Client* client, cmdStruct* command);
 
 void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
+bool		handlePartErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command);
 void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);
 // void		handleNAMESCommand(Server& server, Client* client, cmdStruct* command);
 // void		handleLISTCommand(Server& server, Client* client, cmdStruct* command);
@@ -57,6 +58,9 @@ void		handleINVITECommand(Server& server, Client* client, cmdStruct* command);
 void		handleTOPICCommand(Server& server, Client* client, cmdStruct* command);
 void		handleMODECommand(Server& server, Client* client, cmdStruct* command);
 
+void		handleDisconnect();
+
+// fonctions outils
 void	printCmdStruct(cmdStruct& command);
 
 class dataTransferError : public std::exception {

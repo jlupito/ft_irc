@@ -6,7 +6,7 @@
 
 void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = "Connexion failure.\r\n";
+	std::string reply = "Connexion failure CAP.\r\n";
 	int connexion = client->getConnectionStatus();
 
 	(void)server;

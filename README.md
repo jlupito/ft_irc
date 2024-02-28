@@ -8,9 +8,9 @@ L’objectif de ce projet est de reproduire le fonctionnement d’un serveur IRC
 - doc complete officielle:
 [Protocol](https://tools.ietf.org/html/rfc1459)
 [Architecture](https://tools.ietf.org/html/rfc2810)
-[Channel Management](https://tools.ietf.org/html/rfc2811)   
-[Client](https://tools.ietf.org/html/rfc2812)   
-[Server Protocol](https://tools.ietf.org/html/rfc2813)
+[Channel Management](https://tools.ietf.org/html/rfc2811)
+[Client](https://tools.ietf.org/html/rfc2812)
+[Server Protocol](https://tools.ietf.org/html/rfc2813) plus d' infos sur le formatage replies
 
 - Résumé de la doc: https://modern.ircdocs.horse/#errneedmoreparams-461
 
@@ -49,7 +49,7 @@ https://www.codequoi.com/programmation-reseau-via-socket-en-c/
 - `fcntl` Modifie les propriétés d'un descripteur de fichier.
 - `poll` Suspend l'exécution jusqu'à ce qu'un événement se produise sur un descripteur de fichier.
 
-**1.1 Servers**  
+**1.1 Servers**
 ---
 Servers are uniquely identified by their name, which has a maximum
 length of sixty three (63) characters.

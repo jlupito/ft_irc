@@ -18,6 +18,7 @@ class Channel;
 
 bool joinChannel(Server& server, Channel *channel, Client* client, std::string key) {
 	std::string reply;
+
 	(void)server;
 	if (channel->getMode().find("k") != std::string::npos) {
 			if (channel->getChannelPwd() != key) {
@@ -27,7 +28,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 			}
 	}
 	if (channel->getMode().find("l") != std::string::npos) {
-			if (channel->getClientsList().size() >= channel->getNbrUsersLimit()) {
+			if (channel->getClientsList().size() >= static_cast<size_t>(channel->getNbrUsersLimit())) {
 				reply = ERR_CHANNELISFULL(client->getNickname(), channel->getChannelName());
 				sendBytesToClient(client, reply.c_str());
 				return false;

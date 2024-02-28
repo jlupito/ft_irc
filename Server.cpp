@@ -61,9 +61,6 @@ void	Server::initCommandMap(void) {
 	_cmdList.insert(std::make_pair("INVITE", &handleINVITECommand));
     _cmdList.insert(std::make_pair("TOPIC", &handleTOPICCommand));
 	_cmdList.insert(std::make_pair("MODE", &handleMODECommand));
-    // // _cmdList.insert(std::make_pair("NAMES", &handleNAMESCommand));
-	// // _cmdList.insert(std::make_pair("LIST", &handleLISTCommand));
-
 }
 
 void	Server::initialization(void) {
@@ -110,7 +107,7 @@ Fonction initialization(), étapes :
 - Ajouter le socket du serveur à l'ensemble epoll().
 */
 
-void Server::removeClient(const std::string& nickname) {
+void	Server::removeClient(const std::string& nickname) {
 
 	std::map<const int, Client*>& clientList = this->getClients();
 	std::map<const int, Client*>::iterator it;
@@ -125,4 +122,21 @@ void Server::removeClient(const std::string& nickname) {
 			break;
 		}
 	}
+}
+
+void	Server::handleDisconnect(Server &server) {
+
+	std::map<const int, Client *>::iterator it1 = server.getClients().begin();
+	std::map<std::string, Channel *>::iterator it2 = server.getChannels().begin();
+
+	for (; it1 != server.getClients().end(); it1++) {
+		if (it1->second)
+			delete it1->second;
+	}
+	for (; it2 != server.getChannels().end(); it2++) {
+		if (it2->second)
+			delete it2->second;
+	}
+	server.getClients().clear();
+	server.getChannels().clear();
 }

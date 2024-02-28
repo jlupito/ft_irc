@@ -32,7 +32,7 @@ bool	handlePartErrors(Client *client, Channel* channel, std::string &user, cmdSt
 }
 
 void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
-	
+
 	std::string reply;
 	std::vector<std::string> chanToLeave;
 
@@ -47,7 +47,7 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 
 
 	for (std::vector<std::string>::iterator it = chanToLeave.begin(); it != chanToLeave.end(); it++) {
-		
+
 		std::string channelName = *it;
 		if (!channelName.empty() or channelName[0] != '#')
 			channelName.insert(0, "#");
@@ -79,4 +79,3 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 	return ;
 
 }
-
