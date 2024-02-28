@@ -67,7 +67,7 @@ int handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 
 void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
-	std::string reply = "Connexion failure.\r\n";
+	std::string reply = "Server failed to connect on NICK command.\r\n";
 	int errorCode = handleNICKErrors(server, client, command);
 	int connexion = client->getConnectionStatus();
 
@@ -91,15 +91,14 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 				client->setConnectionStatus(connexion);
 				reply = "NICK - Nickname was successfully set.\r\n";
 			}
-			else {
-
-				std::string oldNickname = client->getNickname();
-				client->setNickname(command->params[1]);
-				reply = "NICK - Nickname changed from " + oldNickname + " to " + client->getNickname() + ". \r\n";
-				informAllClientsOfNickChange(server, client, oldNickname);
-			}
-			break ;
 		}
+	}
+	else if (connexion == 4) {
+
+		std::string oldNickname = client->getNickname();
+		client->setNickname(command->params[1]);
+		reply = ":" + oldNickname + " NICK " + client->getNickname() + "\r\n";
+		informAllClientsOfNickChange(server, client, oldNickname);
 	}
 	sendBytesToClient(client, reply.c_str());
 }

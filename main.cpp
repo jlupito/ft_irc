@@ -1,6 +1,6 @@
 #include "Server.hpp"
 #include "Commands.hpp"
-
+#include "Signals.hpp"
 /*
 	Pour un test en nc, on entre "nc localhost 6667", apres avoir lancé le
 	serveur sur le port voulu avec le mdp. Ensuite, on entre manuellement
@@ -14,6 +14,8 @@ int main(int ac, char **av) {
 		return (std::cout << "Too few arguments." << std::endl, -1);
 
 	Server server(av[1], av[2]);
+	SignalMonitor monitoring(server);
+
 	while (true) {
 		int numEvents = epoll_wait(server.getEpollFd(), server.getEventsTab(), 1024, -1);
 		if (numEvents < 0)
@@ -24,7 +26,8 @@ int main(int ac, char **av) {
 
 				try {
 
-					int tmp = accept(server.getServerSocket(), (struct sockaddr*)&newClient->getClientAddr(), &newClient->getClientAddrLen());
+					int tmp = accept(server.getServerSocket(), (struct sockaddr*)&newClient->getClientAddr(),
+						&newClient->getClientAddrLen());
 					newClient->setClientSocket(tmp);
 					if (newClient->getClientSocket() < 0)
 						throw Client::clientConnectFailure();
@@ -46,14 +49,8 @@ int main(int ac, char **av) {
 				processEvent(server, i);
 		}
 	}
-
-	for (std::map<const int, Client* >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
-
-		close(it->first); // verifier gestion memoire pointeurs Client*
-		// delete it->second; // verifier si removeClient() fonctionne.
-	}
+	server.handleDisconnect(server);
 	close(server.getEpollFd());
-
 	return 0;
 }
 

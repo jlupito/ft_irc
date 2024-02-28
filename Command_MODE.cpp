@@ -20,7 +20,7 @@ bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	std::string reply;
 	std::string modestring;
 	if (!channel->getMode().empty())
-		modestring = "+" + channel->getMode();
+		modestring = "+" + channel->getMode() + "\r\n";
 	if (command->params.size() <= 1)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
 	else if (command->params.size() == 2)
@@ -41,6 +41,8 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	if (!channelName.empty() and channelName[0] != '#')
 		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
+	if (!channel)
+		return ;
 	std::string user = client->getNickname();
 
 	if (handleModeErrors(client, channel, user, command))

@@ -14,7 +14,7 @@ class Client
         Client();
         ~Client();
         sockaddr_in& 	getClientAddr(void);
-        socklen_t& 	getClientAddrLen(void);
+        socklen_t& 	    getClientAddrLen(void);
         int 	        getClientSocket(void);
         std::string&    getBuffer(void);
         std::string&    getNickname(void);

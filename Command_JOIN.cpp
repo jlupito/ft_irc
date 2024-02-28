@@ -33,6 +33,7 @@ bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdSt
 
 bool joinChannel(Server& server, Channel *channel, Client* client, std::string key, std::string userID) {
 	std::string reply;
+
 	if (channel->getMode().find("k") != std::string::npos) {
 			if (channel->getChannelPwd() != key) {
 				reply = ERR_BADCHANNELKEY(client->getNickname(), channel->getChannelName());

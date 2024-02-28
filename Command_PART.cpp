@@ -32,7 +32,7 @@ bool	handlePartErrors(Client *client, Channel* channel, std::string &user, cmdSt
 }
 
 void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
-	
+
 	std::string reply;
 	std::vector<std::string> chanToLeave;
 
@@ -47,7 +47,7 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 
 
 	for (std::vector<std::string>::iterator it = chanToLeave.begin(); it != chanToLeave.end(); it++) {
-		
+
 		std::string channelName = *it;
 		if (!channelName.empty() and channelName[0] != '#')
 			channelName.insert(0, "#");
@@ -62,8 +62,8 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 			channel->removeOperator(user);
 		for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().begin(); it++) {
 		if (*it == channel->getChannelName())
-			client->getJoinedChan().erase(it);
-	}
+			client->getJoinedChan().erase(it); }
+
 		reply = RPL_PART(command->prefix, channelName, command->message);
 		sendBytesToClient(client, reply.c_str());
 		sendBytesToChannel(channel, reply.c_str());

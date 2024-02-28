@@ -11,10 +11,8 @@ SRCS =	Command_CAP_LS.cpp \
 		Command_INVITE.cpp \
 		Command_JOIN.cpp \
 		Command_KICK.cpp \
-		Command_MODE.cpp \
 		Command_NICK.cpp \
 		Command_NOTICE.cpp \
-		Command_PART.cpp \
 		Command_OPER.cpp \
 		Command_PASS.cpp \
 		Command_PART.cpp \
@@ -27,6 +25,7 @@ SRCS =	Command_CAP_LS.cpp \
 		Commands.cpp \
 		Client.cpp \
 		Server.cpp \
+		Signals.cpp \
 		main.cpp  \
 
 OBJS_PATH = ./objs
