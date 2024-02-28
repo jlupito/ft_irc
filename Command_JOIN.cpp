@@ -16,23 +16,9 @@
 //command = JOIN <channel>{,<channel>} [<key>{,<key>}]
 class Channel;
 
-bool	handleJoinErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command) {
-
-	(void)user;
+bool joinChannel(Server& server, Channel *channel, Client* client, std::string key) {
 	std::string reply;
-	if (command->params.size() < 2)
-		reply = NEEDMOREPARAMS_ERR(command->params[0]);
-	else if (!channel or channel->getClientsList().empty())
-		reply = NOSUCHCHANNEL_ERR(command->params[2]);
-	if (!reply.empty()) {
-		sendBytesToClient(client, reply.c_str());
-		return true;
-	}
-	return false;
-}
-
-bool joinChannel(Server& server, Channel *channel, Client* client, std::string key, std::string userID) {
-	std::string reply;
+	(void)server;
 	if (channel->getMode().find("k") != std::string::npos) {
 			if (channel->getChannelPwd() != key) {
 				reply = ERR_BADCHANNELKEY(client->getNickname(), channel->getChannelName());
@@ -59,12 +45,22 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 	}
 	channel->addToChan(*client);
 	client->addJoinedChan(channel->getChannelName());
-	reply = userID + " JOIN " + channel->getChannelName();
+
+	reply = userID(client->getNickname(), client->getUserName()) + " JOIN " + channel->getChannelName() + "\r\n";
 	sendBytesToChannel(channel, reply.c_str());
-	reply = ":" + server.getServerName() + " JOIN:" + channel->getChannelName();
-	sendBytesToClient(client, reply.c_str());
-	reply = RPL_TOPIC(client->getNickname(), channel->getChannelName(), channel->getTopic());
-	sendBytesToClient(client, reply.c_str());
+
+	// reply = ":" + server.getServerName() + " JOIN :" + channel->getChannelName() + "\r\n";
+	// sendBytesToClient(client, reply.c_str());
+
+	if (!channel->getTopic().empty()) {
+		reply = RPL_TOPIC(client->getNickname(), channel->getChannelName(), channel->getTopic());
+		sendBytesToClient(client, reply.c_str());
+	}
+	else {
+		reply = RPL_NOTOPIC(client->getNickname(), channel->getChannelName());
+		sendBytesToClient(client, reply.c_str());
+	}
+
 	std::string list;
 	for (std::map< std::string, Client >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
 		if (channel->isOperator((&it->second)->getNickname()))
@@ -75,16 +71,24 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 		if (nextIt != channel->getClientsList().end())
 			list += " ";
 	}
+
 	reply = RPL_NAMREPLY(client->getNickname(), channel->getChannelName(), list);
 	sendBytesToClient(client, reply.c_str());
-	reply = RPL_ENDOFNAMES(channel->getChannelName());
+
+	reply = RPL_ENDOFNAMES(client->getNickname(), channel->getChannelName());
 	sendBytesToClient(client, reply.c_str());
+
 	return true;
 }
 
 void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply;
+	if (command->params.size() < 2) {
+		reply = NEEDMOREPARAMS_ERR(command->params[0]);
+		sendBytesToClient(client, reply.c_str());
+		return ;
+	}
 	std::map<std::string, std::string> chanToJoin;
 	std::string user = client->getNickname();
 
@@ -108,23 +112,20 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 		chanToJoin[command->params[1]] = "";
 
 	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
-		for (std::map<std::string, Channel * >::iterator chanList = server.getChannels().begin(); chanList != server.getChannels().end(); chanList++) {
 
-			std::string channelName = chanCmd->first;
-			if (!channelName.empty() and channelName[0] != '#')
-				channelName.insert(0, "#");
-			Channel *channel = server.getChannels()[channelName];
-
-			if (handleJoinErrors(client, channel, user, command))
-				continue ;
-
-			if (chanCmd->first == chanList->first)
-				joinChannel(server, chanList->second, client, chanCmd->second, command->prefix);
-			else {
-				Channel* newChannel = new Channel(chanCmd->first);
-				server.getChannels()[newChannel->getChannelName()] = newChannel;
-			}
+		std::string channelName = chanCmd->first;
+		if (!channelName.empty() and channelName[0] != '#')
+			channelName.insert(0, "#");
+		Channel *channel = server.getChannels()[channelName];
+		if (!channel) {
+			reply = NOSUCHCHANNEL_ERR(channelName);
+			sendBytesToClient(client, reply.c_str());
+			channel = new Channel(chanCmd->first);
+			server.getChannels()[channel->getChannelName()] = channel;
+			channel->addOperators(user);
 		}
+		joinChannel(server, channel, client, chanCmd->second);
 	}
+
 	return ;
 }

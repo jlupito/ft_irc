@@ -26,7 +26,7 @@ bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	else if (command->params.size() == 2)
 		reply = RPL_CHANNELMODEIS(user, command->params[1], modestring);
 	else if (!channel->isOperator(user))
-		reply = CHANOPRIVSNEEDED_ERR(command->params[2]);
+		reply = CHANOPRIVSNEEDED_ERR(channel->getChannelName());
 	if (!reply.empty()) {
 		sendBytesToClient(client, reply.c_str());
 		return true;
@@ -43,11 +43,9 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	Channel *channel = server.getChannels()[channelName];
 	std::string user = client->getNickname();
 
-	if (handleModeErrors(client, channel, user, command))
+	if (!channel or handleModeErrors(client, channel, user, command) or
+		(command->params[2][0] != '-' and command->params[2][0] != '+'))
 		return;
-
-	if (command->params[2][0] != '-' and command->params[2][0] != '+')
-		return ;
 
 	int remove;
 	std::vector<std::string> modeParams;
@@ -79,7 +77,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 				}
 				if (++itParam != modeParams.end())
 					itParam++;
-				else
+				else 
 					*itParam = "";
 				break ;
 
@@ -120,7 +118,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 					}
 					if (++itParam != modeParams.end())
 						itParam++;
-					else
+					else 
 						*itParam = "";
 				}
 				break ;
@@ -139,7 +137,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 						channel->setChannelPwd(*itParam);
 						if (++itParam != modeParams.end())
 							itParam++;
-						else
+						else 
 							*itParam = "";
 					}
 					else {

@@ -20,10 +20,10 @@ bool	handlePartErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	std::string reply;
 	if (command->params.size() < 2)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
-	else if (!channel or channel->getClientsList().empty())
-		reply = NOSUCHCHANNEL_ERR(command->params[2]);
+	else if (!channel/* or channel->getClientsList().empty()*/)
+		reply = NOSUCHCHANNEL_ERR(channel->getChannelName());
 	else if (!channel->isClient(user))
-		reply = NOTONCHANNEL_ERR(user, command->params[1]);
+		reply = NOTONCHANNEL_ERR(user, channel->getChannelName());
 	if (!reply.empty()) {
 		sendBytesToClient(client, reply.c_str());
 		return true;
@@ -49,9 +49,16 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 	for (std::vector<std::string>::iterator it = chanToLeave.begin(); it != chanToLeave.end(); it++) {
 		
 		std::string channelName = *it;
-		if (!channelName.empty() and channelName[0] != '#')
+		if (!channelName.empty() or channelName[0] != '#')
 			channelName.insert(0, "#");
-		Channel *channel = server.getChannels()[channelName];
+		Channel *channel = NULL;
+		for (std::map<std::string, Channel * >::iterator it = server.getChannels().begin(); it != server.getChannels().end(); it++) {
+			if (it->first == channelName) {
+				channel = it->second;
+				std::cout << "channel is :" << (it->second)->getChannelName() << std::endl;
+
+			}
+		}
 		std::string user = client->getNickname();
 
 		if (handlePartErrors(client, channel, user, command))
@@ -61,10 +68,10 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 		if (channel->isOperator(user))
 			channel->removeOperator(user);
 		for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().begin(); it++) {
-		if (*it == channel->getChannelName())
-			client->getJoinedChan().erase(it);
-	}
-		reply = RPL_PART(command->prefix, channelName, command->message);
+			if (*it == channel->getChannelName())
+				client->getJoinedChan().erase(it);
+		}
+		reply = RPL_PART(userID(client->getNickname(), client->getUserName()), channelName, command->message);
 		sendBytesToClient(client, reply.c_str());
 		sendBytesToChannel(channel, reply.c_str());
 	}

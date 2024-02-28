@@ -2,7 +2,11 @@
 
 /************************ CONSTRUCTORS & DESTRUCTORS **************************/
 
-Channel::Channel(const std::string &name) : _name(name) {}
+Channel::Channel(const std::string &name) : _name(name), _mode("+") {
+	
+	std::time_t timestamp = std::time(NULL);
+	_creationTime = timestamp;
+}
 
 Channel::~Channel() {}
 

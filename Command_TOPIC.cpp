@@ -18,11 +18,11 @@ bool	handleTopicErrors(Client *client, Channel* channel, std::string &user, cmdS
 	if (command->params.size() != 2)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
 	else if (!channel or channel->getClientsList().empty())
-		reply = NOSUCHCHANNEL_ERR(command->params[2]);
+		reply = NOSUCHCHANNEL_ERR(command->params[1]);
 	else if (!channel->isClient(user))
 		reply = NOTONCHANNEL_ERR(user, command->params[1]);
 	else if (channel->getMode().find("t") != std::string::npos and !channel->isOperator(user) and !command->message.empty())
-		reply = CHANOPRIVSNEEDED_ERR(command->params[2]);
+		reply = CHANOPRIVSNEEDED_ERR(command->params[1]);
 	if (!reply.empty()) {
 		sendBytesToClient(client, reply.c_str());
 		return true;
@@ -41,31 +41,33 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 	if (handleTopicErrors(client, channel, user, command))
 		return;
 
-	time_t timestamp = time(NULL);
-	struct tm *timeinfo;
-	timeinfo = std::gmtime(&timestamp);
-	std::string time = asctime(timeinfo);
+	std::time_t timestamp = std::time(NULL);
+	std::string timeString = std::ctime(&timestamp);
 
 	if (!command->message.empty()) {
 		channel->getTopic().clear();
-		if (command->message.size() > 1)
+		if (command->message.size() > 1) 
+		{
 			channel->setTopic(command->message.erase(0, 1));
-		for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
-		it != channel->getClientsList().end(); it++) {
-			reply = RPL_TOPIC((&it->second)->getNickname(), channelName, channel->getTopic());
-			sendBytesToClient(&it->second, reply.c_str());
-			reply = RPL_TOPICWHOTIME((&it->second)->getNickname(), channelName, client->getNickname(), time);
-			sendBytesToClient(&it->second, reply.c_str());
+			// reply = RPL_TOPIC((&it->second)->getNickname(), channelName, channel->getTopic());
+			// sendBytesToClient(&it->second, reply.c_str());
+			// reply = RPL_TOPICWHOTIME((&it->second)->getNickname(), channelName, client->getNickname(), time);
+			// sendBytesToClient(&it->second, reply.c_str());
+			reply = userID(user, client->getUserName()) + " TOPIC " + channelName + " :" + command->message + "\r\n";
+			sendBytesToChannel(channel, reply.c_str());
 		}
 	}
 	else {
+		std::cout << "dans le else" << std::endl;
 		if (!channel->getTopic().empty()) {
+			std::cout << "topic is: " << channel->getTopic() << std::endl;
 			reply = RPL_TOPIC(user, channelName, channel->getTopic());
 			sendBytesToClient(client, reply.c_str());
-			reply = RPL_TOPICWHOTIME(user, channelName, client->getNickname(), time);
+			reply = RPL_TOPICWHOTIME(user, channelName, client->getNickname(), timeString);
 			sendBytesToClient(client, reply.c_str());
 		}
 		else {
+			std::cout << "topic is: " << channel->getTopic() << std::endl;
 			reply = RPL_NOTOPIC(user, channelName);
 			sendBytesToClient(client, reply.c_str());
 		}
