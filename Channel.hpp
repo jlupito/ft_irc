@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include "Client.hpp"
+#include <ctime>
 #pragma once
 
 class Client;
@@ -23,6 +24,7 @@ class Channel {
 		std::string						_channelPwd;
 		std::string						_topic;
 		std::string						_mode;
+		std::string						_creationTime;
 		size_t							_nbrUsersLimit;
 
 	public:
@@ -35,6 +37,7 @@ class Channel {
 		std::string&					getChannelPwd( void );
 		std::string&					getTopic( void );
 		std::string&					getMode( void );
+		std::string&					getCreationTime( void );
 		std::vector<std::string>&		getKicked( void );
 		std::vector<std::string>&		getInvited();
 		std::vector<std::string>&		getBanned( void );

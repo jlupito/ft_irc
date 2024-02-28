@@ -26,7 +26,7 @@ bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	else if (command->params.size() == 2)
 		reply = RPL_CHANNELMODEIS(user, command->params[1], modestring);
 	else if (!channel->isOperator(user))
-		reply = CHANOPRIVSNEEDED_ERR(command->params[2]);
+		reply = CHANOPRIVSNEEDED_ERR(channel->getChannelName());
 	if (!reply.empty()) {
 		sendBytesToClient(client, reply.c_str());
 		return true;
