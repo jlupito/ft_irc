@@ -5,7 +5,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 */
 /*COMMON REPLIES*/
 # define NEEDMOREPARAMS_ERR(command) (": localhost 461 " + command + " :Not enough parameters" + "\r\n")
-# define ERR_NORECIPIENT(command) (": localhost 411 :No recipient given " + command + "\r\n")
 
 // "Welcome to the Internet Relay Network John!user123@irc.example.com"
 // "Welcome to the Internet Relay Network <nick>!<user>@<host>"
@@ -51,8 +50,8 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define USERONCHANNEL_ERR(client, nickname, channel) (":localhost 443 " + client + " " + nickname + " " + channel + " :is already on channel" + "\r\n")
 # define CHANOPRIVSNEEDED_ERR(channel) (":localhost 482 " + channel + " :You're not channel operator" + "\r\n")
 
-# define RPL_KICK(user_id, channel, kicked, reason) (user_id + " KICK #" + channel + " " + kicked + " " + reason + "\r\n")
-# define RPL_PART(user_id, channel, reason) (user_id + " PART #" + channel + " " + (reason.empty() ? "." : reason ) + "\r\n")
+# define RPL_KICK(user_id, channel, kicked, reason) (user_id + " KICK " + channel + " " + kicked + " " + reason + "\r\n")
+# define RPL_PART(user_id, channel, reason) (user_id + " PART " + channel + " " + (reason.empty() ? "." : reason ) + "\r\n")
 # define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " #" + channel + "\r\n")
 # define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + " :No topic is set" + "\r\n")
 # define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " " + topic + "\r\n")

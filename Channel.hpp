@@ -19,7 +19,7 @@ class Channel {
 		std::vector<std::string>		_kicked;
 		std::vector<std::string>		_banned;
 		std::vector<std::string> 		_invited;
-		std::map<std::string, Client >	_clients;
+		std::map<std::string, Client * >	_clients;
 		std::string 					_name;
 		std::string						_channelPwd;
 		std::string						_topic;
@@ -31,7 +31,7 @@ class Channel {
 		Channel(const std::string &name);
 		~Channel();
 
-		std::map<std::string, Client >&	getClientsList();
+		std::map<std::string, Client * >&	getClientsList();
 		size_t							getNbrUsersLimit( void );
 		std::string&					getChannelName( void );
 		std::string&					getChannelPwd( void );
@@ -57,7 +57,7 @@ class Channel {
 		void							removeOperator(std::string &nickname);
 		void							removeClientFromChan(std::string &nickname);
 		void							removeClientFromInvite(std::string &nickname);
-		void							addToChan(Client &client);
+		void							addToChan(Client *client);
 		void							addToInvited(std::string &nickname);
 		void							addToKicked(std::string &nickname);
 		void							addToBanned(std::string &nickname);

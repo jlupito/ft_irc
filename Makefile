@@ -15,8 +15,8 @@ SRCS =	Command_CAP_LS.cpp \
 		Command_NOTICE.cpp \
 		Command_PART.cpp \
 		Command_PASS.cpp \
-		Command_PART.cpp \
 		Command_PINGPONG.cpp \
+		Command_MODE.cpp \
 		Command_PRIVMSG.cpp \
 		Command_QUIT.cpp \
 		Command_TOPIC.cpp \

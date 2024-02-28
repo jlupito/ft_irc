@@ -44,7 +44,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 			else
 				channel->removeClientFromInvite(client->getNickname());
 	}
-	channel->addToChan(*client);
+	channel->addToChan(client);
 	client->addJoinedChan(channel->getChannelName());
 
 	reply = userID(client->getNickname(), client->getUserName()) + " JOIN " + channel->getChannelName() + "\r\n";
@@ -63,11 +63,11 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 	}
 
 	std::string list;
-	for (std::map< std::string, Client >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
-		if (channel->isOperator((&it->second)->getNickname()))
+	for (std::map< std::string, Client * >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
+		if (channel->isOperator((it->second)->getNickname()))
 			list += "@";
-		list += (&it->second)->getNickname();
-		std::map<std::string, Client>::iterator nextIt = it;
+		list += (it->second)->getNickname();
+		std::map<std::string, Client * >::iterator nextIt = it;
     	++nextIt;
 		if (nextIt != channel->getClientsList().end())
 			list += " ";
@@ -119,10 +119,13 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			channelName.insert(0, "#");
 		Channel *channel = server.getChannels()[channelName];
 		if (!channel) {
+			std::cout << "channel in join via string: " << (chanCmd->first) << std::endl;
 			reply = NOSUCHCHANNEL_ERR(channelName);
 			sendBytesToClient(client, reply.c_str());
 			channel = new Channel(chanCmd->first);
 			server.getChannels()[channel->getChannelName()] = channel;
+			std::cout << "channel is in join via channel name: " << channel->getChannelName() << std::endl;
+			std::cout << "channel is in join via objec/server: " << server.getChannels()[channelName]->getChannelName() << std::endl;
 			channel->addOperators(user);
 		}
 		joinChannel(server, channel, client, chanCmd->second);

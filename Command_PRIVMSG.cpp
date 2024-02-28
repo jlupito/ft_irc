@@ -26,16 +26,6 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 		std::string receiver;
 		while (std::getline(iss, receiver, ','))
 			receiversList.push_back(receiver);
-		// // Test erreur 413
-		// for (size_t i = 0; i < receiversList.size(); i++) {
-		// 	if (receiversList[i].find('.') == std::string::npos)
-		// 		errorMessages.push_back(ERR_NOTOPLEVEL(receiversList[i])); // erreur 413
-		// }
-		// // Test erreur 414
-		// for (size_t i = 0; i < receiversList.size(); i++) {
-		// 	if (receiversList[i].find('*') != std::string::npos)
-		// 		errorMessages.push_back(ERR_WILDTOPLEVEL(receiversList[i])); // erreur 414
-		// }
 	}
 	else if (command->message.empty()) {
 

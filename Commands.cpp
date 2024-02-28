@@ -28,9 +28,9 @@ void	sendBytesToClient(Client* client, const char* reply) {
 void	sendBytesToChannel(Channel* channel, const char* reply) {
 
 	std::string channelName = channel->getChannelName();
-	for (std::map<std::string, Client>::iterator it = channel->getClientsList().begin();
+	for (std::map<std::string, Client *>::iterator it = channel->getClientsList().begin();
 			it != channel->getClientsList().end(); it++)
-			sendBytesToClient(&it->second, reply);
+			sendBytesToClient(it->second, reply);
 }
 
 /************************ TRAITEMENT DE COMMANDE **************************/

@@ -46,10 +46,11 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	if (handleKickErrors(client, user, channel, nickKicked, command))
 		return ;
 
-	Client *kickedClient;
+	Client *kickedClient = NULL;
 	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().begin(); it++) {
-		if (it->second->getNickname() == nickKicked)
+		if ((it->second)->getNickname() == nickKicked) {
 			kickedClient = it->second;
+		}
 	}
 	std::string reason = (!command->message.empty()) ? command->message : ":Kicked by the channel's operator";
 	// std::string userID = command->prefix;
@@ -59,8 +60,10 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	if (channel->isOperator(user))
 			channel->removeOperator(user);
 	for (std::vector< std::string >::iterator it = kickedClient->getJoinedChan().begin(); it != kickedClient->getJoinedChan().begin(); it++) {
-		if (*it == channel->getChannelName())
+		if (*it == channel->getChannelName()) {
 			kickedClient->getJoinedChan().erase(it);
+			break;
+		}
 	}
 
 	reply = RPL_KICK(userID(client->getNickname(), client->getUserName()), command->params[1], nickKicked, reason);

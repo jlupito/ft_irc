@@ -22,7 +22,7 @@ std::vector<std::string>&		Channel::getKicked( void ) { return this->_kicked; }
 std::vector<std::string>&		Channel::getBanned( void ) { return this->_banned; }
 std::vector<std::string>&		Channel::getOperators( void ) { return this->_operators; }
 std::vector<std::string>&		Channel::getInvited() { return this->_invited; }
-std::map<std::string, Client>&	Channel::getClientsList() { return this->_clients; }
+std::map<std::string, Client *>&	Channel::getClientsList() { return this->_clients; }
 
 /********************************** SETTERS **********************************/
 
@@ -54,7 +54,7 @@ void	Channel::removeMode(std::string mode) {
 bool	Channel::isClient(std::string &nickname) {
 	if (_clients.empty())
 		return false;
-	std::map< std::string, Client>::iterator it = _clients.find(nickname);
+	std::map< std::string, Client * >::iterator it = _clients.find(nickname);
 	if (it != _clients.end())
 		return true;
 	return false;
@@ -95,30 +95,39 @@ bool	Channel::isBanned(std::string &nickname) {
 void	Channel::removeClientFromChan(std::string &nickname) {
 	if (_clients.empty())
 		return ;
-	std::map< std::string, Client>::iterator it = _clients.find(nickname);
-	if (it != _clients.end())
-		_clients.erase(it);
+	for (std::map< std::string, Client * >::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		if (it->first == nickname) {
+			_clients.erase(it);
+			break;
+		}
+	}
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
-		if (*it == nickname)
+		if (*it == nickname) {
 			_operators.erase(it);
+			break;
+		}
 	}
 }
 
 void	Channel::removeOperator(std::string &nickname) {
 
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
-		if (*it == nickname)
+		if (*it == nickname) {
 			_operators.erase(it);
+			break;
+		}
 	}
 }
 
 void	Channel::removeClientFromInvite(std::string &nickname) {
 	for (std::vector< std::string >::iterator it = _invited.begin(); it != _invited.end(); it++) {
-		if (*it == nickname)
+		if (*it == nickname) {
 			_invited.erase(it);
+			break;
+		}
 	}
 }
 
-void	Channel::addToChan(Client &client) {
-	_clients[client.getNickname()] = client;
+void	Channel::addToChan(Client *client) {
+	_clients[client->getNickname()] = client;
 }
