@@ -36,6 +36,7 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 	if (!channelName.empty() and channelName[0] != '#')
 		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
+	std::cout << "channel in topic39 via string: " << channelName << std::endl;
 	std::string user = client->getNickname();
 
 	if (handleTopicErrors(client, channel, user, command))

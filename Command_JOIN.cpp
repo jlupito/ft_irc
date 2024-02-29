@@ -98,8 +98,9 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 		std::istringstream iss2(command->params[2]);
 		std::string chan = "", key = "";
 		while (std::getline(iss1, chan, ',')) {
-			if (std::getline(iss2, key, ','))
+			if (std::getline(iss2, key, ',')) {
 				chanToJoin[chan] = key;
+			}
 		}
 	}
 	else if (command->params[1].find(",") != std::string::npos) {
@@ -109,8 +110,9 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			chanToJoin[chan] = key;
 		}
 	}
-	else
+	else {
 		chanToJoin[command->params[1]] = "";
+	}
 
 	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
 
@@ -119,13 +121,10 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			channelName.insert(0, "#");
 		Channel *channel = server.getChannels()[channelName];
 		if (!channel) {
-			std::cout << "channel in join via string: " << (chanCmd->first) << std::endl;
 			reply = NOSUCHCHANNEL_ERR(channelName);
 			sendBytesToClient(client, reply.c_str());
 			channel = new Channel(chanCmd->first);
 			server.getChannels()[channel->getChannelName()] = channel;
-			std::cout << "channel is in join via channel name: " << channel->getChannelName() << std::endl;
-			std::cout << "channel is in join via objec/server: " << server.getChannels()[channelName]->getChannelName() << std::endl;
 			channel->addOperators(user);
 		}
 		joinChannel(server, channel, client, chanCmd->second);

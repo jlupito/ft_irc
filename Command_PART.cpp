@@ -51,10 +51,7 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 		std::string channelName = *it;
 		if (!channelName.empty() and channelName[0] != '#')
 			channelName.insert(0, "#");
-		std::cout << "channel is in part: " << channelName << std::endl;
 		Channel *channel = server.getChannels()[channelName];
-		std::cout << "channel is in part via channel name: " << channel->getChannelName() << std::endl;
-		std::cout << "channel is in part via objec/server: " << server.getChannels()[channelName]->getChannelName() << std::endl;
 
 		std::string user = client->getNickname();
 
