@@ -37,7 +37,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define ERR_NOSUCHNICK(nickname) (":localhost 401 " + nickname + " :No such nick/channel\r\n")
 # define ERR_CANNOTSENDTOCHAN(channelname) (": localhost 404 " + channelname + " :Cannot send to channel\r\n")
 # define ERR_TOOMANYTARGETS(target) (":localhost 407 " + target + " :Duplicate recipients/no message delivered\r\n")
-# define ERR_NORECIPIENT(command) (": localhost 411 :No recipient given" + command + "\r\n")
 # define ERR_NOTEXTTOSEND ": localhost 412 :No text to send\r\n"
 # define ERR_NOTOPLEVEL(mask) (":localhost 413 " + mask +" :No toplevel domain specified\r\n")
 # define ERR_WILDTOPLEVEL(mask) (":localhost 414 " + mask +" :Wildcard in toplevel domain\r\n")
