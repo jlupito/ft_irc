@@ -84,3 +84,6 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 		it != errorMessages.end(); ++it) {
 		sendBytesToClient(client, it->c_str()); }
 }
+
+// Faire l'Erreur 407 de TOOMANYTARGETS ?
+// cf client irssi et DALnet 
