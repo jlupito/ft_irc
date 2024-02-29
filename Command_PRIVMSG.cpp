@@ -12,6 +12,7 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply = "";
 	std::map<const int, Client*> clientsList = server.getClients();
 	std::map<std::string, Channel *> channelsList = server.getChannels();
+	std::cout << "channelname nbr is : " << server.getChannels().size() << std::endl;
 	std::vector<std::string> errorMessages;
 
 	if (command->params.size() == 1) {
@@ -26,16 +27,6 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 		std::string receiver;
 		while (std::getline(iss, receiver, ','))
 			receiversList.push_back(receiver);
-		// // Test erreur 413
-		// for (size_t i = 0; i < receiversList.size(); i++) {
-		// 	if (receiversList[i].find('.') == std::string::npos)
-		// 		errorMessages.push_back(ERR_NOTOPLEVEL(receiversList[i])); // erreur 413
-		// }
-		// // Test erreur 414
-		// for (size_t i = 0; i < receiversList.size(); i++) {
-		// 	if (receiversList[i].find('*') != std::string::npos)
-		// 		errorMessages.push_back(ERR_WILDTOPLEVEL(receiversList[i])); // erreur 414
-		// }
 	}
 	else if (command->message.empty()) {
 
@@ -53,7 +44,12 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 			for (std::map<std::string, Channel*>::iterator it = channelsList.begin();
 				it != channelsList.end(); it++) {
 				if (it->first == channelReceiving) {
-					sendBytesToChannel(it->second, command->message.c_str());
+					reply = userID(client->getNickname(), client->getUserName()) + " PRIVMSG " + channelReceiving + " " + command->message + "\r\n";
+					for (std::map<std::string, Client *>::iterator itClient = (it->second)->getClientsList().begin();
+						itClient != (it->second)->getClientsList().end(); itClient++) {
+						if (itClient->first != client->getNickname())
+							sendBytesToClient(itClient->second, reply.c_str());
+					}
 					channelFound = true;
 					break;
 				}

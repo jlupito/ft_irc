@@ -2,6 +2,7 @@
 #include "Commands.hpp"
 #include "Replies.hpp"
 #include "Channel.hpp"
+#include <map>
 #include <ctime>
 #include <cstring>
 #include <cstdlib>
@@ -38,8 +39,13 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply;
 	std::string channelName = command->params[1];
-	if (!channelName.empty() and channelName[0] != '#')
+	if (!channelName.empty() and channelName[0] != '#') {
+		for (std::map<const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
+			if ((it->second)->getNickname() == command->params[1])
+				return ;
+		}
 		channelName.insert(0, "#");
+	}
 	Channel *channel = server.getChannels()[channelName];
 	if (!channel)
 		return ;

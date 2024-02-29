@@ -44,7 +44,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 			else
 				channel->removeClientFromInvite(client->getNickname());
 	}
-	channel->addToChan(*client);
+	channel->addToChan(client);
 	client->addJoinedChan(channel->getChannelName());
 
 	reply = userID(client->getNickname(), client->getUserName()) + " JOIN " + channel->getChannelName() + "\r\n";
@@ -63,11 +63,11 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 	}
 
 	std::string list;
-	for (std::map< std::string, Client >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
-		if (channel->isOperator((&it->second)->getNickname()))
+	for (std::map< std::string, Client * >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
+		if (channel->isOperator((it->second)->getNickname()))
 			list += "@";
-		list += (&it->second)->getNickname();
-		std::map<std::string, Client>::iterator nextIt = it;
+		list += (it->second)->getNickname();
+		std::map<std::string, Client * >::iterator nextIt = it;
     	++nextIt;
 		if (nextIt != channel->getClientsList().end())
 			list += " ";
@@ -98,8 +98,9 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 		std::istringstream iss2(command->params[2]);
 		std::string chan = "", key = "";
 		while (std::getline(iss1, chan, ',')) {
-			if (std::getline(iss2, key, ','))
+			if (std::getline(iss2, key, ',')) {
 				chanToJoin[chan] = key;
+			}
 		}
 	}
 	else if (command->params[1].find(",") != std::string::npos) {
@@ -109,8 +110,9 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			chanToJoin[chan] = key;
 		}
 	}
-	else
+	else {
 		chanToJoin[command->params[1]] = "";
+	}
 
 	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
 
