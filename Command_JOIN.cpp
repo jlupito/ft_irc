@@ -63,7 +63,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 	}
 
 	std::string list;
-	for (std::map< const int, Client* >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
+	for (std::map< std::string, Client* >::iterator it = channel->getClientsList().begin(); it != channel->getClientsList().end(); it++) {
 		if (channel->isOperator((it->second)->getNickname()))
 			list += "@";
 		list += (it->second)->getNickname();

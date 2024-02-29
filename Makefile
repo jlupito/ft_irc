@@ -10,14 +10,13 @@ INC =   \
 SRCS =	Command_CAP_LS.cpp \
 		Command_INVITE.cpp \
 		Command_JOIN.cpp \
-		Command_MODE.cpp \
 		Command_KICK.cpp \
 		Command_NICK.cpp \
 		Command_NOTICE.cpp \
 		Command_PASS.cpp \
 		Command_MODE.cpp \
 		Command_PINGPONG.cpp \
-		Command_MODE.cpp \
+		Command_PART.cpp \
 		Command_PRIVMSG.cpp \
 		Command_QUIT.cpp \
 		Command_TOPIC.cpp \

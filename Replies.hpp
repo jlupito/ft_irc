@@ -27,6 +27,7 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define ERR_CANNOTSENDTOCHAN(channelname) (": localhost 404 " + channelname + " :Cannot send to channel\r\n")
 # define ERR_TOOMANYTARGETS(target) (":localhost 407 " + target + " :Duplicate recipients/no message delivered\r\n")
 # define ERR_NOTEXTTOSEND ": localhost 412 :No text to send\r\n"
+# define ERR_NORECIPIENT(command) (": localhost 411 :No recipient given " + command + "\r\n")
 
 /* INVITE ERROR REPLIES */
 # define NOSUCHCHANNEL_ERR(channel) (":localhost 403 " + channel + " :No such channel" + "\r\n")
