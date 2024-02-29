@@ -56,7 +56,7 @@ class Channel {
 		void							removeOperator(std::string &nickname);
 		void							removeClientFromChan(std::string &nickname);
 		void							removeClientFromInvite(std::string &nickname);
-		void							addToChan(Client &client);
+		void							addToChan(Client *client);
 		void							addToInvited(std::string &nickname);
 		void							addToKicked(std::string &nickname);
 		void							addToBanned(std::string &nickname);

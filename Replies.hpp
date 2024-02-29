@@ -33,7 +33,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define ERR_NOSUCHNICK(nickname) (":localhost 401 " + nickname + " :No such nick/channel\r\n")
 # define ERR_CANNOTSENDTOCHAN(channelname) (": localhost 404 " + channelname + " :Cannot send to channel\r\n")
 # define ERR_TOOMANYTARGETS(target) (":localhost 407 " + target + " :Duplicate recipients/no message delivered\r\n")
-# define ERR_NORECIPIENT(command) (": localhost 411 :No recipient given" + command + "\r\n")
 # define ERR_NOTEXTTOSEND ": localhost 412 :No text to send\r\n"
 # define ERR_NOTOPLEVEL(mask) (":localhost 413 " + mask +" :No toplevel domain specified\r\n")
 # define ERR_WILDTOPLEVEL(mask) (":localhost 414 " + mask +" :Wildcard in toplevel domain\r\n")
@@ -46,8 +45,8 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define USERONCHANNEL_ERR(client, nickname, channel) (":localhost 443 " + client + " " + nickname + " " + channel + " :is already on channel" + "\r\n")
 # define CHANOPRIVSNEEDED_ERR(channel) (":localhost 482 " + channel + " :You're not channel operator" + "\r\n")
 
-# define RPL_KICK(user_id, channel, kicked, reason) (user_id + " KICK #" + channel + " " + kicked + " " + reason + "\r\n")
-# define RPL_PART(user_id, channel, reason) (user_id + " PART #" + channel + " " + (reason.empty() ? "." : reason ) + "\r\n")
+# define RPL_KICK(user_id, channel, kicked, reason) (user_id + " KICK " + channel + " " + kicked + " " + reason + "\r\n")
+# define RPL_PART(user_id, channel, reason) (user_id + " PART " + channel + " " + (reason.empty() ? "." : reason ) + "\r\n")
 # define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " #" + channel + "\r\n")
 # define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + " :No topic is set" + "\r\n")
 # define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " " + topic + "\r\n")

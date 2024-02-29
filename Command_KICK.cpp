@@ -47,24 +47,32 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 		return ;
 
 	Client *kickedClient;
-	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().begin(); it++) {
-		if (it->second->getNickname() == nickKicked)
+	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
+		if ((it->second)->getNickname() == nickKicked) {
 			kickedClient = it->second;
+		}
 	}
-	std::string reason = (!command->message.empty()) ? command->message : ":Kicked by the channel's operator";
-	// std::string userID = command->prefix;
+	std::string reason;
+	if (!command->message.empty())
+		reason = command->message;
+	else
+		reason = ":Kicked by the channel's operator";
 
 	channel->removeClientFromChan(nickKicked);
 	channel->addToKicked(nickKicked);
+
+
 	if (channel->isOperator(user))
 			channel->removeOperator(user);
 	for (std::vector< std::string >::iterator it = kickedClient->getJoinedChan().begin(); it != kickedClient->getJoinedChan().begin(); it++) {
-		if (*it == channel->getChannelName())
+		if (*it == channel->getChannelName()) {
 			kickedClient->getJoinedChan().erase(it);
+			break;
+		}
 	}
 
 	reply = RPL_KICK(userID(client->getNickname(), client->getUserName()), command->params[1], nickKicked, reason);
-	sendBytesToClient(client, reply.c_str());
+	sendBytesToClient(kickedClient, reply.c_str());
 	sendBytesToChannel(channel, reply.c_str());
 
 	return ;
