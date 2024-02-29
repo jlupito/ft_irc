@@ -1,4 +1,4 @@
-objs/Command_PART.o: Command_PART.cpp Server.hpp Client.hpp Commands.hpp \
+objs/Command_JOIN.o: Command_JOIN.cpp Server.hpp Client.hpp Commands.hpp \
   Channel.hpp Replies.hpp
 
 Server.hpp:
