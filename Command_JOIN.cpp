@@ -98,9 +98,8 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 		std::istringstream iss2(command->params[2]);
 		std::string chan = "", key = "";
 		while (std::getline(iss1, chan, ',')) {
-			if (std::getline(iss2, key, ',')) {
+			if (std::getline(iss2, key, ','))
 				chanToJoin[chan] = key;
-			}
 		}
 	}
 	else if (command->params[1].find(",") != std::string::npos) {
@@ -110,9 +109,8 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			chanToJoin[chan] = key;
 		}
 	}
-	else {
+	else
 		chanToJoin[command->params[1]] = "";
-	}
 
 	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
 

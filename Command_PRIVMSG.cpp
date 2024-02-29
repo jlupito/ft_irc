@@ -12,7 +12,6 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply = "";
 	std::map<const int, Client*> clientsList = server.getClients();
 	std::map<std::string, Channel *> channelsList = server.getChannels();
-	std::cout << "channelname nbr is : " << server.getChannels().size() << std::endl;
 	std::vector<std::string> errorMessages;
 
 	if (command->params.size() == 1) {
