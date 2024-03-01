@@ -4,8 +4,8 @@
 #include "Client.hpp"
 
 /*
-Command: PING
-  Parameters: <token>
+Command: PING <token>
+
 Numeric replies :
 	ERR_NEEDMOREPARAMS (461)
 	ERR_NOORIGIN (409)

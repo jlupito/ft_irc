@@ -8,7 +8,8 @@ typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 // FONCTION POUR iMPRIMER la CmdStruct
 void printCmdStruct(cmdStruct& command) {
 
-    std::cout << "[Prefix: " << command.prefix << "]";
+    std::cout << "**Unknown command** : ";
+	std::cout << "[Prefix: " << command.prefix << "]";
     std::cout << "[Params: ";
     for (std::vector<std::string>::const_iterator it = command.params.begin();
 		it != command.params.end(); ++it) {
@@ -40,19 +41,17 @@ void executeCmd(Server& server, Client* client, cmdStruct* cmdCut) {
 
 	if (!cmdCut->params.empty()) {
 
-		try {
-			std::string cmdName = cmdCut->params[0];
+		std::string cmdName = cmdCut->params[0];
 
-			std::map< std::string, cmdFunction >& cmdList = server.getCmdList();
-			std::map<std::string, cmdFunction>::iterator it = cmdList.find(cmdName);
-			if (it != cmdList.end())
-				it->second(server, client, cmdCut);
-			else {
-				printCmdStruct(*cmdCut);
-				throw commandDoesntExist();
-			}
+		std::map< std::string, cmdFunction >& cmdList = server.getCmdList();
+		std::map<std::string, cmdFunction>::iterator it = cmdList.find(cmdName);
+		if (it != cmdList.end())
+			it->second(server, client, cmdCut);
+		else {
+			size_t bufferSize = client->getBuffer().size();
+			client->getBuffer().erase(0, bufferSize);
+			printCmdStruct(*cmdCut);
 		}
-		catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 	}
 }
 

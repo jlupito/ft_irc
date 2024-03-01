@@ -40,27 +40,22 @@ void		handleNICKCommand(Server& server, Client* client, cmdStruct* command);
 void		handleUSERCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePINGCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePONGCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
 void		handleQUITCommand(Server& server, Client* client, cmdStruct* command);
 void		handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command);
 void		handleNOTICECommand(Server& server, Client* client, cmdStruct* command);
-// void		handleKILLCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleDIECommand(Server& server, Client* client, cmdStruct* command);
-
 void		handleJOINCommand(Server& server, Client* client, cmdStruct* command);
 bool		handlePartErrors(Client *client, Channel* channel, std::string &user, cmdStruct* command);
 void		handlePARTCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleNAMESCommand(Server& server, Client* client, cmdStruct* command);
-// void		handleLISTCommand(Server& server, Client* client, cmdStruct* command);
-
 void		handleKICKCommand(Server& server, Client* client, cmdStruct* command);
 void		handleINVITECommand(Server& server, Client* client, cmdStruct* command);
 void		handleTOPICCommand(Server& server, Client* client, cmdStruct* command);
 void		handleMODECommand(Server& server, Client* client, cmdStruct* command);
+// void		handleOPERCommand(Server& server, Client* client, cmdStruct* command);
+// void		handleKILLCommand(Server& server, Client* client, cmdStruct* command);
+// void		handleDIECommand(Server& server, Client* client, cmdStruct* command);
+// void		handleNAMESCommand(Server& server, Client* client, cmdStruct* command);
+// void		handleLISTCommand(Server& server, Client* client, cmdStruct* command);
 
-void		handleDisconnect();
-
-// fonctions outils
 void	printCmdStruct(cmdStruct& command);
 
 class dataTransferError : public std::exception {
@@ -70,9 +65,9 @@ class dataTransferError : public std::exception {
 		}
 };
 
-class commandDoesntExist : public std::exception {
-		public:
-		virtual const char* what() const throw() {
-			return "Error: this command isn't handled by this gorgeous IRC.";
-		}
-};
+// class commandDoesntExist : public std::exception {
+// 		public:
+// 		virtual const char* what() const throw() {
+// 			return "Error: this command isn't handled by this gorgeous IRC.";
+// 		}
+// };
