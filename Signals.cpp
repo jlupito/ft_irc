@@ -22,7 +22,7 @@ void SignalMonitor::handleSignal(int signal) {
 			std::cout << std::endl << "Received SIGINT (Ctrl+C)" << std::endl;
 		else if (signal == SIGQUIT)
 			std::cout << "Received SIGQUIT (Ctrl+\\)" << std::endl;
-		serverInstance->handleDisconnect(*serverInstance);
+		serverInstance->handleDisconnect();
 	}
 }
 

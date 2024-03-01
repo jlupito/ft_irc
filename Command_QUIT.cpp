@@ -13,29 +13,32 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 	if (command->params.size() > 2)
 		return ;
 
-	std::string reply = command->prefix + " QUIT\r\n";
 	std::string user = client->getNickname();
-	std::string reason = "";
+	std::string reply;
+	std::string reason = "Quit: ";
 
-	if (command->params.size() == 2 && (!command->params[1].empty())) {
-		reason = command->params[1];
-		reply = command->prefix + " QUIT :" + reason + "\r\n";
-	}
-
-	for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().begin(); it++) {
-		std::string channelName = *it;
-		if (!channelName.empty() and channelName[0] != '#')
-			channelName.insert(0, "#");
-		Channel *channel = server.getChannels()[channelName];
-			channel->removeClientFromChan(user);
-			if (channel->isOperator(user))
-				channel->removeOperator(user);
-			client->getJoinedChan().erase(it);
-			sendBytesToChannel(channel, reply.c_str());
-			return ;
+	if (command->params.size() == 2 && (!command->params[1].empty()))
+		reason += command->params[1];
+	else	
+		reason += "leaving";
+	
+	for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); 
+			it != client->getJoinedChan().end(); it++) {
+		Channel *channel = server.getChannels()[*it];
+		channel->removeClientFromChan(user);
+		if (channel->isOperator(user))
+			channel->removeOperator(user);
+		reply = RPL_QUIT(userID(client->getNickname(), client->getUserName()), reason);
+		sendBytesToChannel(channel, reply.c_str());
 	}
 	sendBytesToClient(client, reply.c_str());
 	server.removeClient(client->getNickname());
+	// for (std::map<const int, Client *>::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
+	// 	if (it->first == client->getClientSocket()) {
+	// 		(it->second)->getNickname();
+	// 		delete it->second;
+	// 	}
+	// }
 }
 // verfiier que le QUIT sans param et le QUIT avec param sont bien affichés dans
 // les channels dans lesquels le client qui QUIT se trouve.

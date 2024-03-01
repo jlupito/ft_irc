@@ -38,6 +38,8 @@ void	Channel::addOperators(std::string &nickname) {this->_operators.push_back(ni
 
 void	Channel::addMode(std::string mode) {
 
+	if (mode[0] == '+')
+		mode.erase(0, 1);
 	if (_mode.find(mode) == std::string::npos)
 		_mode += mode;
 }

@@ -36,7 +36,6 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 	if (!channelName.empty() and channelName[0] != '#')
 		channelName.insert(0, "#");
 	Channel *channel = server.getChannels()[channelName];
-	std::cout << "channel in topic39 via string: " << channelName << std::endl;
 	std::string user = client->getNickname();
 
 	if (handleTopicErrors(client, channel, user, command))
@@ -59,16 +58,13 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 		}
 	}
 	else {
-		std::cout << "dans le else" << std::endl;
 		if (!channel->getTopic().empty()) {
-			std::cout << "topic is: " << channel->getTopic() << std::endl;
 			reply = RPL_TOPIC(user, channelName, channel->getTopic());
 			sendBytesToClient(client, reply.c_str());
 			reply = RPL_TOPICWHOTIME(user, channelName, client->getNickname(), timeString);
 			sendBytesToClient(client, reply.c_str());
 		}
 		else {
-			std::cout << "topic is: " << channel->getTopic() << std::endl;
 			reply = RPL_NOTOPIC(user, channelName);
 			sendBytesToClient(client, reply.c_str());
 		}

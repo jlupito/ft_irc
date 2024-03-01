@@ -22,10 +22,8 @@ int main(int ac, char **av) {
 			return -1;
 		for (int i = 0; i < numEvents; ++i) {
 			if (server.getEventsTab()[i].data.fd == server.getServerSocket()) {
-				Client* newClient = new Client;  // Allocation dynamique avec new
-
+				Client* newClient = new Client;
 				try {
-
 					int tmp = accept(server.getServerSocket(), (struct sockaddr*)&newClient->getClientAddr(),
 						&newClient->getClientAddrLen());
 					newClient->setClientSocket(tmp);
@@ -49,7 +47,7 @@ int main(int ac, char **av) {
 				processEvent(server, i);
 		}
 	}
-	server.handleDisconnect(server);
+	server.handleDisconnect();
 	close(server.getEpollFd());
 	return 0;
 }

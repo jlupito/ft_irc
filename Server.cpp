@@ -5,7 +5,7 @@
 
 Server::Server(std::string port, std::string password)
 	: _port(std::atoi(port.c_str())), _password(password) {
-	std::cout << "Hello World! - Server has been created." << std::endl;
+	std::cout << "Hello World! - Server is now running." << std::endl;
 	initialization();
 }
 
@@ -109,34 +109,31 @@ Fonction initialization(), étapes :
 
 void	Server::removeClient(const std::string& nickname) {
 
-	std::map<const int, Client*>& clientList = this->getClients();
-	std::map<const int, Client*>::iterator it;
+	for (std::map<const int, Client*>::iterator it = _clients.begin(); 
+		it != _clients.end(); ++it) {
 
-	for (it = clientList.begin(); it != clientList.end(); ++it) {
-
-		if (it->second->getNickname() == nickname) {
-			const int clientSocket = it->first;
-			close(clientSocket);
+		if ((it->second)->getNickname() == nickname) {
+			close(it->first);
 			delete it->second;
-			clientList.erase(it);
+			_clients.erase(it->first);
 			break;
 		}
 	}
 }
 
-void	Server::handleDisconnect(Server &server) {
+void	Server::handleDisconnect(void) {
 
-	std::map<const int, Client *>::iterator it1 = server.getClients().begin();
-	std::map<std::string, Channel *>::iterator it2 = server.getChannels().begin();
 
-	for (; it1 != server.getClients().end(); it1++) {
-		if (it1->second)
+	for (std::map<const int, Client *>::iterator it1 = _clients.begin(); 
+			it1 != _clients.end(); it1++) {
+		if (it1->second) {}
 			delete it1->second;
 	}
-	for (; it2 != server.getChannels().end(); it2++) {
+	for (std::map<std::string, Channel *>::iterator it2 = _channels.begin();
+			it2 != _channels.end(); it2++) {
 		if (it2->second)
 			delete it2->second;
 	}
-	server.getClients().clear();
-	server.getChannels().clear();
+	_clients.clear();
+	_channels.clear();
 }

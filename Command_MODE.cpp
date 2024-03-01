@@ -59,9 +59,12 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	std::vector<std::string> modeParams;
 	size_t nbParams = command->params.size() - 3;
 
-	for (size_t i = 0; i <= nbParams; i++)
-		modeParams.push_back(command->params[i]);
-	std::vector<std::string>::iterator itParam = modeParams.begin();
+	std::vector<std::string>::iterator itParam;
+	if (nbParams) {
+		for (size_t i = 0; i <= nbParams; i++)
+			modeParams.push_back(command->params[i + 3]);
+		itParam = modeParams.begin();
+	}
 
 	for (size_t i = 0; command->params[2][i]; i++) {
 
@@ -76,52 +79,71 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 
 			case ('o'):
 				if (remove) {
-					if (channel->isClient(*itParam) and channel->isOperator(*itParam))
+					if (channel->isClient(*itParam) and channel->isOperator(*itParam)) {
 						channel->removeOperator(*itParam);
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "-o", *itParam);
+					}
 				}
 				else {
-					if (channel->isClient(*itParam) and !channel->isOperator(*itParam))
+					if (channel->isClient(*itParam) and !channel->isOperator(*itParam)) {
 						channel->addOperators(*itParam);
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+o", *itParam);
+					}
 				}
 				if (++itParam != modeParams.end())
 					itParam++;
 				else 
 					*itParam = "";
+				sendBytesToChannel(channel, reply.c_str());
 				break ;
 
 			case ('t'):
 				if (remove) {
-					if (channel->getMode().find("t") != std::string::npos)
+					if (channel->getMode().find("t") != std::string::npos) {
 						channel->removeMode("t");
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "-t", "");
+					}
 				}
 				else {
-					if (channel->getMode().find("t") == std::string::npos)
+					if (channel->getMode().find("t") == std::string::npos) {
 						channel->addMode("t");
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+t", "");
+					}
 				}
+				sendBytesToChannel(channel, reply.c_str());
 				break ;
+
 			case ('i'):
 				if (remove) {
-					if (channel->getMode().find("i") != std::string::npos)
+					if (channel->getMode().find("i") != std::string::npos) {
 						channel->removeMode("i");
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "-i", "");
+					}
 				}
 				else {
-					if (channel->getMode().find("i") == std::string::npos)
+					if (channel->getMode().find("i") == std::string::npos) {
 						channel->addMode("i");
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+i", "");
+					}
 				}
+				sendBytesToChannel(channel, reply.c_str());
 				break ;
 
 			case ('l'):
 				if (remove) {
-					if (channel->getMode().find("l") != std::string::npos)
+					if (channel->getMode().find("l") != std::string::npos) {
 						channel->removeMode("l");
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "-l", "");
+					}
 				}
 				else {
-					if (channel->getMode().find("l") != std::string::npos) {
+					if (channel->getMode().find("l") == std::string::npos) {
 						std::istringstream lim(*itParam);
 						int nb;
 						if (lim >> nb) {
 							channel->setNbrUsersLimit(nb);
 							channel->addMode("l");
+							reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+l", *itParam);
 						}
 					}
 					if (++itParam != modeParams.end())
@@ -129,6 +151,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 					else 
 						*itParam = "";
 				}
+				sendBytesToChannel(channel, reply.c_str());
 				break ;
 
 			case ('k'):
@@ -137,6 +160,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 						channel->removeMode("k");
 						if (!channel->getChannelPwd().empty())
 							channel->getChannelPwd().clear();
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "-k", "");
 					}
 				}
 				else {
@@ -147,12 +171,15 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 							itParam++;
 						else 
 							*itParam = "";
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+k", *itParam);
+
 					}
 					else {
 						reply = KEYSET_ERR(channelName);
 						sendBytesToClient(client, reply.c_str());
 					}
 				}
+				sendBytesToChannel(channel, reply.c_str());
 				break ;
 
 			default :

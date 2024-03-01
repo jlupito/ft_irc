@@ -39,7 +39,7 @@ class Server {
 		std::map<std::string, Channel *>&		getChannels(void);
 		std::map<std::string, cmdFunction>&		getCmdList(void);
 		void									removeClient(const std::string& nickname);
-		void									handleDisconnect(Server &server);
+		void									handleDisconnect(void);
 
 	private:
 		std::string								_serverName;

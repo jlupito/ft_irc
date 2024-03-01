@@ -16,10 +16,9 @@
 //command = JOIN <channel>{,<channel>} [<key>{,<key>}]
 class Channel;
 
-bool joinChannel(Server& server, Channel *channel, Client* client, std::string key) {
+bool joinChannel(Channel *channel, Client* client, std::string key) {
 	std::string reply;
 
-	(void)server;
 	if (channel->getMode().find("k") != std::string::npos) {
 			if (channel->getChannelPwd() != key) {
 				reply = ERR_BADCHANNELKEY(client->getNickname(), channel->getChannelName());
@@ -36,7 +35,7 @@ bool joinChannel(Server& server, Channel *channel, Client* client, std::string k
 	}
 	if (channel->getMode().find("i") != std::string::npos) {
 		    std::vector<std::string>::iterator it = std::find(channel->getInvited().begin(), channel->getInvited().end(), client->getNickname());
-			if (it != channel->getInvited().end()) {
+			if (it == channel->getInvited().end()) {
 				reply = ERR_INVITEONLYCHAN(client->getNickname(), channel->getChannelName());
 				sendBytesToClient(client, reply.c_str());
 				return false;
@@ -93,10 +92,10 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 	std::map<std::string, std::string> chanToJoin;
 	std::string user = client->getNickname();
 
-	if (command->params[1].find(",") != std::string::npos and command->params[2].size()) {
+	if (command->params[1].find(",") != std::string::npos and command->params.size() > 2) {
 		std::istringstream iss1(command->params[1]);
 		std::istringstream iss2(command->params[2]);
-		std::string chan = "", key = "";
+		std::string chan, key;
 		while (std::getline(iss1, chan, ',')) {
 			if (std::getline(iss2, key, ','))
 				chanToJoin[chan] = key;
@@ -104,7 +103,7 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 	}
 	else if (command->params[1].find(",") != std::string::npos) {
 		std::istringstream iss1(command->params[1]);
-		std::string chan = "", key = "";
+		std::string chan, key;
 		while (std::getline(iss1, chan, ',')) {
 			chanToJoin[chan] = key;
 		}
@@ -125,7 +124,7 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			server.getChannels()[channel->getChannelName()] = channel;
 			channel->addOperators(user);
 		}
-		joinChannel(server, channel, client, chanCmd->second);
+		joinChannel(channel, client, chanCmd->second);
 	}
 
 	return ;

@@ -66,13 +66,13 @@ void	printCmdStruct(cmdStruct& command);
 class dataTransferError : public std::exception {
 		public:
 		virtual const char* what() const throw() {
-			return "Error : failure in send or receive.";
+			return "Error : failure in sending or receiving.";
 		}
 };
 
 class commandDoesntExist : public std::exception {
 		public:
 		virtual const char* what() const throw() {
-			return "Error : this command doesn't exist.";
+			return "Error: this command isn't handled by this gorgeous IRC.";
 		}
 };

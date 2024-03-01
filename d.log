@@ -1,0 +1,207 @@
+<< CAP LS
+<< NICK jarthaud
+<< USER jarthaud jarthaud irc.dal.net :Jean-loup ARTHAUD
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** Looking up your hostname...
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** Checking Ident
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** Found your hostname
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** No Ident response
+>> :atw.hu.eu.dal.net 001 jarthaud :Welcome to the DALnet IRC Network jarthaud!~jarthaud@62.210.32.117
+<< MODE jarthaud +i
+>> :atw.hu.eu.dal.net 002 jarthaud :Your host is atw.hu.eu.dal.net, running version bahamut-2.2.3
+>> :atw.hu.eu.dal.net 003 jarthaud :This server was created Tue Dec 12 2023 at 01:47:04 AM CET
+>> :atw.hu.eu.dal.net 004 jarthaud atw.hu.eu.dal.net bahamut-2.2.3 aAbcCdefFghHiIjkKmnoOPrRsSwxXy AbceiIjklLmMnoOpPrRsStv beIjklov
+>> :atw.hu.eu.dal.net 005 jarthaud NETWORK=DALnet SAFELIST MAXBANS=200 MAXCHANNELS=50 CHANNELLEN=32 KICKLEN=307 NICKLEN=30 TOPICLEN=307 MODES=6 CHANTYPES=# CHANLIMIT=#:50 PREFIX=(ohv)@%+ STATUSMSG=@%+ :are available on this server
+>> :atw.hu.eu.dal.net 005 jarthaud CASEMAPPING=ascii WATCH=128 SILENCE=10 ELIST=cmntu EXCEPTS INVEX CHANMODES=beI,k,jl,ciPAmMnOprRsSt MAXLIST=b:200,e:100,I:100 TARGMAX=DCCALLOW:,JOIN:,KICK:4,KILL:20,NOTICE:20,PART:,PRIVMSG:20,WHOIS:,WHOWAS: :are available on this server
+>> :atw.hu.eu.dal.net 251 jarthaud :There are 67 users and 7358 invisible on 37 servers
+>> :atw.hu.eu.dal.net 252 jarthaud 77 :IRC Operators online
+>> :atw.hu.eu.dal.net 254 jarthaud 3774 :channels formed
+>> :atw.hu.eu.dal.net 255 jarthaud :I have 1288 clients and 1 servers
+>> :atw.hu.eu.dal.net 265 jarthaud :Current local users: 1288 Max: 2113
+>> :atw.hu.eu.dal.net 266 jarthaud :Current global users: 7425 Max: 12060
+>> :atw.hu.eu.dal.net NOTICE jarthaud :*** Notice -- motd was last changed at 20/1/2021 6:02
+>> :atw.hu.eu.dal.net 375 jarthaud :- atw.hu.eu.dal.net Message of the Day - 
+>> :atw.hu.eu.dal.net 372 jarthaud :-20/1/2021 6:02
+>> :atw.hu.eu.dal.net 372 jarthaud :- Welcome to DALnet!  By connecting to this network, you agree to abide
+>> :atw.hu.eu.dal.net 372 jarthaud :- by its acceptable use policy, available here: http://www.dal.net/aup
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :- Server Policies:
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :-    *   We reserve the right to deny access to this server without
+>> :atw.hu.eu.dal.net 372 jarthaud :-        warning or explanation
+>> :atw.hu.eu.dal.net 372 jarthaud :-    *   No malicious bots, including flood and nick/channel chasers
+>> :atw.hu.eu.dal.net 372 jarthaud :-    *   No channel filler bots/clients/psybncs
+>> :atw.hu.eu.dal.net 372 jarthaud :-          - A channel filler is a client, bnc, or bot which is
+>> :atw.hu.eu.dal.net 372 jarthaud :-            connected just to fill a channel and make it look
+>> :atw.hu.eu.dal.net 372 jarthaud :-            bigger
+>> :atw.hu.eu.dal.net 372 jarthaud :-    *   Operator impersonation, spamming, or any other abuse will
+>> :atw.hu.eu.dal.net 372 jarthaud :-        cause you to be banned from this server
+>> :atw.hu.eu.dal.net 372 jarthaud :-    *   Abide by DALnet's AUP (www.dal.net/aup)
+>> :atw.hu.eu.dal.net 372 jarthaud :-    *   Please have fun and enjoy DALnet!
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :-      ///admins////////////////////////////////////////
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //                                             //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //  [ Hidden  - administrator             ]    //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //                                             // 
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //  [ koszik  - assistant administrator   ]    //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //                                             //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      ///operators/////////////////////////////////////
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //                                             //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //                                             //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      //                                             //
+>> :atw.hu.eu.dal.net 372 jarthaud :-      /////////////////////////////////////////////////
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :- For IRCop assistance, please /join #operhelp or message one of our
+>> :atw.hu.eu.dal.net 372 jarthaud :- friendly server staff listed above.
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :- For multilingual information:  <http://docs.dal.net/>
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 372 jarthaud :- Thank you for using DALnet!  We hope you have a pleasant day.
+>> :atw.hu.eu.dal.net 372 jarthaud :- 
+>> :atw.hu.eu.dal.net 376 jarthaud :End of /MOTD command.
+>> :jarthaud MODE jarthaud :+iH
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< JOIN #mychannel
+>> :jarthaud!~jarthaud@e31b-8788-709-476b-f34d.210.62.ip JOIN :#mychannel
+>> :atw.hu.eu.dal.net 353 jarthaud = #mychannel :@jarthaud 
+>> :atw.hu.eu.dal.net 366 jarthaud #mychannel :End of /NAMES list.
+<< MODE #mychannel
+>> :atw.hu.eu.dal.net 324 jarthaud #mychannel + 
+--> chanquery mode
+<< WHO #mychannel
+>> :atw.hu.eu.dal.net 329 jarthaud #mychannel 1709298260
+--> event 329
+>> :atw.hu.eu.dal.net 352 jarthaud #mychannel ~jarthaud e31b-8788-709-476b-f34d.210.62.ip atw.hu.eu.dal.net jarthaud H@ :0 Jean-loup ARTHAUD
+--> silent event who
+>> :atw.hu.eu.dal.net 315 jarthaud #mychannel :End of /WHO list.
+--> chanquery who end
+<< MODE #mychannel b
+>> :atw.hu.eu.dal.net 368 jarthaud #mychannel :End of Channel Ban List
+--> chanquery ban end
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+>> :jarthaud_!~jarthaud@e31b-8788-709-476b-f34d.210.62.ip JOIN :#mychannel
+>> :jarthaud_!~jarthaud@e31b-8788-709-476b-f34d.210.62.ip QUIT :Quit: leaving
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+>> :jarthaud_!~jarthaud@e31b-8788-709-476b-f34d.210.62.ip JOIN :#mychannel
+>> :jarthaud_!~jarthaud@e31b-8788-709-476b-f34d.210.62.ip QUIT :Quit: im fucking bored
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :jarthaud
+--> lag pong
+<< QUIT :Lost terminal

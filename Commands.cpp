@@ -8,21 +8,21 @@ typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 // FONCTION POUR iMPRIMER la CmdStruct
 void printCmdStruct(cmdStruct& command) {
 
-    std::cout << "Prefix: " << command.prefix << std::endl;
-    std::cout << "Params: ";
+    std::cout << "[Prefix: " << command.prefix << "]";
+    std::cout << "[Params: ";
     for (std::vector<std::string>::const_iterator it = command.params.begin();
 		it != command.params.end(); ++it) {
         std::cout << *it << " ";
     }
-    std::cout << std::endl;
-    std::cout << "Message: " << command.message << std::endl;
+    std::cout << "]";
+    std::cout << "[Message: " << command.message << "]" << std::endl;
 }
 
 void	sendBytesToClient(Client* client, const char* reply) {
 
 	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
 	if (bytes_transfered <= 0)
-		std::cout << "Server failed to send a reply to client." << std::endl;
+		std::cout << "0 bytes transfered from server to client." << std::endl;
 }
 
 void	sendBytesToChannel(Channel* channel, const char* reply) {
@@ -85,7 +85,7 @@ void processEvent(Server& server, int i) {
 
 	ssize_t bytes_transfered = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
 	if (bytes_transfered <= 0) {
-		std::cout << "Server failed to receive client's reply." << std::endl;
+		std::cout << "0 bytes transfered from client to server." << std::endl;
 		close(clientSocket); // faire une fonction handleDisconnect(&server, clienFd); plutot ?
 	}
 	else {
@@ -101,6 +101,7 @@ void processEvent(Server& server, int i) {
 			receivedData.erase(0, pos + 2);
 			processCmd(server, client, cmdFull);
 		}
-		client->setBuffer(receivedData);
+		if (!receivedData.empty())
+			client->setBuffer(receivedData);
 	}
 }

@@ -37,13 +37,17 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define CHANOPRIVSNEEDED_ERR(channel) (":localhost 482 " + channel + " :You're not channel operator" + "\r\n")
 
 # define RPL_KICK(user_id, channel, kicked, reason) (user_id + " KICK " + channel + " " + kicked + " " + reason + "\r\n")
-# define RPL_PART(user_id, channel, reason) (user_id + " PART " + channel + " " + (reason.empty() ? "." : reason ) + "\r\n")
+# define RPL_PART(user_id, channel, reason) (user_id + " PART " + channel + " " + reason + "\r\n")
+# define RPL_QUIT(user_id, reason) (user_id + " QUIT " + " " + reason + "\r\n")
+
 # define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " #" + channel + "\r\n")
 # define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + " :No topic is set" + "\r\n")
+# define RPL_MODE(user_id, channel, modeset, target) (user_id + " MODE " + channel + " " + modeset + " " + target + "\r\n")
+
 # define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " " + topic + "\r\n")
 # define RPL_TOPICWHOTIME(client, channel, nick, setat) (":localhost 333 " + client + " " + channel + " " + nick + " " + setat + "\r\n")
 
-# define RPL_CHANNELMODEIS(client, channel, modestring) (":localhost 324 " + client + " " + channel + " " + modestring + " " + "\r\n")
+# define RPL_CHANNELMODEIS(client, channel, modestring) (":localhost 324 " + client + " " + channel + " " + modestring + "\r\n")
 # define UNKNOWNMODE_ERR(modeChar, channel) (":localhost 472 " + std::string(1, modeChar) + " :is unknown mode char to me for " + channel + "\r\n")
 # define KEYSET_ERR(channel) (":localhost 467 " + channel + ":Channel key already set" + "\r\n")
 
@@ -56,4 +60,4 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_NAMREPLY(client, channel, list) (":localhost 353 " + client + " = " + channel + " :" + list + "\r\n")
 # define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /NAMES list" + "\r\n")
 
-# define userID(nickname, username) (":" + nickname + "!" + username + "@localhost" + "\r\n")
+# define userID(nickname, username) (":" + nickname + "!" + username + "@localhost") // NE PAS METTRE LE DELIMITEUR, CEST UN SOUS DEFINE !!!!!
