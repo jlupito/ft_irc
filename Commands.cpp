@@ -8,7 +8,7 @@ typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 // FONCTION POUR iMPRIMER la CmdStruct
 void printCmdStruct(cmdStruct& command) {
 
-    std::cout << "**Unknown command** : ";
+    std::cout << "**Unknown command** -> ";
 	std::cout << "[Prefix: " << command.prefix << "]";
     std::cout << "[Params: ";
     for (std::vector<std::string>::const_iterator it = command.params.begin();
@@ -71,8 +71,10 @@ void	processCmd(Server& server, Client* client, std::string cmdFull) {
 	}
 	std::istringstream iss(cmdFull);
 	std::string token;
-	while (std::getline(iss, token, ' '))
-		cmdCut.params.push_back(token);
+	while (std::getline(iss, token, ' ')) {
+		if (!token.empty())
+			cmdCut.params.push_back(token);
+	}
 	executeCmd(server, client, &cmdCut);
 }
 

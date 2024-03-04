@@ -60,14 +60,14 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	size_t nbParams = command->params.size() - 3;
 
 	std::vector<std::string>::iterator itParam;
-	if (nbParams) {
-		for (size_t i = 0; i <= nbParams; i++)
+	if (nbParams > 0) {
+		for (size_t i = 0; i < nbParams; i++) {
 			modeParams.push_back(command->params[i + 3]);
+		}
 		itParam = modeParams.begin();
 	}
 
 	for (size_t i = 0; command->params[2][i]; i++) {
-
 		switch (command->params[2][i]) {
 			case ('-'):
 				remove = 1;
@@ -78,6 +78,8 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 				break;
 
 			case ('o'):
+				if ((*itParam).empty())
+					break;
 				if (remove) {
 					if (channel->isClient(*itParam) and channel->isOperator(*itParam)) {
 						channel->removeOperator(*itParam);
@@ -138,6 +140,8 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 				}
 				else {
 					if (channel->getMode().find("l") == std::string::npos) {
+						if ((*itParam).empty())
+							break;
 						std::istringstream lim(*itParam);
 						int nb;
 						if (lim >> nb) {
@@ -165,13 +169,15 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 				}
 				else {
 					if (channel->getMode().find("k") == std::string::npos) {
+						if ((*itParam).empty())
+							break;
 						channel->addMode("k");
 						channel->setChannelPwd(*itParam);
+						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+k", *itParam);
 						if (++itParam != modeParams.end())
 							itParam++;
 						else 
 							*itParam = "";
-						reply = RPL_MODE(userID(client->getNickname(), client->getUserName()), channelName, "+k", *itParam);
 
 					}
 					else {
