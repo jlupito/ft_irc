@@ -59,7 +59,7 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 		channel->removeClientFromChan(user);
 		if (channel->isOperator(user))
 			channel->removeOperator(user);
-		for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().begin(); it++) {
+		for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().end(); it++) {
 			if (*it == channel->getChannelName())
 				client->getJoinedChan().erase(it);
 		}

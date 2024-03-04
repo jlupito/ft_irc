@@ -56,7 +56,7 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 	channel->addToKicked(nickKicked);
 	if (channel->isOperator(nickKicked))
 			channel->removeOperator(nickKicked);
-	for (std::vector< std::string >::iterator it = kickedClient->getJoinedChan().begin(); it != kickedClient->getJoinedChan().begin(); it++) {
+	for (std::vector< std::string >::iterator it = kickedClient->getJoinedChan().begin(); it != kickedClient->getJoinedChan().end(); it++) {
 		if (*it == channel->getChannelName()) {
 			kickedClient->getJoinedChan().erase(it);
 			break;

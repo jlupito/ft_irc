@@ -19,8 +19,18 @@ class Channel;
 bool joinChannel(Channel *channel, Client* client, std::string key) {
 	std::string reply;
 
+	if (channel->getMode().find("i") != std::string::npos) {
+		    std::vector<std::string>::iterator it = std::find(channel->getInvited().begin(), channel->getInvited().end(), client->getNickname());
+			if (it == channel->getInvited().end()) {
+				reply = ERR_INVITEONLYCHAN(client->getNickname(), channel->getChannelName());
+				std::cout << "pas trouvé dans la invite list" << std::endl;
+				sendBytesToClient(client, reply.c_str());
+				return false;
+			}
+	}
 	if (channel->getMode().find("k") != std::string::npos) {
 			if (channel->getChannelPwd() != key) {
+				std::cout << "key asked: " << channel->getChannelPwd() << std::endl;
 				reply = ERR_BADCHANNELKEY(client->getNickname(), channel->getChannelName());
 				sendBytesToClient(client, reply.c_str());
 				return false;
@@ -33,24 +43,13 @@ bool joinChannel(Channel *channel, Client* client, std::string key) {
 				return false;
 			}
 	}
-	if (channel->getMode().find("i") != std::string::npos) {
-		    std::vector<std::string>::iterator it = std::find(channel->getInvited().begin(), channel->getInvited().end(), client->getNickname());
-			if (it == channel->getInvited().end()) {
-				reply = ERR_INVITEONLYCHAN(client->getNickname(), channel->getChannelName());
-				sendBytesToClient(client, reply.c_str());
-				return false;
-			}
-			else
-				channel->removeClientFromInvite(client->getNickname());
-	}
+	if (channel->getMode().find("i") != std::string::npos)
+		channel->removeClientFromInvite(client->getNickname());
 	channel->addToChan(client);
 	client->addJoinedChan(channel->getChannelName());
 
 	reply = userID(client->getNickname(), client->getUserName()) + " JOIN " + channel->getChannelName() + "\r\n";
 	sendBytesToChannel(channel, reply.c_str());
-
-	// reply = ":" + server.getServerName() + " JOIN :" + channel->getChannelName() + "\r\n";
-	// sendBytesToClient(client, reply.c_str());
 
 	if (!channel->getTopic().empty()) {
 		reply = RPL_TOPIC(client->getNickname(), channel->getChannelName(), channel->getTopic());
@@ -108,6 +107,8 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			chanToJoin[chan] = key;
 		}
 	}
+	else if (command->params.size() > 2)
+		chanToJoin[command->params[1]] = command->params[2];
 	else
 		chanToJoin[command->params[1]] = "";
 
@@ -124,6 +125,7 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			server.getChannels()[channel->getChannelName()] = channel;
 			channel->addOperators(user);
 		}
+		std::cout << "key entered: " << chanCmd->second << std::endl;
 		joinChannel(channel, client, chanCmd->second);
 	}
 

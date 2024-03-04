@@ -12,7 +12,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_YOURHOST(client, servername, version) (":localhost 002 " + client + " :Your host is " + servername + " , running version " + version + "\r\n")
 # define RPL_CREATED (": localhost 003 " + "This server was created <date>")
 # define RPL_MYINFO (": localhost 004 " + "<servername> <version> <available user modes>" +  "<available channel modes>")
-# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n");
 
 /* PASS ERROR REPLIES */
 # define ALREADYREGISTRED_ERR ": localhost 462 :Unauthorized command (already registered)\r\n"
@@ -40,7 +39,8 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_PART(user_id, channel, reason) (user_id + " PART " + channel + " " + reason + "\r\n")
 # define RPL_QUIT(user_id, reason) (user_id + " QUIT " + " " + reason + "\r\n")
 
-# define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " #" + channel + "\r\n")
+# define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " :" + channel + "\r\n")
+# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n");
 # define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + " :No topic is set" + "\r\n")
 # define RPL_MODE(user_id, channel, modeset, target) (user_id + " MODE " + channel + " " + modeset + " " + target + "\r\n")
 
