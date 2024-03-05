@@ -53,8 +53,11 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 			break;
 		}
 	}
-	if (!inviteeClient)
+	if (!inviteeClient) {
+		reply = ERR_NOSUCHNICK(invitee);
+		sendBytesToClient(client, reply.c_str());
 		return ;
+	}
 
 	channel->addToInvited(invitee);
 	reply = RPL_INVITE(userID(client->getNickname(), client->getUserName()), invitee, channelName);
