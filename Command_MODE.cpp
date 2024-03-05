@@ -21,7 +21,7 @@ bool	handleModeErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	std::string reply;
 	std::string modestring;
 	if (!channel->getMode().empty())
-		modestring = "+" + channel->getMode() + "\r\n";
+		modestring = channel->getMode() + "\r\n";
 	if (command->params.size() <= 1)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
 	else if (command->params.size() == 2)
@@ -67,7 +67,7 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	else if (!nbParams)
 		modeParams.push_back("");
 	itParam = modeParams.begin();
-	
+
 	for (size_t i = 0; command->params[2][i]; i++) {
 		
 		std::vector<std::string>::iterator itTmp = itParam;

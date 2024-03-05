@@ -10,9 +10,9 @@ void handleCAP_LSCommand(Server& server, Client* client, cmdStruct* command) {
 	int connexion = client->getConnectionStatus();
 
 	(void)server;
-	if (connexion == 0)
+	if (connexion == 0 && command->params.size() == 2)
 	{
-		if (command->params[1] == "LS" && command->params.size() == 2) {
+		if (command->params[1] == "LS") {
 			connexion = 1;
 			client->setConnectionStatus(connexion);
 			reply = "CAP_ACK LS\r\n";

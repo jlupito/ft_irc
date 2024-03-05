@@ -64,6 +64,10 @@ int handleNICKErrors(Server& server, Client* client, cmdStruct* command) {
 void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 
 	std::string reply = "Server failed to connect on NICK command.\r\n";
+	if (command->params.size() < 2) {
+		sendBytesToClient(client, reply.c_str());
+		return;
+	}
 	int errorCode = handleNICKErrors(server, client, command);
 	int connexion = client->getConnectionStatus();
 
