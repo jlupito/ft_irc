@@ -90,26 +90,14 @@ void	Server::initialization(void) {
 			close(_epollFd);
 			throw Server::serverInitFailure(); }
 
-		initCommandMap(); // fonction d'init de la map _cmdList contenant le repertoire des commandes
+		initCommandMap();
 	}
 	catch (const std::exception &e) { std::cout << e.what() <<std::endl; return ; }
 }
 
-/*
-Fonction initialization(), étapes :
-- Créer un socket pour le serveur, il s'agit de la socket d' ecoute du serveur.
-- Configurer l adresse du serveur : Famille d'adresses (AF_INET pour ipv4), adresse IP
- du serveur en format binaire. numero de port htons = "host to network short", garantit
- que le numéro de port est correctement converti dans le format réseau
-- Lier le socket à l'adresse et au port
-- Mettre le socket en mode ecoute avec la fonction listen(),
-- Créer un descripteur de fichier epoll(),
-- Ajouter le socket du serveur à l'ensemble epoll().
-*/
-
 void	Server::removeClient(const std::string& nickname) {
 
-	for (std::map<const int, Client*>::iterator it = _clients.begin(); 
+	for (std::map<const int, Client*>::iterator it = _clients.begin();
 		it != _clients.end(); ++it) {
 
 		if ((it->second)->getNickname() == nickname) {
@@ -124,7 +112,7 @@ void	Server::removeClient(const std::string& nickname) {
 void	Server::handleDisconnect(void) {
 
 
-	for (std::map<const int, Client *>::iterator it1 = _clients.begin(); 
+	for (std::map<const int, Client *>::iterator it1 = _clients.begin();
 			it1 != _clients.end(); it1++) {
 		if (it1->second)
 			delete it1->second;

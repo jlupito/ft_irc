@@ -6,8 +6,6 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 /*COMMON REPLIES*/
 # define NEEDMOREPARAMS_ERR(command) (": localhost 461 " + command + " :Not enough parameters" + "\r\n")
 
-// "Welcome to the Internet Relay Network John!user123@irc.example.com"
-// "Welcome to the Internet Relay Network <nick>!<user>@<host>"
 # define RPL_WELCOME(userName, nickname) (":localhost 001 " + nickname + " :Welcome to the Internet Relay Network " + nickname + "!" + userName + "\r\n")
 # define RPL_YOURHOST(client, servername, version) (":localhost 002 " + client + " :Your host is " + servername + " , running version " + version + "\r\n")
 # define RPL_CREATED (": localhost 003 " + "This server was created <date>")
@@ -59,4 +57,4 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 # define RPL_NAMREPLY(client, channel, list) (":localhost 353 " + client + " = " + channel + " :" + list + "\r\n")
 # define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /NAMES list" + "\r\n")
 
-# define userID(nickname, username) (":" + nickname + "!" + username + "@localhost") // NE PAS METTRE LE DELIMITEUR, CEST UN SOUS DEFINE !!!!!
+# define userID(nickname, username) (":" + nickname + "!" + username + "@localhost")

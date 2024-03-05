@@ -5,25 +5,13 @@
 
 typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 
-// FONCTION POUR iMPRIMER la CmdStruct
-void printCmdStruct(cmdStruct& command) {
-
-    std::cout << "**Unknown command** -> ";
-	std::cout << "[Prefix: " << command.prefix << "]";
-    std::cout << "[Params: ";
-    for (std::vector<std::string>::const_iterator it = command.params.begin();
-		it != command.params.end(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << "]";
-    std::cout << "[Message: " << command.message << "]" << std::endl;
-}
-
-void	sendBytesToClient(Client* client, const char* reply) {
+void sendBytesToClient(Client* client, const char* reply) {
 
 	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
-	if (bytes_transfered <= 0)
-		std::cout << "0 bytes transfered from server to client." << std::endl;
+	if (bytes_transfered <= 0) {
+		perror("send");
+		std::cout << "Error sending data to client." << std::endl;
+	}
 }
 
 void	sendBytesToChannel(Channel* channel, const char* reply) {

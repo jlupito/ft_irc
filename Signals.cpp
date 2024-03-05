@@ -10,7 +10,7 @@ Server* SignalMonitor::serverInstance = NULL;
 SignalMonitor::SignalMonitor(Server &server) {
 
 	serverInstance = &server;
-	std::signal(SIGINT, handleSignal); // attention cette fonction ne prend rien que des int
+	std::signal(SIGINT, handleSignal);
 	std::signal(SIGQUIT, handleSignal);
 }
 

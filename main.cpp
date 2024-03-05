@@ -17,9 +17,11 @@ int main(int ac, char **av) {
 	SignalMonitor monitoring(server);
 
 	while (true) {
+
 		int numEvents = epoll_wait(server.getEpollFd(), server.getEventsTab(), 1024, -1);
 		if (numEvents < 0)
 			return -1;
+
 		for (int i = 0; i < numEvents; ++i) {
 			if (server.getEventsTab()[i].data.fd == server.getServerSocket()) {
 				Client* newClient = new Client;
@@ -29,17 +31,12 @@ int main(int ac, char **av) {
 					newClient->setClientSocket(tmp);
 					if (newClient->getClientSocket() < 0)
 						throw Client::clientConnectFailure();
-
-					// Configuration du socket en mode non bloquant
-					fcntl(newClient->getClientSocket(), F_SETFL, O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
-					// verification du retour des deux fonctions (-1?) cf commentaires
-
+					fcntl(newClient->getClientSocket(), F_SETFL, O_NONBLOCK);
 					server.getEvent().events = EPOLLIN;
 					server.getEvent().data.fd = newClient->getClientSocket();
 					if (epoll_ctl(server.getEpollFd(), EPOLL_CTL_ADD, newClient->getClientSocket(), &server.getEvent()) < 0) {
 						throw Client::clientConnectFailure(); }
 					server.getClients()[newClient->getClientSocket()] = newClient;
-					// std::cout << "CREATION // adress client: " <<  &client << std::endl;
 				}
 				catch (const std::exception &e) { std::cout << e.what() <<std::endl ; close(newClient->getClientSocket()); }
 			}

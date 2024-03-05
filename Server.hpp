@@ -43,15 +43,15 @@ class Server {
 
 	private:
 		std::string								_serverName;
-		struct sockaddr_in 						_serverAddr; //struct pour stocker les infos relatives aux adresses IP
+		struct sockaddr_in 						_serverAddr;
 		struct epoll_event 						_event;
 		struct epoll_event 						_events[1024];
 		int										_port;
 		int 									_serverSocket;
 		int 									_epollFd;
 		std::string								_password;
-		std::map< std::string, cmdFunction > 	_cmdList; // map pour contenir les noms et pointeurs sur f()
-		std::map< const int, Client * > 		_clients; // le int est le fd attribue au client(socket) - non cessible
+		std::map< std::string, cmdFunction > 	_cmdList;
+		std::map< const int, Client * > 		_clients;
 		std::map< std::string, Channel * >		_channels;
 
 	class serverInitFailure : public std::exception {
