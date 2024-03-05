@@ -17,9 +17,9 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
 	std::string reason = "Quit: ";
 
-	if (command->params.size() == 2 && (!command->params[1].empty()))
-		reason += command->params[1];
-	else
+	if (!command->message.empty())
+		reason += command->message;
+	else	
 		reason += "leaving";
 
 	for (std::vector< std::string >::iterator it = client->getJoinedChan().begin();
