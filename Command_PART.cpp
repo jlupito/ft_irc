@@ -20,7 +20,7 @@ bool	handlePartErrors(Client *client, Channel* channel, std::string &user, cmdSt
 	std::string reply;
 	if (command->params.size() < 2)
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
-	else if (!channel/* or channel->getClientsList().empty()*/)
+	else if (!channel)
 		reply = NOSUCHCHANNEL_ERR(channel->getChannelName());
 	else if (!channel->isClient(user))
 		reply = NOTONCHANNEL_ERR(user, channel->getChannelName());
@@ -69,7 +69,5 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 		sendBytesToClient(client, reply.c_str());
 		sendBytesToChannel(channel, reply.c_str());
 	}
-
 	return ;
-
 }

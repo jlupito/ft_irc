@@ -35,6 +35,7 @@ bool handleKickErrors(Client* client, std::string &user, Channel* channel, std::
 }
 
 void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
+
 	std::string reply;
 	std::string channelName = command->params[1];
 	if (!channelName.empty() and channelName[0] != '#')
@@ -51,7 +52,6 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 		if ((it->second)->getNickname() == nickKicked)
 			kickedClient = it->second;
 	}
-
 	channel->removeClientFromChan(nickKicked);
 	channel->addToKicked(nickKicked);
 	if (channel->isOperator(nickKicked))
@@ -64,7 +64,6 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 		else if (it == kickedClient->getJoinedChan().end())
 			return;
 	}
-
 	std::string reason;
 	if (!command->message.empty())
 		reason = command->message;

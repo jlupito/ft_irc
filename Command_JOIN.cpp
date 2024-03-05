@@ -17,8 +17,8 @@
 class Channel;
 
 bool joinChannel(Channel *channel, Client* client, std::string key) {
-	std::string reply;
 
+	std::string reply;
 	if (channel->getMode().find("i") != std::string::npos) {
 		    std::vector<std::string>::iterator it = std::find(channel->getInvited().begin(), channel->getInvited().end(), client->getNickname());
 			if (it == channel->getInvited().end()) {
@@ -73,10 +73,8 @@ bool joinChannel(Channel *channel, Client* client, std::string key) {
 
 	reply = RPL_NAMREPLY(client->getNickname(), channel->getChannelName(), list);
 	sendBytesToClient(client, reply.c_str());
-
 	reply = RPL_ENDOFNAMES(client->getNickname(), channel->getChannelName());
 	sendBytesToClient(client, reply.c_str());
-
 	return true;
 }
 
@@ -103,16 +101,16 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 	else if (command->params[1].find(",") != std::string::npos) {
 		std::istringstream iss1(command->params[1]);
 		std::string chan, key;
-		while (std::getline(iss1, chan, ',')) {
+		while (std::getline(iss1, chan, ','))
 			chanToJoin[chan] = key;
-		}
 	}
 	else if (command->params.size() > 2)
 		chanToJoin[command->params[1]] = command->params[2];
 	else
 		chanToJoin[command->params[1]] = "";
 
-	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin(); chanCmd != chanToJoin.end(); chanCmd++) {
+	for (std::map<std::string, std::string >::iterator chanCmd = chanToJoin.begin();
+			chanCmd != chanToJoin.end(); chanCmd++) {
 
 		std::string channelName = chanCmd->first;
 		if (!channelName.empty() and channelName[0] != '#')
@@ -127,6 +125,5 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 		}
 		joinChannel(channel, client, chanCmd->second);
 	}
-
 	return ;
 }

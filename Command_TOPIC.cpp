@@ -46,13 +46,8 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 
 	if (!command->message.empty()) {
 		channel->getTopic().clear();
-		if (command->message.size() > 1) 
-		{
+		if (command->message.size() > 1) {
 			channel->setTopic(command->message.erase(0, 1));
-			// reply = RPL_TOPIC((&it->second)->getNickname(), channelName, channel->getTopic());
-			// sendBytesToClient(&it->second, reply.c_str());
-			// reply = RPL_TOPICWHOTIME((&it->second)->getNickname(), channelName, client->getNickname(), time);
-			// sendBytesToClient(&it->second, reply.c_str());
 			reply = userID(user, client->getUserName()) + " TOPIC " + channelName + " :" + command->message + "\r\n";
 			sendBytesToChannel(channel, reply.c_str());
 		}
@@ -70,6 +65,5 @@ void handleTOPICCommand(Server& server, Client* client, cmdStruct* command) {
 		}
 	}
 	return ;
-
 }
 

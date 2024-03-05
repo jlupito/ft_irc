@@ -19,10 +19,10 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 
 	if (command->params.size() == 2 && (!command->params[1].empty()))
 		reason += command->params[1];
-	else	
+	else
 		reason += "leaving";
-	
-	for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); 
+
+	for (std::vector< std::string >::iterator it = client->getJoinedChan().begin();
 			it != client->getJoinedChan().end(); it++) {
 		Channel *channel = server.getChannels()[*it];
 		channel->removeClientFromChan(user);
@@ -34,5 +34,3 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 	sendBytesToClient(client, reply.c_str());
 	server.removeClient(client->getNickname());
 }
-// verfiier que le QUIT sans param et le QUIT avec param sont bien affichés dans
-// les channels dans lesquels le client qui QUIT se trouve.

@@ -7,8 +7,7 @@
 Command: USER
 	Parameters: <username> <hostname> <servername> :<realname>
 si on ignore la communication inter-srveurs, on ignore les params
-<hostname>  et <servername> A confirner pour implemtation gestion erreurs
-Realname peut contenir des espaces et doit être préfixé par deux-points (':')
+<hostname>  et <servername>
 */
 
 void	handleUSERCommand(Server& server, Client* client, cmdStruct* command) {
@@ -18,9 +17,9 @@ void	handleUSERCommand(Server& server, Client* client, cmdStruct* command) {
 
 	if (connexion == 3) {
 
-		if (command->params.size() != 4 || command->message.empty()) { // on a 4 params ET le message rempli par le realname
-			reply = NEEDMOREPARAMS_ERR(command->params[0]); 
-			sendBytesToClient(client, reply.c_str()); return ; 
+		if (command->params.size() != 4 || command->message.empty()) {
+			reply = NEEDMOREPARAMS_ERR(command->params[0]);
+			sendBytesToClient(client, reply.c_str()); return ;
 		}
 
 		client->setUserName(command->params[1]);

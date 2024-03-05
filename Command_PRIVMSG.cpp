@@ -16,7 +16,7 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 
 	if (command->params.size() == 1) {
 
-		reply = ERR_NORECIPIENT(command->params[0]); // erreur 411
+		reply = ERR_NORECIPIENT(command->params[0]);
 		sendBytesToClient(client, reply.c_str());
 		return;
 	}
@@ -29,13 +29,12 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 	}
 	else if (command->message.empty()) {
 
-		reply = ERR_NOTEXTTOSEND; // erreur 412
+		reply = ERR_NOTEXTTOSEND;
 		sendBytesToClient(client, reply.c_str());
 		return;
 	}
 	for (size_t i = 0; i < receiversList.size(); i++) {
 
-		// si c'est un format channel
 		if (!receiversList[i].empty() && receiversList[i][0] == '#') {
 			std::string channelReceiving = receiversList[i];
 			bool channelFound = false;
@@ -54,9 +53,8 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 				}
 			}
 			if (!channelFound)
-				errorMessages.push_back(ERR_CANNOTSENDTOCHAN(channelReceiving)); // erreur 404
+				errorMessages.push_back(ERR_CANNOTSENDTOCHAN(channelReceiving));
 		}
-		// si c'est un format user
 		else if (!receiversList[i].empty()) {
 
 			std::string userReceiving = receiversList[i];
@@ -73,9 +71,8 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
             		break; }
     		}
 			if (!userFound)
-				errorMessages.push_back(ERR_NOSUCHNICK(userReceiving)); // erreur 401
+				errorMessages.push_back(ERR_NOSUCHNICK(userReceiving));
 		}
-		// si elle est vide, on renvoie Erreur 401
 		else
 			errorMessages.push_back(ERR_NOSUCHNICK(command->params[1]));
 	}
@@ -83,6 +80,3 @@ void handlePRIVMSGCommand(Server& server, Client* client, cmdStruct* command) {
 		it != errorMessages.end(); ++it) {
 		sendBytesToClient(client, it->c_str()); }
 }
-
-// Faire l'Erreur 407 de TOOMANYTARGETS ?
-// cf client irssi et DALnet 

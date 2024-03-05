@@ -54,6 +54,7 @@ void	Channel::removeMode(std::string mode) {
 }
 
 bool	Channel::isClient(std::string &nickname) {
+
 	if (_clients.empty())
 		return false;
 	std::map< std::string, Client * >::iterator it = _clients.find(nickname);
@@ -63,6 +64,7 @@ bool	Channel::isClient(std::string &nickname) {
 }
 
 bool	Channel::isInvited(std::string &nickname) {
+
 	if (_invited.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _invited.begin(); it != _invited.end(); it++) {
@@ -84,6 +86,7 @@ bool	Channel::isOperator(std::string &nickname) {
 }
 
 bool	Channel::isBanned(std::string &nickname) {
+
 	if (_banned.empty())
 		return false;
 	for (std::vector< std::string >::iterator it = _banned.begin(); it != _banned.end(); it++) {
@@ -95,6 +98,7 @@ bool	Channel::isBanned(std::string &nickname) {
 
 
 void	Channel::removeClientFromChan(std::string &nickname) {
+
 	if (_clients.empty())
 		return ;
 	for (std::map< std::string, Client * >::iterator it = _clients.begin(); it != _clients.end(); it++) {
@@ -122,6 +126,7 @@ void	Channel::removeOperator(std::string &nickname) {
 }
 
 void	Channel::removeClientFromInvite(std::string &nickname) {
+
 	for (std::vector< std::string >::iterator it = _invited.begin(); it != _invited.end(); it++) {
 		if (*it == nickname) {
 			_invited.erase(it);

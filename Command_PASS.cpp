@@ -9,9 +9,6 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply = "Connexion failure PASS.";
 	int connexion = client->getConnectionStatus();
 
-	// for (size_t i = 0; i < command->params.size(); i++) // test ok
-	// 	std::cout << "PASS IRSSI Param " << i << " est : " << command->params[i] << std::endl; //ok
-
 	if (command->params.empty()) {
 
 		reply = NEEDMOREPARAMS_ERR(command->params[0]);
@@ -23,7 +20,7 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 
 		reply = ALREADYREGISTRED_ERR;
 		sendBytesToClient(client, reply.c_str());
-		return ; // handleDisconnect();
+		return ;
 	}
 	else if ((connexion == 1) && (command->params[1] == server.getPassWord())
 		&& command->params.size() == 2) {
@@ -31,7 +28,6 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 		reply = "Password accepted.\r\n";
 		connexion = 2;
 		client->setConnectionStatus(connexion);
-		// std::cout << "PASS - Valid password." << std::endl;
 	}
 	sendBytesToClient(client, reply.c_str());
 }

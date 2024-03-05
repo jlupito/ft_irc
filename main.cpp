@@ -52,21 +52,3 @@ int main(int ac, char **av) {
 	return 0;
 }
 
-/*
-Premier jet avec fcntl() : (cf correction)
-	int flag = fcntl(newClient->getClientSocket(), F_GETFL, 0); // on recupere l'indice de controle dans flag.
-	fcntl(newClient->getClientSocket(), F_SETFL, flag | O_NONBLOCK); // on ajoute l' option "non-bloquant" aux options de socket
-Pour les verifications de retour de fonctions :
-int flags = fcntl(client.getClientSocket(), F_GETFL, 0);
-if (flags == -1) {
-	throw ...
-	close(client.getClientSocket());
-	throw Client::clientConnectFailure();
-}
-
-if (fcntl(client.getClientSocket(), F_SETFL, flags | O_NONBLOCK) == -1) {
-	throw ...
-	close(client.getClientSocket());
-	throw Client::clientConnectFailure();
-}
-*/

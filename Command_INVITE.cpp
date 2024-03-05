@@ -33,8 +33,8 @@ bool	handleInviteErrors(Client *client, Channel* channel, std::string &invitee, 
 }
 
 void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
-	std::string reply;
 
+	std::string reply;
 	std::string channelName = command->params[2];
 	if (!channelName.empty() and channelName[0] != '#')
 		channelName.insert(0, "#");
@@ -45,7 +45,6 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 
 	if (handleInviteErrors(client, channel, invitee, inviter, command))
 		return ;
-
 	Client *inviteeClient = NULL;
 	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
 		if ((it->second)->getNickname() == invitee) {
@@ -58,7 +57,6 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 		sendBytesToClient(client, reply.c_str());
 		return ;
 	}
-
 	channel->addToInvited(invitee);
 	reply = RPL_INVITE(userID(client->getNickname(), client->getUserName()), invitee, channelName);
 	sendBytesToClient(inviteeClient, reply.c_str());
