@@ -66,40 +66,41 @@ void updateNickInChannels(Server &server, std::string oldNickname, std::string n
 	std::map<std::string, Channel*>& channelsList = server.getChannels();
 	std::map<const int, Client*>& clientsList = server.getClients();
 
+	for (std::map<const int, Client*>::iterator it3 = clientsList.begin();
+        it3 != clientsList.end(); it3++) {
+        Client* client = it3->second;
+        if ((client)->getNickname() == oldNickname) {
+            (client)->setNickname(newNickname);
+		}
+    }
 	for (std::map<std::string, Channel*>::iterator it = channelsList.begin();
 		it != channelsList.end(); it++) {
 		Channel* channel = it->second;
-		if (channel->isOperator(oldNickname)) {
-			channel->removeOperator(oldNickname);
-			channel->addOperators(newNickname);
+		if ((channel)->isOperator(oldNickname)) {
+			(channel)->removeOperator(oldNickname);
+			(channel)->addOperators(newNickname);
         }
-        if (channel->isKicked(oldNickname)) {
-			channel->removeKicked(oldNickname);
-			channel->addToKicked(newNickname);
+        if ((channel)->isKicked(oldNickname)) {
+			(channel)->removeKicked(oldNickname);
+			(channel)->addToKicked(newNickname);
         }
-        if (channel->isClient(oldNickname)) {
-			for (std::map<std::string, Client*>::iterator it = channel->getClientsList().begin();
-                it != channel->getClientsList().end(); it++) {
-                Client* client = it->second;
-                if (client->getNickname() == oldNickname) {
-                    client->setNickname(newNickname);
-                    channel->getClientsList()[newNickname] = client;
-					channel->getClientsList().erase(it);
+        if ((channel)->isClient(oldNickname)) {
+			for (std::map<std::string, Client*>::iterator it1 = (channel)->getClientsList().begin();
+                it1 != (channel)->getClientsList().end(); it1++) {
+				Client* clientChan = it1->second;
+                if (it1->first == oldNickname) {
+					(clientChan)->setNickname(newNickname);
+                    (channel)->getClientsList()[newNickname] = clientChan;
+					(channel)->getClientsList().erase(it1);
                     break ;
 			    }
             }
         }
-        if (channel->isInvited(oldNickname)) {
-            channel->removeClientFromInvite(oldNickname);
-            channel->addToInvited(newNickname);
+        if ((channel)->isInvited(oldNickname)) {
+            (channel)->removeClientFromInvite(oldNickname);
+            (channel)->addToInvited(newNickname);
 		}
 	}
-	for (std::map<const int, Client*>::iterator it = clientsList.begin();
-        it != clientsList.end(); it++) {
-        Client* client = it->second;
-        if (client->getNickname() == oldNickname)
-            client->setNickname(newNickname);
-    }
 }
 
 void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
@@ -139,11 +140,10 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 		if (errorCode == 0) {
 
 			std::string oldNickname = client->getNickname();
-			client->setNickname(command->params[1]);
-			reply = ":" + oldNickname + " NICK " + client->getNickname() + "\r\n";
-			informAllClientsOfNickChange(server, client, oldNickname);
-			std::string newNickname = client->getNickname();
+			std::string newNickname = (command->params[1]);
+			reply = ":" + oldNickname + " NICK " + newNickname + "\r\n";
 			updateNickInChannels(server, oldNickname, newNickname);
+			informAllClientsOfNickChange(server, client, oldNickname);
 		}
 		else
 			reply = ERRONEUSNICKNAME_ERR(command->params[1]);
