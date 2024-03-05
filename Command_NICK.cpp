@@ -91,10 +91,15 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 	}
 	else if (connexion == 4) {
 
-		std::string oldNickname = client->getNickname();
-		client->setNickname(command->params[1]);
-		reply = ":" + oldNickname + " NICK " + client->getNickname() + "\r\n";
-		informAllClientsOfNickChange(server, client, oldNickname);
+		if (errorCode == 0) {
+
+			std::string oldNickname = client->getNickname();
+			client->setNickname(command->params[1]);
+			reply = ":" + oldNickname + " NICK " + client->getNickname() + "\r\n";
+			informAllClientsOfNickChange(server, client, oldNickname);
+		}
+		else
+			reply = ERRONEUSNICKNAME_ERR(command->params[1]);
 	}
 	sendBytesToClient(client, reply.c_str());
 }
