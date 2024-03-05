@@ -33,12 +33,6 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 	}
 	sendBytesToClient(client, reply.c_str());
 	server.removeClient(client->getNickname());
-	// for (std::map<const int, Client *>::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
-	// 	if (it->first == client->getClientSocket()) {
-	// 		(it->second)->getNickname();
-	// 		delete it->second;
-	// 	}
-	// }
 }
 // verfiier que le QUIT sans param et le QUIT avec param sont bien affichés dans
 // les channels dans lesquels le client qui QUIT se trouve.

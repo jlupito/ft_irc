@@ -63,9 +63,11 @@ void handleMODECommand(Server& server, Client* client, cmdStruct* command) {
 	if (nbParams > 0) {
 		for (size_t i = 0; i < nbParams; i++)
 			modeParams.push_back(command->params[i + 3]);
-		itParam = modeParams.begin();
 	}
-
+	else if (!nbParams)
+		modeParams.push_back("");
+	itParam = modeParams.begin();
+	
 	for (size_t i = 0; command->params[2][i]; i++) {
 		
 		std::vector<std::string>::iterator itTmp = itParam;

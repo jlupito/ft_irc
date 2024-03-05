@@ -61,6 +61,8 @@ void handleKICKCommand(Server& server, Client* client, cmdStruct* command) {
 			kickedClient->getJoinedChan().erase(it);
 			break;
 		}
+		else if (it == kickedClient->getJoinedChan().end())
+			return;
 	}
 
 	std::string reason;

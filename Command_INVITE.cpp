@@ -46,11 +46,15 @@ void handleINVITECommand(Server& server, Client* client, cmdStruct* command) {
 	if (handleInviteErrors(client, channel, invitee, inviter, command))
 		return ;
 
-	Client *inviteeClient;
+	Client *inviteeClient = NULL;
 	for (std::map< const int, Client * >::iterator it = server.getClients().begin(); it != server.getClients().end(); it++) {
-		if ((it->second)->getNickname() == invitee)
+		if ((it->second)->getNickname() == invitee) {
 			inviteeClient = it->second;
+			break;
+		}
 	}
+	if (!inviteeClient)
+		return ;
 
 	channel->addToInvited(invitee);
 	reply = RPL_INVITE(userID(client->getNickname(), client->getUserName()), invitee, channelName);

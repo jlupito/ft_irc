@@ -60,8 +60,10 @@ void handlePARTCommand(Server& server, Client* client, cmdStruct* command) {
 		if (channel->isOperator(user))
 			channel->removeOperator(user);
 		for (std::vector< std::string >::iterator it = client->getJoinedChan().begin(); it != client->getJoinedChan().end(); it++) {
-			if (*it == channel->getChannelName())
+			if (*it == channel->getChannelName()) {
 				client->getJoinedChan().erase(it);
+				break;
+			}
 		}
 		reply = RPL_PART(userID(client->getNickname(), client->getUserName()), channelName, command->message);
 		sendBytesToClient(client, reply.c_str());
