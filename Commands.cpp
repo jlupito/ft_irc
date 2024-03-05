@@ -9,7 +9,6 @@ void sendBytesToClient(Client* client, const char* reply) {
 
 	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
 	if (bytes_transfered <= 0) {
-		perror("send");
 		std::cout << "Error sending data to client." << std::endl;
 	}
 }
