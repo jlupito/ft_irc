@@ -19,7 +19,6 @@ std::string&	Channel::getTopic( void ) { return this->_topic; }
 std::string&	Channel::getMode( void ) { return this->_mode; }
 
 std::vector<std::string>&		Channel::getKicked( void ) { return this->_kicked; }
-std::vector<std::string>&		Channel::getBanned( void ) { return this->_banned; }
 std::vector<std::string>&		Channel::getOperators( void ) { return this->_operators; }
 std::vector<std::string>&		Channel::getInvited() { return this->_invited; }
 std::map<std::string, Client*>&	Channel::getClientsList() { return this->_clients; }
@@ -32,7 +31,6 @@ void	Channel::setChannelPwd(std::string channelPwd) { this->_channelPwd = channe
 
 void	Channel::addToInvited(std::string &nickname) {this->_invited.push_back(nickname);}
 void	Channel::addToKicked(std::string &nickname) {this->_kicked.push_back(nickname);}
-void	Channel::addToBanned(std::string &nickname) {this->_banned.push_back(nickname);}
 void	Channel::addOperators(std::string &nickname) {this->_operators.push_back(nickname);}
 
 
@@ -85,17 +83,16 @@ bool	Channel::isOperator(std::string &nickname) {
 	return false;
 }
 
-bool	Channel::isBanned(std::string &nickname) {
+bool	Channel::isKicked(std::string &nickname) {
 
-	if (_banned.empty())
+	if (_kicked.empty())
 		return false;
-	for (std::vector< std::string >::iterator it = _banned.begin(); it != _banned.end(); it++) {
+	for (std::vector< std::string >::iterator it = _kicked.begin(); it != _kicked.end(); it++) {
 		if (*it == nickname)
 			return true;
 	}
 	return false;
 }
-
 
 void	Channel::removeClientFromChan(std::string &nickname) {
 
@@ -117,9 +114,23 @@ void	Channel::removeClientFromChan(std::string &nickname) {
 
 void	Channel::removeOperator(std::string &nickname) {
 
+	if (_operators.empty())
+		return ;
 	for (std::vector< std::string >::iterator it = _operators.begin(); it != _operators.end(); it++) {
 		if (*it == nickname) {
 			_operators.erase(it);
+			break;
+		}
+	}
+}
+
+void	Channel::removeKicked(std::string &nickname) {
+
+	if (_kicked.empty())
+		return ;
+	for (std::vector< std::string >::iterator it = _kicked.begin(); it != _kicked.end(); it++) {
+		if (*it == nickname) {
+			_kicked.erase(it);
 			break;
 		}
 	}

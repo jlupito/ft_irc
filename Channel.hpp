@@ -17,7 +17,6 @@ class Channel {
 	private:
 		std::vector<std::string>		_operators;
 		std::vector<std::string>		_kicked;
-		std::vector<std::string>		_banned;
 		std::vector<std::string> 		_invited;
 		std::map<std::string, Client*>	_clients;
 		std::string 					_name;
@@ -39,7 +38,6 @@ class Channel {
 		std::string&					getMode( void );
 		std::vector<std::string>&		getKicked( void );
 		std::vector<std::string>&		getInvited();
-		std::vector<std::string>&		getBanned( void );
 		std::vector<std::string>&		getOperators( void );
 
 		void							setNbrUsersLimit(int limit);
@@ -51,14 +49,14 @@ class Channel {
 		bool							isClient(std::string &nickname);
 		bool							isInvited(std::string &nickname);
 		bool							isOperator(std::string &nickname);
-		bool							isBanned(std::string &nickname);
+		bool							isKicked(std::string &nickname);
 
 		void							removeOperator(std::string &nickname);
+		void							removeKicked(std::string &nickname);
 		void							removeClientFromChan(std::string &nickname);
 		void							removeClientFromInvite(std::string &nickname);
 		void							addToChan(Client *client);
 		void							addToInvited(std::string &nickname);
 		void							addToKicked(std::string &nickname);
-		void							addToBanned(std::string &nickname);
 		void							addOperators(std::string &nickname);
 };
