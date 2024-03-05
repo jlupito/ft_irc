@@ -19,7 +19,9 @@ void	handleUSERCommand(Server& server, Client* client, cmdStruct* command) {
 	if (connexion == 3) {
 
 		if (command->params.size() != 4 || command->message.empty()) { // on a 4 params ET le message rempli par le realname
-			reply = NEEDMOREPARAMS_ERR(command->params[0]); sendBytesToClient(client, reply.c_str()); return ; }
+			reply = NEEDMOREPARAMS_ERR(command->params[0]); 
+			sendBytesToClient(client, reply.c_str()); return ; 
+		}
 
 		client->setUserName(command->params[1]);
 		server.setServerName(command->params[3]);

@@ -48,8 +48,8 @@ void executeCmd(Server& server, Client* client, cmdStruct* cmdCut) {
 		if (it != cmdList.end())
 			it->second(server, client, cmdCut);
 		else {
-			size_t bufferSize = client->getBuffer().size();
-			client->getBuffer().erase(0, bufferSize);
+			// size_t bufferSize = client->getBuffer().size();
+			// client->getBuffer().erase(0, bufferSize);
 			printCmdStruct(*cmdCut);
 		}
 	}
@@ -102,7 +102,10 @@ void processEvent(Server& server, int i) {
 			receivedData.erase(0, pos + 2);
 			processCmd(server, client, cmdFull);
 		}
-		if (!receivedData.empty())
+		if (!receivedData.empty()) {
 			client->setBuffer(receivedData);
+			size_t len = receivedData.size();
+			receivedData.erase(0, len);
+		}
 	}
 }

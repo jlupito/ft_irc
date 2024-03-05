@@ -125,7 +125,6 @@ void handleJOINCommand(Server& server, Client* client, cmdStruct* command) {
 			server.getChannels()[channel->getChannelName()] = channel;
 			channel->addOperators(user);
 		}
-		std::cout << "key entered: " << chanCmd->second << std::endl;
 		joinChannel(channel, client, chanCmd->second);
 	}
 

@@ -126,7 +126,7 @@ void	Server::handleDisconnect(void) {
 
 	for (std::map<const int, Client *>::iterator it1 = _clients.begin(); 
 			it1 != _clients.end(); it1++) {
-		if (it1->second) {}
+		if (it1->second)
 			delete it1->second;
 	}
 	for (std::map<std::string, Channel *>::iterator it2 = _channels.begin();

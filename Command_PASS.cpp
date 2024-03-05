@@ -28,10 +28,10 @@ void	handlePASSCommand(Server& server, Client* client, cmdStruct* command) {
 	else if ((connexion == 1) && (command->params[1] == server.getPassWord())
 		&& command->params.size() == 2) {
 
-		reply = "PASS - valid password.";
+		reply = "Password accepted.\r\n";
 		connexion = 2;
 		client->setConnectionStatus(connexion);
-		std::cout << "PASS - Valid password." << std::endl;
+		// std::cout << "PASS - Valid password." << std::endl;
 	}
 	sendBytesToClient(client, reply.c_str());
 }

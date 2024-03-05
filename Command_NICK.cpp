@@ -89,7 +89,7 @@ void	handleNICKCommand(Server& server, Client* client, cmdStruct* command) {
 				client->setNickname(command->params[1]);
 				connexion = 3;
 				client->setConnectionStatus(connexion);
-				reply = "You're now known as " + client->getNickname() + "\r\n";
+				reply = "You're now known as " + client->getNickname() + ".\r\n";
 			}
 		}
 	}
