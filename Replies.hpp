@@ -42,7 +42,7 @@ https://datatracker.ietf.org/doc/html/rfc2812#section-5
 
 # define RPL_KICK(user_id, channel, kicked, reason) (user_id + " KICK " + channel + " " + kicked + " " + reason + "\r\n")
 # define RPL_PART(user_id, channel, reason) (user_id + " PART " + channel + " " + reason + "\r\n")
-# define RPL_QUIT(user_id, reason) (user_id + " QUIT " + " " + reason + "\r\n")
+# define RPL_QUIT(user_id, reason) (user_id + " QUIT " + reason + "\r\n")
 
 # define RPL_INVITE(user_id, invited, channel) (user_id + " INVITE " + invited + " :" + channel + "\r\n")
 # define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel + "\r\n");
