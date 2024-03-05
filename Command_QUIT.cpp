@@ -17,10 +17,8 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 	std::string reply;
 	std::string reason = "Quit: ";
 
-	if (!command->message.empty()) {
+	if (!command->message.empty())
 		reason += command->message;
-		std::cout << "message: " << command->message << std::endl;
-	}
 	else	
 		reason += "leaving";
 	
@@ -30,7 +28,6 @@ void	handleQUITCommand(Server& server, Client* client, cmdStruct* command) {
 		channel->removeClientFromChan(user);
 		if (channel->isOperator(user))
 			channel->removeOperator(user);
-		std::cout << "reason: " << reason << std::endl;
 		reply = RPL_QUIT(userID(client->getNickname(), client->getUserName()), reason);
 		sendBytesToChannel(channel, reply.c_str());
 	}
