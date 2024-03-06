@@ -8,7 +8,7 @@ typedef void (*cmdFunction)(Server&, Client*, cmdStruct*);
 void sendBytesToClient(Client* client, const char* reply) {
 
 	ssize_t bytes_transfered = send(client->getClientSocket(), reply, strlen(reply), 0);
-	if (bytes_transfered <= 0) {
+	if (bytes_transfered < 0) {
 		std::cout << "Error sending data to client." << std::endl;
 	}
 }
@@ -66,8 +66,11 @@ void processEvent(Server& server, int i) {
 	Client 	*client = server.getClients()[clientSocket];
 
 	ssize_t bytes_transfered = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
-	if (bytes_transfered <= 0)
+	if (bytes_transfered < 0) {
+
+		std::cout << "Error receiving data from client." << std::endl;
 		close(clientSocket);
+	}
 	else {
 		buffer[bytes_transfered] = '\0';
 		std::string receivedData(buffer);

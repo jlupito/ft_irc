@@ -23,14 +23,12 @@ bool joinChannel(Channel *channel, Client* client, std::string key) {
 		    std::vector<std::string>::iterator it = std::find(channel->getInvited().begin(), channel->getInvited().end(), client->getNickname());
 			if (it == channel->getInvited().end()) {
 				reply = ERR_INVITEONLYCHAN(client->getNickname(), channel->getChannelName());
-				std::cout << "pas trouvé dans la invite list" << std::endl;
 				sendBytesToClient(client, reply.c_str());
 				return false;
 			}
 	}
 	if (channel->getMode().find("k") != std::string::npos) {
 			if (channel->getChannelPwd() != key) {
-				std::cout << "key asked: " << channel->getChannelPwd() << std::endl;
 				reply = ERR_BADCHANNELKEY(client->getNickname(), channel->getChannelName());
 				sendBytesToClient(client, reply.c_str());
 				return false;
